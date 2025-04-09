@@ -1,0 +1,1147 @@
+@import url("https://fonts.googleapis.com/css2?family=Oxanium:wght@200..800&family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap");
+
+:root {
+  --primary-color: #0094ff;
+  --dark-bg: #12172d;
+  --text-color: #ffffff;
+}
+html {
+  overflow-x: hidden;
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+/* Appliquer le même fond au header et au body */
+.custom-header {
+  background-color: rgba(30, 41, 59, 1); /* Même couleur que le body */
+  border-bottom: none; /* Supprimer la ligne entre le header et le body */
+  padding: 16px;
+  display: flex;
+  color: #fff;
+  justify-content: flex-end;
+  align-items: center;
+  border-radius: 12px 12px 0 0; /* Coins arrondis pour le haut */
+}
+
+.custom-body {
+  background-color: rgba(30, 41, 59, 1); /* Même couleur que le header */
+  color: #fff;
+  padding: 5px;
+  border-radius: 0 0 12px 12px; /* Coins arrondis pour le bas */
+}
+
+/* Bouton de fermeture personnalisé */
+.btn-close {
+  background-color: transparent;
+  border: none;
+  font-size: 1.2rem;
+  filter: invert(1);
+  cursor: pointer;
+  outline: none;
+  transition: transform 0.2s, opacity 0.2s;
+}
+
+.btn-close:hover {
+  transform: scale(1.1);
+  opacity: 0.8;
+}
+body {
+  overflow-x: hidden;
+  font-family: "Poppins", sans-serif;
+  background: rgba(30, 41, 59, 1);
+  color: var(--text-color);
+  text-align: center;
+}
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 2vh 5vw;
+  background: rgba(30, 41, 59, 1);
+  position: relative;
+}
+
+.logo img {
+  height: 5vh;
+  max-height: 40px;
+}
+
+.navbar nav {
+  flex: 1;
+  padding-top: 15px;
+  display: flex;
+  justify-content: center;
+}
+
+.nav-links {
+  list-style: none;
+  display: flex;
+  gap: 3vw;
+}
+
+.nav-links li a {
+  color: rgba(0, 168, 232, 1);
+  text-decoration: none;
+  font-size: 1rem;
+  padding: 1vh;
+  transition: 0.3s;
+}
+
+.nav-links li a.active,
+.nav-links li a:hover {
+  color: var(--primary-color);
+}
+
+.btn-primary {
+  background: rgba(0, 168, 232, 1);
+  border: none;
+  padding: 1vh 2vw;
+  border-radius: 36px;
+  color: rgba(30, 41, 59, 1);
+  font-weight: 400;
+  cursor: pointer;
+  transition: 0.3s;
+}
+.modal-dialog {
+  max-width: 600px !important; /* Ajuste selon ton besoin */
+}
+.btn-primary:hover {
+  background: #0078cc;
+}
+
+/* Bouton menu mobile */
+.menu-toggle {
+  display: block;
+  position: absolute;
+  left: 15px;
+  top: 15px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  z-index: 1000;
+}
+
+.menu-toggle img {
+  width: 30px;
+}
+.nav-links {
+  list-style: none;
+  display: flex;
+  gap: 3vw;
+}
+
+.nav-links li a {
+  color: var(--text-color);
+  text-decoration: none;
+  font-size: 1rem;
+  padding: 1vh;
+  transition: 0.3s;
+}
+
+.nav-links li a.active,
+.nav-links li a:hover {
+  color: var(--primary-color);
+}
+
+/* Bouton menu mobile */
+.menu-toggle {
+  display: none;
+  position: absolute;
+  left: 15px;
+  top: 15px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  z-index: 1000;
+}
+
+.menu-toggle img {
+  width: 30px;
+}
+
+.hero {
+  width: 100%;
+  margin-top: 5vh;
+  text-align: center;
+}
+
+.hero h1 {
+  font-size: clamp(2rem, 5vw, 4rem);
+  font-weight: bold;
+  color: rgba(0, 168, 232, 1);
+  line-height: 1.4;
+}
+
+.hero p {
+  font-size: clamp(1rem, 2vw, 1.2rem);
+  margin: 2vh auto;
+  width: 80%;
+  font-weight: 400;
+  color: rgba(226, 232, 240, 1);
+}
+.search-container {
+  display: flex;
+  align-items: center;
+  background-color: #e2e8f0; /* Couleur claire */
+  margin: 3vh auto; /* Centrer horizontalement */
+  width: 80%; /* Réduire la largeur pour qu'elle soit plus adaptable */
+  max-width: 600px; /* Limiter la largeur maximale */
+  border-radius: 50px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Icône de recherche */
+.search-icon {
+  margin-left: 10px;
+  color: #64748b;
+}
+
+/* Champ de texte */
+.search-container input {
+  flex: 1;
+  width: 100%; /* Utiliser toute la largeur disponible */
+  padding: 1vh;
+  border: none;
+  background: transparent;
+  font-size: 1rem;
+  outline: none;
+  color: #475569;
+}
+
+/* Bouton de recherche */
+.search-button {
+  padding: 1vh;
+  border-radius: 50%;
+  background-color: #007acc; /* Bleu du bouton */
+  border: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  margin-right: 5px;
+}
+
+.search-button i {
+  color: white;
+  font-size: 1rem;
+}
+
+/* Effet au survol */
+.search-button:hover {
+  background-color: #005fa3;
+}
+
+.hero .image-container {
+  position: relative;
+  width: 100%;
+  margin-top: 5vh;
+}
+
+.hero .image-container img {
+  width: 100%;
+  height: auto;
+  position: relative;
+  z-index: 2;
+}
+
+.circle-background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 150%;
+  background: url("src/assets/images/semi-circle.png") no-repeat center center;
+  background-size: cover;
+  z-index: 1;
+}
+
+.partners {
+  position: relative;
+  z-index: 1;
+  margin-top: -15px;
+  background: rgba(30, 41, 59, 1);
+  padding: 15vh 0;
+  text-align: center;
+}
+
+.partners h2 {
+  color: white;
+  font-size: clamp(1.5rem, 3vw, 2rem);
+  margin-bottom: 2vh;
+}
+
+.partners-container {
+  display: flex;
+  padding-top: 8vh;
+  justify-content: center;
+  gap: 3vw;
+  flex-wrap: wrap;
+}
+
+.partner {
+  background: white;
+  padding: 1vh;
+  border-radius: 8px;
+  width: 9vw;
+  height: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.partner img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+.platform-offers {
+  text-align: center;
+  padding: 5vh 0;
+  background-color: #ffffff;
+  color: #000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.section-title {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #12172d;
+  margin-bottom: 20px;
+}
+
+.highlight {
+  color: rgba(0, 168, 232, 1);
+}
+.platform-offers .container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 50px;
+  padding: 40px;
+}
+.platform-offers .container .cardd {
+  background: #eef2f7;
+  padding: 20px;
+  border-radius: 10px;
+  text-align: center;
+  position: relative;
+  will-change: transform;
+  transition: opacity 0.4s ease-in-out, transform 0.4s ease-in-out; /* Ensure transition is on the base state */
+}
+.platform-offers .container .cardd i {
+  font-size: 30px;
+  color: rgba(0, 168, 232, 1);
+  background: white;
+  padding: 10px;
+  border-radius: 50%;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+}
+.platform-offers .container .cardd .icon {
+  width: 60px;
+  height: 60px;
+  background: white;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  top: -30px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.platform-offers .container .cardd h3 {
+  margin-top: 30px;
+  font-size: 20px;
+  color: #333;
+}
+.platform-offers .container .cardd p {
+  font-size: 14px;
+  color: #666;
+  margin: 10px 0;
+}
+.platform-offers .container .cardd a {
+  background: #3da9fc;
+  color: white;
+  padding: 8px 15px;
+  border-radius: 50%;
+  display: inline-block;
+  text-decoration: none;
+  margin-top: 15px;
+  font-size: 22px;
+}
+.platform-offers .container .cardd:hover {
+  background: rgba(0, 168, 232, 1);
+  cursor: pointer;
+  color: white;
+  opacity: 1;
+  transform: translateY(-15px) !important;
+}
+
+.platform-offers .container .cardd:hover h3,
+.platform-offers .container .cardd:hover p {
+  color: white;
+}
+
+/* Button changes */
+.platform-offers .container .cardd:hover a {
+  width: auto;
+  padding: 8px 20px;
+  border-radius: 50px;
+  font-size: 14px;
+  background: rgba(30, 41, 59, 1);
+  color: white;
+}
+.platform-offers .container .cardd a::before {
+  content: "↗";
+  display: inline-block;
+}
+/* Change arrow to text on hover */
+.platform-offers .container .cardd:hover a::before {
+  content: "Voir Plus  →";
+  font-size: 16px;
+  transition: transform 0.7s ease-in-out;
+}
+.job-listings {
+  padding: 40px;
+}
+.job-listings .grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr)); /* Deux colonnes */
+  gap: 30px; /* Espacement entre les cartes */
+  max-width: 1100px; /* Réduction de la largeur maximale */
+  margin: auto; /* Centrage horizontal */
+}
+.job-listings .card {
+  background-color: #fff; /* Fond blanc */
+  padding: 15px; /* Réduction de l'espace intérieur */
+  border-radius: 12px; /* Coins arrondis */
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* Ombre subtile */
+  text-align: left;
+  transition: transform 0.05s ease;
+}
+
+.job-listings .card:hover {
+  cursor: pointer;
+  transform: scale(1.1) !important; /* Agrandissement de 5% au survol */
+}
+
+.job-listings .logo {
+  width: 50px; /* Taille réduite du logo */
+  height: 50px;
+  border-radius: 50%; /* Gardez ceci si vous voulez des logos ronds */
+  object-fit: cover; /* Assure que l'image couvre tout l'espace */
+}
+
+.job-listings .company {
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.job-listings .time {
+  font-size: 14px;
+  color: gray;
+}
+
+.job-listings h2 {
+  font-size: 25px;
+  font-weight: 600;
+}
+
+.job-listings.location {
+  font-size: 14px;
+}
+
+.job-listings .icon {
+  background: rgba(226, 232, 240, 1);
+  color: black;
+  border: none;
+  padding: 12px 23px;
+  border-radius: 30px;
+  cursor: pointer;
+  margin-top: 10px;
+  font-size: 25px;
+}
+.job-listings .btn {
+  width: 100%;
+  background: var(--primary-color);
+  color: white;
+  border: none;
+  padding: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 10px;
+  font-size: 14px;
+}
+.btn:hover {
+  background: #008fcc;
+}
+.job-listings h1 {
+  margin: 50px;
+  font-size: clamp(1.5rem, 3vw, 2rem);
+  font-weight: 800;
+}
+.job-listings .header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  max-width: 1100px;
+  margin: auto;
+  padding-bottom: 50px;
+}
+
+/* Style du titre */
+.job-listings .header h1 {
+  font-size: clamp(1.5rem, 3vw, 2rem);
+  font-weight: 800;
+  margin: 0;
+}
+
+/* Style du bouton */
+.job-listings .button-container {
+  display: flex;
+  align-items: center;
+}
+
+.hover-button {
+  background-color: transparent;
+  border: none;
+  font-size: 1.2rem;
+  font-weight: 400;
+  cursor: pointer;
+  padding: 10px 20px;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+/* Icône de base visible */
+.hover-button .icon {
+  transition: opacity 0.3s ease-in-out;
+  opacity: 1;
+  position: absolute; /* Remove icon from the normal flow */
+  left: 0; /* Position it where you want it */
+  transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+}
+
+/* Texte caché de base */
+.hover-button .text {
+  opacity: 0;
+  visibility: hidden;
+  display: none;
+  transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+}
+
+/* Effet hover */
+.hover-button:hover {
+  background-color: rgba(0, 168, 232, 1);
+  color: black;
+  padding: 10px 25px;
+}
+
+/* Masquer l'icône et afficher le texte */
+.hover-button:hover .icon {
+  opacity: 0;
+  left: -9999px; /* Move it off-screen to prevent space occupation */
+}
+
+.hover-button:hover .text {
+  opacity: 1;
+  display: inline-block;
+  visibility: visible;
+}
+
+.news-section {
+  background-color: white;
+  text-align: center;
+  padding: 40px 20px;
+}
+.news-section .header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  max-width: 1100px;
+  margin: auto;
+  padding-bottom: 50px;
+}
+.news-section .icon {
+  background: rgba(30, 41, 59, 1);
+  color: white;
+  border: none;
+  padding: 12px 23px;
+  border-radius: 30px;
+  cursor: pointer;
+  margin-top: 10px;
+  font-size: 25px;
+}
+.news-section h2 {
+  padding: 20px;
+  font-size: 28px;
+  color: #1d2636;
+}
+
+.news-container {
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  flex-wrap: wrap; /* Ensures cards wrap on smaller screens */
+}
+
+.news-card {
+  background: #e6edf7;
+  border-radius: 10px;
+  padding: 20px;
+  max-width: 350px;
+  text-align: center;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  position: relative;
+  transition: transform 0.2s ease-in-out;
+}
+.news-card:hover {
+  transform: translateY(-15px) !important;
+}
+
+.news-image {
+  width: 100%;
+  border-radius: 10px;
+}
+
+.news-card .logo {
+  background: white;
+  padding: 10px;
+  border-radius: 8px;
+  display: inline-block;
+  margin-top: -30px;
+  position: relative;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.news-card .logo img {
+  height: 40px;
+}
+
+.news-card h3 {
+  margin-top: 10px;
+  font-size: 18px;
+  color: #1d2636;
+}
+
+.news-card .subtitle {
+  font-weight: bold;
+  color: #1d2636;
+  margin-top: 5px;
+}
+
+.news-card .description {
+  font-size: 14px;
+  color: #4a4a4a;
+  margin-top: 10px;
+}
+
+.news-card .read-more {
+  background: #3da9fc;
+  color: white;
+  padding: 8px 15px;
+  border-radius: 50%;
+  display: inline-block;
+  text-decoration: none;
+  margin-top: 15px;
+  font-size: 22px;
+}
+.news-card:hover {
+  background: rgba(0, 168, 232, 1);
+  cursor: pointer;
+  color: white;
+  transition: opacity 0.7s ease-in-out, transform 0.4s ease-in-out;
+  transform: translateY(-15px);
+}
+
+.news-card:hover h3,
+.news-card:hover p {
+  color: white;
+}
+
+/* Button changes */
+.news-card:hover a {
+  width: auto;
+  padding: 8px 20px;
+  border-radius: 50px;
+  font-size: 14px;
+  background: rgba(30, 41, 59, 1);
+  color: white;
+}
+.news-card a::before {
+  content: "↗";
+  display: inline-block;
+}
+/* Change arrow to text on hover */
+.news-card:hover a::before {
+  content: "Voir Plus  →";
+  font-size: 16px;
+  transition: transform 0.7s ease-in-out;
+}
+.recrutement .container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #172133;
+  padding: 50px 20px;
+  min-height: 100vh;
+}
+
+.recrutement .content {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap; /* Allows stacking on smaller screens */
+  padding: 30px;
+  border-radius: 10px;
+  max-width: 1200px;
+  width: 100%;
+}
+
+.recrutement .image {
+  flex: 1;
+  text-align: center;
+}
+
+.recrutement .image img {
+  width: 100%;
+  max-width: 500px;
+  border-radius: 8px;
+}
+
+.recrutement .text {
+  flex: 1;
+  text-align: left;
+  color: white;
+  padding: 20px;
+}
+
+.recrutement .text h2 {
+  font-size: 2vw;
+  font-weight: 800;
+  margin-bottom: 10px;
+}
+
+.recrutement .text p {
+  font-size: 1vw; /* Responsive text */
+  font-weight: 400;
+  margin-bottom: 20px;
+  line-height: 1.5;
+}
+
+.recrutement .btn {
+  display: inline-block;
+  background-color: #1da1f2;
+  color: white;
+  padding: 12px 20px;
+  text-decoration: none;
+  font-weight: bold;
+  border-radius: 5px;
+  transition: 0.3s;
+  font-weight: 400;
+  font-size: 0.8vw; /* Responsive button text */
+}
+
+.recrutement .btn:hover {
+  background-color: #0d8ae0;
+}
+
+.app {
+  display: flex;
+  justify-content: center;
+  background-color: white;
+  padding: 50px 0;
+}
+
+.app .container {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 40px;
+  width: 80%;
+  position: relative;
+  align-items: center;
+  gap: 20px;
+}
+
+/* Gray background placed in the middle of the phone */
+.app .container::before {
+  content: "";
+  position: absolute;
+  top: 50%; /* Start from the middle */
+  left: 0;
+  width: 100%; /* Cover full width */
+  height: 60%; /* Only cover the middle part */
+  transform: translateY(-50%); /* Center it vertically */
+  background-color: rgba(226, 232, 240, 1);
+  border-radius: 15px;
+}
+
+.app .text-content {
+  flex: 1;
+  text-align: left;
+  min-width: 300px;
+  z-index: 2;
+}
+
+.app .text-content h2 {
+  font-size: 2vw;
+  font-weight: 800;
+  color: #000;
+}
+
+.app .text-content p {
+  font-size: 1vw;
+  font-weight: 400;
+  color: #333;
+  margin: 10px 0;
+}
+
+.app .buttons {
+  display: flex;
+  gap: 10px;
+  cursor: pointer;
+  margin-top: 10px;
+  flex-wrap: wrap;
+}
+
+.app .buttons img {
+  width: 100px;
+}
+
+.app .image-container {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  padding: 20px;
+  min-width: 300px;
+  z-index: 3; /* Ensure the image stays above the background */
+}
+
+.app .image-container img {
+  width: 100%;
+  max-width: 450px;
+  position: relative;
+  z-index: 3;
+}
+.sponsors-section {
+  background-color: rgba(226, 232, 240, 1);
+  padding: 20px;
+}
+.sponsors-title {
+  font-size: clamp(1.5rem, 3vw, 2rem);
+  font-weight: 800;
+  color: #000;
+  margin-bottom: 20px;
+}
+.sponsors-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 40px;
+}
+.sponsor {
+  max-width: 150px;
+}
+.sponsor img {
+  width: 100%;
+  height: auto;
+}
+.footer {
+  background-color: #1c2738;
+  color: white;
+  padding-top: 40px;
+  padding-bottom: 0px;
+  text-align: center;
+}
+.footer-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  max-width: 1200px;
+  margin: auto;
+}
+.footer-column {
+  text-align: left;
+  padding-bottom: 20px;
+  margin: 10px;
+  min-width: 200px;
+}
+.footer-column h3 {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+.footer-column ul {
+  list-style: none;
+  padding: 0;
+}
+.footer-column ul li {
+  margin: 5px 0;
+}
+.footer-column ul li a {
+  font-weight: 400;
+  color: white;
+  text-decoration: none;
+}
+.footer-logo {
+  text-align: left;
+}
+.footer-logo img {
+  max-width: 130px;
+}
+.newsletter {
+  display: flex;
+  align-items: center;
+  background-color: #eef1f5;
+  border-radius: 30px;
+  padding: 5px 10px;
+  max-width: 250px;
+  margin: 10px auto;
+}
+.newsletter input {
+  border: none;
+  outline: none;
+  background: transparent;
+  flex: 1;
+  padding: 10px;
+  border-radius: 30px;
+}
+.newsletter button {
+  background-color: #1c2738;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+.social-icons {
+  margin-top: 10px;
+}
+.social-icons a {
+  margin: 0 10px;
+  color: white;
+  font-size: 20px;
+  text-decoration: none;
+}
+.footer-bottom {
+  margin-top: 20px;
+  color: #000;
+  padding-top: 10px;
+  padding-bottom: 15px;
+  border-top: 1px solid #ccc;
+  font-size: 12px;
+  background-color: white;
+}
+@media screen and (max-width: 1024px) {
+  .job-listings .grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .news-container {
+    flex-direction: row;
+    justify-content: center;
+  }
+  .news-card {
+    width: 45%;
+  }
+  .recrutement .content {
+    flex-direction: column;
+    text-align: center;
+  }
+  .recrutement .text {
+    text-align: center;
+  }
+  .recrutement .text h2 {
+    font-size: 5vw;
+  }
+  .recrutement .text p {
+    font-size: 2vw;
+  }
+  .recrutement .btn {
+    font-size: 2vw;
+    padding: 10px 18px;
+  }
+  .app .text-content h2 {
+    font-size: 5vw;
+  }
+
+  .app .text-content p {
+    font-size: 2vw;
+  }
+}
+@media (max-width: 768px) {
+  .navbar {
+    flex-direction: column;
+  }
+  .offers-container {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .nav-links {
+    flex-direction: column;
+    position: fixed;
+    top: 0;
+    z-index: 1000;
+    right: -100%; /* Caché par défaut */
+    width: 250px;
+    height: 100%;
+    background: var(--dark-bg);
+    padding-top: 60px;
+    transition: right 0.3s ease-in-out;
+    box-shadow: -2px 0 5px rgba(0, 0, 0, 0.2);
+  }
+  .recrutement .text h2 {
+    font-size: 6vw;
+  }
+  .recrutement .text p {
+    font-size: 2.5vw;
+  }
+  .recrutement .btn {
+    font-size: 3vw;
+    padding: 8px 16px;
+  }
+  .app .text-content h2 {
+    font-size: 6vw;
+  }
+
+  .app .text-content p {
+    font-size: 2.5vw;
+  }
+  .nav-links.active {
+    right: 0; /* Slide-in depuis la droite */
+  }
+
+  .nav-links li {
+    text-align: center;
+    padding: 15px 0;
+  }
+
+  .menu-toggle {
+    display: block;
+  }
+
+  .partners-container {
+    flex-wrap: wrap;
+    gap: 2vh;
+  }
+
+  .partner {
+    width: 20vw;
+    max-width: 100px;
+  }
+  .news-container {
+    flex-direction: column;
+    align-items: center;
+  }
+  .news-card {
+    width: 90%;
+  }
+  .app .container {
+    padding: 60px;
+    width: 100%;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+  .buttons {
+    justify-content: center;
+  }
+  .app .container::before {
+    background-color: white;
+  }
+  .footer-column {
+    text-align: center;
+  }
+  .footer-logo {
+    text-align: center;
+  }
+  .footer-container {
+    flex-direction: column;
+    text-align: center;
+  }
+}
+@media screen and (max-width: 600px) {
+  .job-listings .grid {
+    grid-template-columns: 1fr;
+    gap: 15px;
+  }
+
+  .job-listings .card {
+    max-width: 100%;
+    padding: 15px;
+  }
+
+  .job-listings .logo {
+    width: 40px;
+    height: 40px;
+  }
+
+  .company,
+  .time,
+  .location {
+    font-size: 12px;
+  }
+
+  .tags span {
+    font-size: 11px;
+    padding: 4px 8px;
+  }
+
+  .job-listings button {
+    font-size: 13px;
+  }
+  .app .container {
+    padding: 60px;
+    width: 100%;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+  .app .container::before {
+    background-color: white;
+  }
+  .sponsors-container {
+    flex-direction: column;
+    align-items: center;
+    gap: 0px;
+  }
+  .sponsor {
+    max-width: 100px;
+  }
+}
+
+@media (max-width: 480px) {
+  .offers-container {
+    grid-template-columns: repeat(1, 1fr);
+  }
+  .app .container {
+    padding: 30px;
+    width: 100%;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+  .job-listings {
+    padding: 20px;
+  }
+  .app .container::before {
+    background-color: white;
+  }
+}

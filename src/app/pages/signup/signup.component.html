@@ -1,0 +1,314 @@
+<body>
+    <!-- Step 1 -->
+    <div *ngIf="currentStep === 1" class="container">
+        <h2>Inscription</h2>
+        <p>Voulez-vous vous inscrire en tant que candidat ou entreprise ?</p>
+        <div style="text-align: center;">
+            <button (click)="selectUserType('candidat')" [class.active]="userType === 'candidat'" class="btn">
+                <span><i class="fa-regular fa-user"></i></span> Candidat
+            </button>
+            <button (click)="selectUserType('entreprise')" [class.active]="userType === 'entreprise'" class="btn">
+                <span><i class="fa-regular fa-building"></i></span> Entreprise
+            </button>
+        </div>
+        <p>
+            Vous avez déjà un compte ?
+            <a (click)="logIn()" class="link" style="cursor: pointer">Se connecter</a>
+        </p>
+    </div>
+    <div *ngIf="currentStep === 8" class="container">
+        <h2>Se Connecter</h2>
+        <form [formGroup]="entrepriseForm">
+            <div class="form-group">
+                <label for="email">Adresse Email</label>
+                <input id="email" formControlName="email" type="email" class="form-input" placeholder="Adresse Email" />
+            </div>
+
+            <div class="form-group">
+                <label for="password">Mot de passe</label>
+                <input id="password" formControlName="password" type="password" class="form-input"
+                    placeholder="Mot de passe" />
+            </div>
+
+            <button type="button" class="btn btn-next" style="width: 100%;">
+                Se Connecter
+            </button>
+        </form>
+        <p>
+            Vous n'avez pas un compte ?
+            <a (click)="inscription()" class="link" style="cursor: pointer">S'inscrire</a>
+        </p>
+    </div>
+    <!-- Entreprise -->
+    <div *ngIf="currentStep === 2 && userType === 'entreprise'" class="container">
+        <h2>S'inscrire en tant qu'entreprise</h2>
+        <p>Inscrivez votre entreprise et trouvez les meilleurs talents avec UTTEC !</p>
+        <form [formGroup]="entrepriseForm">
+            <div class="form-group">
+                <label for="companyName">Nom entreprise</label>
+                <input id="companyName" formControlName="companyName" type="text" class="form-input"
+                    placeholder="Nom entreprise" />
+            </div>
+
+            <div class="form-group">
+                <label for="responsable">Responsable</label>
+                <input id="responsable" formControlName="responsable" type="text" class="form-input"
+                    placeholder="Responsable" />
+            </div>
+
+            <div class="form-group">
+                <label for="email">Adresse Email</label>
+                <input id="email" formControlName="email" type="email" class="form-input" placeholder="Adresse Email" />
+            </div>
+
+            <div class="form-group">
+                <label for="password">Mot de passe</label>
+                <input id="password" formControlName="password" type="password" class="form-input"
+                    placeholder="Mot de passe" />
+            </div>
+
+            <div class="form-group">
+                <label for="confirmPassword">Confirmer mot de passe</label>
+                <input id="confirmPassword" formControlName="confirmPassword" type="password" class="form-input"
+                    placeholder="Confirmer mot de passe" />
+            </div>
+
+            <div class="form-buttons">
+                <button type="button" class="btn btn-prev" (click)="previousStep()">
+                    Retour
+                </button>
+                <button type="button" class="btn btn-next" (click)="nextStep()">
+                    Suivant
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <div *ngIf="currentStep === 3 && userType === 'entreprise'" class="container">
+        <h2>Quelques derniers détails</h2>
+
+        <div class="avatar-upload">
+            <div class="avatar-circle">
+                <img *ngIf="logoPreview" [src]="logoPreview" alt="Logo" />
+                <ng-container *ngIf="!logoPreview">
+                    <img src="assets/images/default-avatar.png" alt="Default" />
+                </ng-container>
+            </div>
+            <label class="upload-button">
+                <i class="fa fa-upload"></i> Télécharger Le Logo
+                <input type="file" (change)="onLogoUpload($event)" hidden />
+            </label>
+        </div>
+
+        <form [formGroup]="detailsForm " class="form-fields">
+            <div class="form-group">
+                <label for="sector">Secteur</label>
+                <select id="sector" formControlName="sector" class="form-input">
+                    <option value="">Choisir votre secteur</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="government">Gouvernorat</label>
+                <select id="government" formControlName="government" class="form-input">
+                    <option value="">Choisir votre Gouvernorat</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="address">Adresse</label>
+                <input id="address" formControlName="address" type="text" class="form-input"
+                    placeholder="Entrez votre adresse" />
+            </div>
+
+            <div class="form-group">
+                <label for="phone">Téléphone</label>
+                <input id="phone" formControlName="phone" type="text" class="form-input"
+                    placeholder="Entrez votre téléphone" />
+            </div>
+
+            <div class="form-buttons">
+                <button type="button" class="btn btn-prev" (click)="previousStep()">Retour</button>
+                <button type="button" class="btn btn-next" (click)="nextStep()">Suivant</button>
+            </div>
+        </form>
+    </div>
+    <div *ngIf="currentStep === 4 && userType === 'entreprise'" class="container">
+        <h2>Votre Identifiant</h2>
+        <form [formGroup]="idForm">
+            <div class="form-group">
+                <label for="identifier">Identifiant</label>
+                <input formControlName="identifier" id="identifier" type="text" class="form-input"
+                    placeholder="Entrez votre identifiant RNE" />
+            </div>
+            <div *ngIf="uploadedFileName" class="uploaded-file">
+                <p>📄 Fichier sélectionné : {{ uploadedFileName }}</p>
+            </div>
+            <label class="file-label">
+                <span style="display: inline-flex; align-items: center; gap: 8px;">
+                    <i class="fa fa-upload"></i> Télécharger Votre Identifiant RNE
+                </span>
+                <input type="file" (change)="onFileUpload($event)" hidden />
+            </label>
+
+            <div class="form-buttons">
+                <button type="button" class="btn-prev" (click)="previousStep()">Retour</button>
+                <button type="button" class="btn-next" (click)="submitForm()">Terminer</button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Candidat -->
+    <div *ngIf="currentStep === 2 && userType === 'candidat'" class="container">
+        <h2>S'inscrire</h2>
+        <p>Inscrivez-vous et boostez votre carrière avec UTTEC ! 🚀</p>
+        <form [formGroup]="candidatForm">
+            <div class="form-group">
+                <label for="firstName">Prénom</label>
+                <input id="firstName" formControlName="firstName" type="text" class="form-input"
+                    placeholder="Entrez votre prénom" />
+            </div>
+            <div class="form-group">
+                <label for="lastName">Nom</label>
+                <input id="lastName" formControlName="lastName" type="text" class="form-input"
+                    placeholder="Entrez votre nom" />
+            </div>
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input id="email" formControlName="email" type="email" class="form-input"
+                    placeholder="Entrez votre email" />
+            </div>
+            <div class="form-group">
+                <label for="password">Mot de passe</label>
+                <input id="password" formControlName="password" type="password" class="form-input"
+                    placeholder="Mot de passe" />
+            </div>
+            <div class="form-group">
+                <label for="confirmPassword">Confirmer mot de passe</label>
+                <input id="confirmPassword" formControlName="confirmPassword" type="password" class="form-input"
+                    placeholder="Confirmer mot de passe" />
+            </div>
+            <div class="form-buttons">
+                <button type="button" class="btn btn-prev" (click)="previousStep()">
+                    Retour
+                </button>
+                <button type="button" class="btn btn-next" (click)="nextStep()">
+                    Suivant
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <div *ngIf="currentStep === 3 && userType === 'candidat'" class="container">
+        <h2>Précisez votre profil</h2>
+        <p>Voulez-vous vous inscrire en tant que candidat, chercheur, freelancer ou étudiant ?</p>
+        <div style="text-align: center;">
+            <button (click)="selectProfile('candidat')" class="btn">Candidat</button>
+            <button (click)="selectProfile('chercheur')" class="btn">Chercheur</button>
+            <button (click)="selectProfile('freelancer')" class="btn">Freelancer</button>
+            <button (click)="selectProfile('étudiant')" class="btn">Étudiant</button>
+            <button type="button" class="btn btn-prev" (click)="previousStep()">Retour</button>
+        </div>
+    </div>
+
+    <div *ngIf="currentStep === 4 && userType === 'candidat'" class="container" style="align-items: center;">
+        <div style="width: 85%;">
+            <h2 style="text-align: left;">Ajoutez un titre pour dire au monde ce que vous faites.</h2>
+            <p style="text-align: left;">Saisissez une description en une seule phrase de vos compétences/expériences
+                professionnelles (par
+                exemple, développeur Web).</p>
+            <form [formGroup]="candidatForm" style="width: 100%;">
+                <div class="form-group">
+                    <label for="title">Votre titre</label>
+                    <input id="title" formControlName="title" type="text" class="form-input"
+                        placeholder='Ex: développeur Web' />
+                </div>
+                <div class="form-buttons">
+                    <button type="button" class="btn btn-prev" (click)="previousStep()">Retour</button>
+                    <button type="button" class="btn btn-next" (click)="nextStep()">Suivant</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div *ngIf="currentStep === 5 && userType === 'candidat'" class="container" style="align-items: center;">
+        <div style="width: 85%;">
+            <h2 style="text-align: left;">Écrivez maintenant une bio pour parler de vous au monde.</h2>
+            <p style="text-align: left;">Aidez les gens à vous connaître en un coup d'œil. Quel est
+                votre domaine de prédilection ? Expliquez-le clairement, en utilisant des paragraphes ou des puces. Vous
+                pourrez toujours éditer plus tard ; assurez-vous simplement de relire maintenant.</p>
+            <form [formGroup]="candidatForm" style="width: 100%;">
+                <div class="form-group">
+                    <label for="description">Votre bio</label>
+                    <textarea id="description" formControlName="description" class="form-input" style="height: 100px;"
+                        placeholder="Indiquez vos principales compétences, expériences et intérêts."></textarea>
+                </div>
+                <div class="form-buttons">
+                    <button type="button" class="btn btn-prev" (click)="previousStep()">Retour</button>
+                    <button type="button" class="btn btn-next" (click)="nextStep()">Suivant</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div *ngIf="currentStep === 6 && userType === 'candidat'" class="container" style="align-items: center;">
+        <div style="width: 85%;">
+            <h2>Vos compétences ?</h2>
+            <p>
+                Vos compétences montrent aux clients ce que vous pouvez offrir et nous aident à choisir les emplois à
+                vous recommander.
+            </p>
+
+            <!-- Formulaire compétences -->
+            <form [formGroup]="candidatForm" style="width: 100%;">
+                <div class="form-group skill-input-wrapper">
+                    <label for="skillInput">Ajouter une compétence</label>
+                    <input id="skillInput" type="text" formControlName="skillInput"
+                        (keydown.enter)="addSkill(); $event.preventDefault();"
+                        placeholder="Tapez une compétence et appuyez sur Entrée" class="form-input"
+                        autocomplete="off" />
+
+                    <div *ngIf="suggestions.length > 0" class="suggestions-list">
+                        <div *ngFor="let suggestion of suggestions" (click)="addSkill(suggestion)"
+                            class="suggestion-item">
+                            {{ suggestion }}
+                        </div>
+                    </div>
+                </div>
+                <!-- Affichage des compétences sélectionnées -->
+                <div class="skills-container">
+                    <span class="skill-tag" *ngFor="let skill of skills; let i = index">
+                        {{ skill }}
+                        <button type="button" (click)="removeSkill(i)">×</button>
+                    </span>
+                </div>
+
+                <!-- Navigation -->
+                <div class="form-buttons">
+                    <button type="button" class="btn btn-prev" (click)="previousStep()">Retour</button>
+                    <button type="button" class="btn btn-next" (click)="nextStep()">Suivant</button>
+                </div>
+
+            </form>
+        </div>
+    </div>
+    <div *ngIf="currentStep === 7 && userType === 'candidat'" class="container">
+        <h2>Importer votre CV</h2>
+        <form [formGroup]="candidatForm">
+            <label class="file-label">
+                <span style="display: inline-flex; align-items: center; gap: 8px;">
+                    <i class="fa fa-upload"></i> Téléverser un CV
+                </span>
+                <input type="file" (change)="onFileUpload($event)" hidden />
+            </label>
+            <div *ngIf="uploadedFileName" class="uploaded-file">
+                <p>📄 Fichier sélectionné : {{ uploadedFileName }}</p>
+            </div>
+
+
+            <div class="form-buttons">
+                <button type="button" class="btn-prev" (click)="previousStep()">Retour</button>
+                <button type="button" class="btn-next" (click)="submitForm()">Terminer</button>
+            </div>
+        </form>
+    </div>
+
+</body>

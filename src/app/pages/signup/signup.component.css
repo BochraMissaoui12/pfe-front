@@ -1,0 +1,395 @@
+@import url("https://fonts.googleapis.com/css2?family=Oxanium:wght@200..800&family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap");
+body {
+  font-family: "Poppins", sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: rgba(30, 41, 59, 1);
+  color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+body::-webkit-scrollbar {
+  width: 10px;
+}
+
+body::-webkit-scrollbar-track {
+  background: #1e2a38; /* fond sombre */
+}
+
+body::-webkit-scrollbar-thumb {
+  background-color: #5a6b7b; /* thumb bleu-gris */
+  border-radius: 10px;
+  border: 2px solid #1e2a38; /* effet creusé */
+}
+
+body::-webkit-scrollbar-thumb:hover {
+  background-color: #7a8c9e;
+}
+.container {
+  background-color: rgba(30, 41, 59, 1);
+  border-radius: 12px;
+  padding: 5px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+}
+
+h2 {
+  color: rgba(226, 232, 240, 1);
+  font-size: 1.5rem;
+  font-weight: 500;
+  margin-bottom: 10px;
+}
+
+p {
+  font-size: 0.9rem;
+  color: #c0c0c0;
+  font-weight: 400;
+  margin-bottom: 20px;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #e0e6ed;
+  color: #000;
+  font-size: 1rem;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  gap: 8px;
+  width: 80%;
+  margin-bottom: 15px;
+  transition: transform 0.2s, background-color 0.3s;
+}
+
+.btn:hover {
+  background-color: rgba(0, 168, 232, 1);
+  transform: translateY(-2px);
+  color: #fff;
+}
+
+form {
+  width: 80%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start; /* Aligner les labels à gauche */
+  margin-bottom: 15px;
+  width: 100%;
+}
+
+.form-group label {
+  font-weight: 400;
+  font-size: 14px;
+  margin-bottom: 5px;
+  color: #fff;
+}
+
+.form-input {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  border-radius: 8px;
+  background-color: rgba(30, 41, 59, 1);
+  color: #fff;
+  font-size: 1rem;
+}
+
+.form-input::placeholder {
+  font-weight: 400;
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.7);
+}
+.form-buttons {
+  display: flex;
+  justify-content: space-between; /* Aligner Retour à gauche et Inscrire au centre */
+  width: 100%;
+  margin-top: 20px;
+}
+
+.btn-prev {
+  background-color: transparent;
+  color: #fff;
+  border: 1px solid rgba(226, 232, 240, 1);
+  padding: 10px;
+  border-radius: 16px;
+  cursor: pointer;
+  width: 40%; /* Taille ajustée */
+  text-align: center;
+}
+
+.btn-prev:hover {
+  background-color: #868e96;
+}
+select.form-input {
+  appearance: none;
+  background-image: url('data:image/svg+xml;utf8,<svg fill="white" height="16" viewBox="0 0 24 24" width="16" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>');
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  background-size: 16px 16px;
+}
+
+.avatar-upload {
+  display: flex;
+  margin-left: 10%;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 25px;
+}
+
+.avatar-circle {
+  width: 85px;
+  height: 85px;
+  border-radius: 50%;
+  background-color: #e2e8f0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.avatar-circle img {
+  width: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+.upload-button {
+  background-color: #e2e8f0;
+  color: #000;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 18px;
+  font-size: 0.95rem;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.upload-button:hover {
+  background-color: #cbd5e1;
+}
+.btn-next {
+  background-color: #00b4d8;
+  color: #fff;
+  padding: 10px;
+  border-radius: 16px;
+  cursor: pointer;
+  width: 40%;
+  text-align: center;
+}
+
+.btn-next:hover {
+  background-color: #0096c7;
+}
+
+.link {
+  color: #00b4d8;
+  text-decoration: none;
+  font-size: 0.85rem;
+}
+
+.link:hover {
+  text-decoration: underline;
+}
+.file-label {
+  display: inline-block;
+  padding: 10px 20px;
+  background-color: #adb5bd;
+  color: #000;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-bottom: 15px;
+  font-size: 0.9rem;
+}
+
+.file-label:hover {
+  background-color: #868e96;
+}
+
+.logo-preview {
+  margin-top: 15px;
+  max-width: 100px;
+  max-height: 100px;
+  border-radius: 50%;
+  border: 2px solid #00b4d8;
+}
+.uploaded-file {
+  margin: 10px 0;
+  color: #ffffff;
+  font-size: 0.95rem;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.skills-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 10px;
+  border: 2px solid rgba(226, 232, 240, 1);
+  border-radius: 10px;
+  padding: 15px;
+  background-color: rgba(30, 41, 59, 1);
+}
+
+.skill-tag {
+  background-color: transparent;
+  color: #ffffff;
+  border: 1px solid rgba(226, 232, 240, 1);
+  border-radius: 9999px;
+  padding: 5px 15px;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  transition: background-color 0.3s;
+}
+
+.skill-tag:hover {
+  background-color: #3d4f63;
+}
+
+.skill-tag button {
+  background: none;
+  border: none;
+  color: rgba(226, 232, 240, 1); /* rouge doux */
+  font-weight: bold;
+  margin-left: 10px;
+  cursor: pointer;
+  transition: color 0.3s;
+  font-size: 16px;
+}
+
+.skill-tag button:hover {
+  color: #ef4444;
+}
+
+.suggestions-list {
+  position: absolute;
+  top: 100%; /* s’affiche juste sous l’input */
+  left: 0;
+  right: 0;
+
+  background-color: #2a3442;
+  border: 1px solid #5a6b7b;
+  border-radius: 8px;
+  margin-top: 4px;
+  max-height: 200px;
+  overflow-y: auto;
+  padding: 4px 0;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+  z-index: 50;
+}
+.suggestions-list::-webkit-scrollbar {
+  width: 8px;
+}
+
+.suggestions-list::-webkit-scrollbar-track {
+  background: #2a3442; /* même fond que la liste */
+  border-radius: 10px;
+}
+
+.suggestions-list::-webkit-scrollbar-thumb {
+  background-color: #5a6b7b; /* thumb gris/bleu foncé */
+  border-radius: 10px;
+  border: 2px solid #2a3442; /* petit contour */
+}
+
+.suggestions-list::-webkit-scrollbar-thumb:hover {
+  background-color: #768899; /* un peu plus clair au hover */
+}
+/* Un élément dans la liste */
+.suggestion-item {
+  padding: 12px 16px;
+  cursor: pointer;
+  color: #ecf0f1;
+  transition: background-color 0.2s;
+}
+
+/* Hover stylé */
+.suggestion-item:hover {
+  background-color: #3b4b5a;
+}
+.skill-input-wrapper {
+  position: relative;
+  z-index: 10;
+}
+@media (max-width: 768px) {
+  .container {
+    width: 95%; /* Utilisez une largeur plus grande sur les écrans plus petits */
+    padding: 15px; /* Réduisez le padding */
+  }
+
+  h2 {
+    font-size: 1.6rem; /* Ajustez la taille de la police */
+  }
+
+  p {
+    font-size: 0.9rem; /* Ajustez la taille de la police */
+  }
+
+  .btn {
+    font-size: 1rem; /* Ajustez la taille de la police */
+    padding: 10px 16px;
+  }
+
+  .form-input {
+    font-size: 1rem; /* Ajustez la taille de la police */
+    padding: 10px;
+  }
+
+  .form-buttons {
+    flex-direction: column; /* Empilez les boutons sur les petits écrans */
+    align-items: center; /* Centrez les boutons */
+    gap: 10px; /* Ajoutez un espace entre les boutons */
+  }
+
+  .btn-prev,
+  .btn-next {
+    width: 100%; /* Utilisez toute la largeur disponible */
+    margin-bottom: 0; /* Supprimez la marge en bas */
+  }
+
+  .avatar-upload {
+    flex-direction: column; /* Empilez l'avatar et le bouton de téléchargement */
+    align-items: center; /* Centrez les éléments */
+  }
+
+  .avatar-circle {
+    width: 80px; /* Réduisez la taille de l'avatar */
+    height: 80px; /* Réduisez la taille de l'avatar */
+  }
+
+  .upload-button {
+    width: 100%; /* Utilisez toute la largeur disponible */
+    text-align: center; /* Centrez le texte */
+  }
+}
+
+/* Styles pour les écrans encore plus petits */
+@media (max-width: 480px) {
+  h2 {
+    font-size: 1.4rem; /* Ajustez davantage la taille de la police */
+  }
+
+  p {
+    font-size: 0.8rem; /* Ajustez davantage la taille de la police */
+  }
+
+  .btn {
+    font-size: 0.9rem; /* Ajustez davantage la taille de la police */
+  }
+
+  .form-input {
+    font-size: 0.9rem; /* Ajustez davantage la taille de la police */
+  }
+}
