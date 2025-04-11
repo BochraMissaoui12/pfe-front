@@ -1,0 +1,226 @@
+<body>
+    <header class="navbar">
+        <div class="logo">
+            <img src="assets/images/logo.png" alt="Logo">
+        </div>
+        <nav>
+            <ul class="nav-links">
+                <li><a href="#" class="active">Les offre</a></li>
+                <li><a href="#">Messages</a></li>
+                <li><a href="#">Actualité</a></li>
+                <li><a href="#">Contact</a></li>
+            </ul>
+        </nav>
+        <div class="search-container" style="margin-right: 10px;">
+            <input type="text" placeholder="Search in site">
+            <i class="fa fa-search search-icon"></i>
+        </div>
+        <div class="icons">
+            <i class="fa fa-bell"></i>
+            <div class="user-avatar">
+                <img src="assets/images/default-avatar.png" alt="User Avatar">
+            </div>
+        </div>
+        <!-- Menu mobile -->
+        <button class="menu-toggle" (click)="toggleMenu()">
+            <img src="assets/images/Vector.png" alt="Menu">
+        </button>
+    </header>
+    <div class="main-content">
+        <div class="card">
+            <div class="card-header">
+                <div class="logo-container">
+                    <img src="assets/images/opl.png" alt="Human.AI Logo" class="logo" />
+                </div>
+                <div class="company-info">
+                    <h1>TechNova Solutions</h1>
+                    <p>Information Technology & AI</p>
+                    <div class="contact-details">
+                        <div>
+                            <p><i class="fa fa-phone"></i> +216 77 456 991</p>
+                            <p><i class="fa fa-map-marker"></i> 63 Avenue Moufida Bourguiba, 1237 CITE OUVRIERE</p>
+                        </div>
+                        <div>
+                            <p><i class="fa fa-envelope"></i> contact&#64;technova.com</p>
+                            <p><i class="fa fa-linkedin"></i> TechNova Solutions</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="edit-icon">
+                    <i class="fa fa-pencil"></i>
+                </div>
+            </div>
+
+            <div class="card-body">
+                <div class="recruitment-section">
+                    <h2>Votre prochaine recrue exceptionnelle est à portée de clic !</h2>
+                    <p>
+                        Publiez votre offre d’emploi dès aujourd’hui et entrez rapidement en contact avec les meilleurs
+                        talents. Notre plateforme intuitive simplifie le recrutement et facilite la recherche de
+                        professionnels qualifiés.
+                    </p>
+                    <button type="button" class="btnn btn-primary" data-bs-toggle="modal"
+                        data-bs-target="#publishModal">
+                        Publiez votre emploi maintenant !
+                    </button>
+
+                    <!-- Modal -->
+                    <div class="modal fade" id="publishModal" tabindex="-1" aria-labelledby="publishModalLabel"
+                        aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-content"
+                                style="background-color: #1e293b; color: #ffffff; border-radius: 10px;">
+                                <div class="modal-header">
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                                        style="filter: brightness(0) invert(1);"></button>
+                                </div>
+                                <div class="modal-body" *ngIf="step === 1">
+                                    <h5 class="modal-title text-center" id="publishModalLabel">Publier votre offre
+                                        maintenant</h5>
+                                    <button type="button" class="btn btn-secondary w-100 mb-3 mt-4"
+                                        (click)="goToStep2()">Offre de
+                                        stage</button>
+                                    <button type="button" class="btn btn-secondary w-100">Offres d'emploi</button>
+                                </div>
+
+                                <!-- Step 2: Formulaire d'offre de stage -->
+                                <div class="modal-body" *ngIf="step === 2">
+                                    <h5 class="modal-title text-center">Ajouter une offre de stage</h5>
+                                    <form>
+                                        <div class="row" style="margin-top: 20px;">
+                                            <!-- Ligne 1 -->
+                                            <div class="col-md-6 mb-3">
+                                                <label for="titre" class="form-label">Titre</label>
+                                                <input type="text" id="titre" class="form-control"
+                                                    placeholder="Titre...">
+                                            </div>
+                                            <div class="col-md-6 mb-3">
+                                                <label for="nombrePostes" class="form-label">Nombre de postes
+                                                    ouverts</label>
+                                                <input type="number" id="nombrePostes" class="form-control"
+                                                    placeholder="0...">
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <!-- Ligne 2 -->
+                                            <div class="col-md-6 mb-3">
+                                                <label for="typeStage" class="form-label">Type de stage</label>
+                                                <input type="text" id="typeStage" class="form-control"
+                                                    placeholder="Type d'emploi...">
+                                            </div>
+                                            <div class="col-md-6 mb-3">
+                                                <label for="niveauEtudes" class="form-label">Niveau d'études</label>
+                                                <input type="text" id="niveauEtudes" class="form-control"
+                                                    placeholder="Niveau d'études...">
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <!-- Ligne 3 -->
+                                            <div class="col-md-6 mb-3">
+                                                <label for="dateOuverture" class="form-label">Date d'ouverture</label>
+                                                <input type="date" id="dateOuverture" class="form-control">
+                                            </div>
+                                            <div class="col-md-6 mb-3">
+                                                <label for="dateExpiration" class="form-label">Date d'expiration</label>
+                                                <input type="date" id="dateExpiration" class="form-control">
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <!-- Ligne 4 -->
+                                            <div class="col-md-6 mb-3">
+                                                <label for="specialite" class="form-label">Spécialité</label>
+                                                <input type="text" id="specialite" class="form-control"
+                                                    placeholder="Secteur de l'offre...">
+                                            </div>
+                                            <div class="col-md-6 mb-3">
+                                                <label for="lieuTravail" class="form-label">Lieu</label>
+                                                <input type="text" id="lieuTravail" class="form-control"
+                                                    placeholder="Lieu de travail...">
+                                            </div>
+                                        </div>
+
+                                        <!-- Description de l'offre (sur une seule ligne) -->
+                                        <div class="mb-3">
+                                            <label for="descriptionOffre" class="form-label">Description de
+                                                l'offre</label>
+                                            <textarea id="descriptionOffre" rows="3" class="form-control"></textarea>
+                                        </div>
+
+                                        <div class="modal-footer ff">
+                                            <button type="button" class="btn btn-secondary"
+                                                (click)=" goToStep1()">Annuler</button>
+                                            <button type="button" class="btn btn-primary">Publier</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="about-section">
+                    <h2>About Us</h2>
+                    <div class="edit-iconn">
+                        <i class="fa fa-pencil"></i>
+                    </div>
+                    <p>
+                        TechNova Solutions is a leading innovator in AI-driven software development, specializing in
+                        enterprise solutions, machine learning, and cloud computing. Our mission is to empower
+                        businesses with cutting-edge technology to enhance productivity and efficiency.
+                    </p>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-column footer-logo">
+                <img src="assets/images/Rectangle 43.png" alt="Logo">
+                <div class="newsletter">
+                    <input type="email" placeholder="Entrez votre email...">
+                    <button>➜</button>
+                </div>
+                <div class="social-icons">
+                    <a href="#">🔵</a>
+                    <a href="#">🔘</a>
+                    <a href="#">🔗</a>
+                </div>
+            </div>
+            <div class="footer-column">
+                <h3>Navigation :</h3>
+                <ul>
+                    <li><a href="#">Offres d'emploi</a></li>
+                    <li><a href="#">Offres de stage</a></li>
+                    <li><a href="#">Freelances</a></li>
+                    <li><a href="#">Publier une offre</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h3>À propos :</h3>
+                <ul>
+                    <li><a href="#">Qui sommes-nous ?</a></li>
+                    <li><a href="#">Notre mission</a></li>
+                    <li><a href="#">Contact</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h3>Support :</h3>
+                <ul>
+                    <li><a href="#">FAQ</a></li>
+                    <li><a href="#">Assistance</a></li>
+                    <li><a href="#">Conditions d'utilisation</a></li>
+                    <li><a href="#">Politique de confidentialité</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            © Tous droits réservés.<br>
+            Ce site est une réalisation de la société Yooreed InnoTech.
+        </div>
+    </footer>
+</body>

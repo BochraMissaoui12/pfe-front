@@ -32,7 +32,7 @@
         <div class="sidebar">
             <ul>
                 <li class="active"><i class="fa fa-user"></i> Profil</li>
-                <li><i class="fa fa-file"></i> Candidatures</li>
+                <li routerLink="/candidatures"><i class="fa fa-file"></i> Candidatures</li>
                 <li><i class="fa fa-sign-out"></i> Déconnexion</li>
             </ul>
         </div>
@@ -48,7 +48,7 @@
             <div class="section">
                 <div class="section-header">
                     <h3>Software Engineer | AI Enthusiast</h3>
-                    <i class="fa fa-pencil edit-icon"></i>
+                    <i class="fa fa-pencil edit-icon" (click)="openModal()"></i>
                 </div>
                 <p>
                     Je suis Alex Carter, ingénieur logiciel et passionné d'IA, spécialisé dans
@@ -56,58 +56,234 @@
                     et garde une longueur d'avance dans le monde de la technologie.
                 </p>
             </div>
+
+            <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content custom-modal-content">
+                        <div class="modal-header custom-modal-header">
+                            <h5 class="modal-title" id="editModalLabel">Modifiez votre titre et votre présentation de
+                                profil</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body custom-modal-body">
+                            <p>Utilisez cet espace pour mettre en avant vos compétences et votre expérience afin
+                                d'attirer les clients :</p>
+                            <ul>
+                                <li>Mettez en avant vos points forts et vos savoir-faire</li>
+                                <li>Présentez vos projets, réalisations et parcours académique</li>
+                                <li>Soyez clair, concis et veillez à éviter toute erreur</li>
+                            </ul>
+                            <textarea class="form-control custom-textarea"
+                                rows="6">Je suis Alex Carter, ingénieur logiciel et passionné d'IA...</textarea>
+                            <small class="character-count" style="font-size: 10px;">4655 caractères restants</small>
+                        </div>
+                        <div class="modal-footer custom-modal-footer">
+                            <button type="button" class="btn btn-secondary custom-cancel-button"
+                                data-bs-dismiss="modal">Annuler</button>
+                            <button type="button" class="btn btn-primary custom-save-button">Sauvegarder</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <div class="section">
                 <div class="section-header">
                     <h3>Compétences</h3>
-                    <i class="fa fa-pencil edit-icon"></i>
+                    <i class="fa fa-pencil edit-icon" (click)="openSkillsModal()"></i>
                 </div>
                 <div class="skills">
-                    <span>Python</span><span>JavaScript</span><span>TypeScript</span><span>C++</span><span>TensorFlow</span><span>Pytorch</span><span>OpenCV</span><span>LLMs</span><span>ReactJs</span><span>NextJs</span><span>ExpressJs</span><span>Mongoose</span>
+                    <span *ngFor="let skill of skills">{{ skill }}</span>
+                </div>
+            </div>
+
+            <!-- Skills Modal -->
+            <div class="modal fade" id="skillsModal" tabindex="-1" aria-labelledby="skillsModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content custom-modal-content">
+                        <div class="modal-header custom-modal-header">
+                            <h5 class="modal-title" id="skillsModalLabel">Modifier les compétences</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body custom-modal-body">
+                            <p class="competences-text">Compétences</p>
+                            <form [formGroup]="candidatForm">
+                                <div class="form-group skill-input-wrapper">
+                                    <input id="skillInput" type="text" formControlName="skillInput"
+                                        (keydown.enter)="addSkill(); $event.preventDefault();"
+                                        placeholder="Tapez une compétence et appuyez sur Entrée" class="form-input"
+                                        autocomplete="off" />
+
+                                    <div *ngIf="suggestions.length > 0" class="suggestions-list">
+                                        <div *ngFor="let suggestion of suggestions" (click)="addSkill(suggestion)"
+                                            class="suggestion-item">
+                                            {{ suggestion }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+
+                            <div class="skills-container">
+                                <span class="skill-tag" *ngFor="let skill of skills; let i = index">
+                                    {{ skill }}
+                                    <button type="button" (click)="removeSkill(i)">×</button>
+                                </span>
+                            </div>
+                            <p class="max-skills">Maximum 15 compétences.</p>
+                        </div>
+                        <div class="modal-footer custom-modal-footer">
+                            <button type="button" class="btn btn-secondary custom-cancel-button"
+                                data-bs-dismiss="modal">Annuler</button>
+                            <button type="button" class="btn btn-primary custom-save-button"
+                                data-bs-dismiss="modal">Sauvegarder</button>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="section" style="background-color: rgba(30, 41, 59, 1);color:rgba(226, 232, 240, 1) ;">
                 <div class="section-header">
                     <h3 style="color:rgba(226, 232, 240, 1) ;">Expérience</h3>
-                    <i style="color:rgba(226, 232, 240, 1) ;" class="fa fa-plus add-icon"></i>
+                    <i style="color:rgba(226, 232, 240, 1) ; cursor: pointer;" class="fa fa-plus add-icon"
+                        (click)="openExperienceModal()"></i>
                 </div>
                 <ul class="experience-list">
-                    <li>
-                        Senior Software Engineer at NeuralTech (2021 - 2024)
+                    <li *ngFor="let experience of experiences; let i = index">
+                        {{ experience.position }} at {{ experience.company }} ({{ experience.startDate }} - {{
+                        experience.endDate }})
                         <div class="list-actions">
-                            <i style="color:rgba(226, 232, 240, 1) ;" class="fa fa-trash delete-icon"></i>
-                            <i style="color:rgba(226, 232, 240, 1) ;" class="fa fa-pencil edit-icon"></i>
-                        </div>
-                    </li>
-                    <li>
-                        Software Engineer at OpenLabs (2018 - 2021)
-                        <div class="list-actions">
-                            <i style="color:rgba(226, 232, 240, 1) ;" class="fa fa-trash delete-icon"></i>
-                            <i style="color:rgba(226, 232, 240, 1) ;" class="fa fa-pencil edit-icon"></i>
-                        </div>
-                    </li>
-                    <li>
-                        AI Researcher at Stanford AI Labs (2015 - 2018)
-                        <div class="list-actions">
-                            <i style="color:rgba(226, 232, 240, 1) ;" class="fa fa-trash delete-icon"></i>
-                            <i style="color:rgba(226, 232, 240, 1) ;" class="fa fa-pencil edit-icon"></i>
+                            <i style="color:rgba(226, 232, 240, 1) ; cursor: pointer;" class="fa fa-trash delete-icon"
+                                (click)="deleteExperience(i)"></i>
                         </div>
                     </li>
                 </ul>
             </div>
-            <div class="section" style="background-color: rgba(30, 41, 59, 1);color:rgba(226, 232, 240, 1) ;">
+
+            <!-- Experience Modal -->
+            <div class="modal fade" id="experienceModal" tabindex="-1" aria-labelledby="experienceModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content custom-modal-content">
+                        <div class="modal-header custom-modal-header">
+                            <h5 class="modal-title" id="experienceModalLabel">Ajouter une expérience</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body custom-modal-body">
+                            <form [formGroup]="experienceForm">
+                                <div class="form-group">
+                                    <label for="company">Entreprise</label>
+                                    <input type="text" class="form-control custom-input" id="company"
+                                        formControlName="company" placeholder="Nom de l'entreprise">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="position">Poste occupé</label>
+                                    <input type="text" class="form-control custom-input" id="position"
+                                        formControlName="position" placeholder="Ex: Développeur Web, Chef de Projet...">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="startDate">Dates de début (optionnel)</label>
+                                    <select class="form-control custom-select" id="startDate"
+                                        formControlName="startDate">
+                                        <option value="">De</option>
+                                        <option *ngFor="let year of years" [value]="year">{{ year }}</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="endDate">Dates de fin (optionnel)</label>
+                                    <select class="form-control custom-select" id="endDate" formControlName="endDate">
+                                        <option value="">à</option>
+                                        <option *ngFor="let year of years" [value]="year">{{ year }}</option>
+                                    </select>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer custom-modal-footer">
+                            <button type="button" class="btn btn-secondary custom-cancel-button"
+                                data-bs-dismiss="modal">Annuler</button>
+                            <button type="button" class="btn btn-primary custom-save-button" (click)="saveExperience()"
+                                data-bs-dismiss="modal">Sauvegarder</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section" style="background-color: rgba(30, 41, 59, 1); color:rgba(226, 232, 240, 1) ;">
                 <div class="section-header">
                     <h3 style="color:rgba(226, 232, 240, 1) ;">Éducation</h3>
-                    <i style="color:rgba(226, 232, 240, 1) ;" class="fa fa-plus add-icon"></i>
+                    <i style="color:rgba(226, 232, 240, 1) ; cursor: pointer;" class="fa fa-plus add-icon"
+                        (click)="openEducationModal()"></i>
                 </div>
                 <ul class="experience-list">
-                    <li>
-                        MSc in Artificial Intelligence - Stanford University
+                    <li *ngFor="let education of educations; let i = index">
+                        {{ education.degree }} - {{ education.university }}
                         <div class="list-actions">
-                            <i style="color:rgba(226, 232, 240, 1) ;" class="fa fa-trash delete-icon"></i>
-                            <i style="color:rgba(226, 232, 240, 1) ;" class="fa fa-pencil edit-icon"></i>
+                            <i style="color:rgba(226, 232, 240, 1) ; cursor: pointer;" class="fa fa-trash delete-icon"
+                                (click)="deleteEducation(i)"></i>
                         </div>
                     </li>
                 </ul>
+            </div>
+
+            <!-- Education Modal -->
+            <div class="modal fade" id="educationModal" tabindex="-1" aria-labelledby="educationModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content custom-modal-content">
+                        <div class="modal-header custom-modal-header">
+                            <h5 class="modal-title" id="educationModalLabel">Modifier la formation</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body custom-modal-body">
+                            <form [formGroup]="educationForm"> <!-- Make sure the Form tag is present -->
+                                <div class="form-group">
+                                    <label for="university">Université</label>
+                                    <input type="text" class="form-control custom-input" id="university"
+                                        formControlName="university"
+                                        placeholder="Ex: Institut Supérieur des Beaux-Arts de Sousse">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="startDate">Dates de début</label>
+                                    <select class="form-control custom-select" id="startDate"
+                                        formControlName="startDate">
+                                        <option value="">De</option>
+                                        <option *ngFor="let year of years" [value]="year">{{ year }}</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="endDate">Dates de fin</label>
+                                    <select class="form-control custom-select" id="endDate" formControlName="endDate">
+                                        <option value="">à (ou année d'obtention du diplôme prévue)</option>
+                                        <option *ngFor="let year of years" [value]="year">{{ year }}</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="degree">Diplôme</label>
+                                    <input type="text" class="form-control custom-input" id="degree"
+                                        formControlName="degree" placeholder="Diplôme">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="fieldOfStudy">Domaine d'études</label>
+                                    <input type="text" class="form-control custom-input" id="fieldOfStudy"
+                                        formControlName="fieldOfStudy" placeholder="Ex: Informatique">
+                                </div>
+
+
+                            </form> <!-- Closing Tag -->
+
+                            <div class="modal-footer custom-modal-footer">
+                                <button type="button" class="btn btn-secondary custom-cancel-button"
+                                    data-bs-dismiss="modal">Annuler</button>
+                                <button type="button" class="btn btn-primary custom-save-button"
+                                    (click)="saveEducation()" data-bs-dismiss="modal">Sauvegarder</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

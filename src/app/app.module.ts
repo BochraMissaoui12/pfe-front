@@ -8,9 +8,11 @@ import { SignupComponent } from './pages/signup/signup.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { ProfileCandidatComponent } from './pages/profile-candidat/profile-candidat.component';
+import { CandidaturesListComponent } from './pages/candidatures-list/candidatures-list.component';
+import { ProfileEntrepriseComponent } from './pages/profile-entreprise/profile-entreprise.component';
 
 @NgModule({
-  declarations: [AppComponent, HomeComponent, SignupComponent, ProfileCandidatComponent],
+  declarations: [AppComponent, HomeComponent, SignupComponent, ProfileCandidatComponent, CandidaturesListComponent, ProfileEntrepriseComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,

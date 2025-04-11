@@ -171,10 +171,7 @@ body {
   background: rgba(30, 41, 59, 1);
   position: relative;
 }
-.logo img {
-  height: 5vh;
-  max-height: 40px;
-}
+
 .navbar nav {
   flex: 1;
   padding-top: 15px;
@@ -287,7 +284,297 @@ body {
 .menu-toggle img {
   width: 30px;
 }
-/* Responsive Design */
+
+/* Modal Styling */
+.custom-modal-content {
+  background-color: rgba(30, 41, 59, 1);
+  border-radius: 10px;
+}
+
+.custom-modal-header {
+  border-bottom: none;
+}
+
+.custom-modal-header h5 {
+  color: #ffffff;
+}
+
+.btn-close {
+  filter: brightness(0) invert(1);
+}
+
+.custom-modal-body p,
+.custom-modal-body ul,
+.custom-modal-body li {
+  color: rgba(226, 232, 240, 0.7);
+  font-weight: 400;
+  font-size: 16px;
+}
+
+.custom-textarea {
+  background-color: transparent;
+  border: 2px solid rgba(226, 232, 240, 1);
+  color: rgba(226, 232, 240, 1);
+  font-size: 15px;
+}
+
+.custom-textarea::placeholder {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.character-count {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.custom-modal-footer {
+  border-top: none;
+}
+
+.custom-cancel-button {
+  background-color: transparent;
+  color: #ffffff;
+  border: none;
+  font-size: 14px;
+}
+
+.custom-save-button {
+  background-color: rgba(0, 168, 232, 1);
+  border-radius: 16px;
+  font-size: 14px;
+}
+.custom-modal-content {
+  background-color: rgba(30, 41, 59, 1);
+  border-radius: 10px;
+  color: white;
+}
+
+.custom-modal-header {
+  border-bottom: none;
+}
+
+.custom-modal-header h5 {
+  color: #ffffff;
+}
+
+.btn-close {
+  filter: brightness(0) invert(1); /* White close button */
+}
+
+.custom-modal-body {
+  padding: 20px; /* Added padding */
+}
+
+.custom-modal-footer {
+  border-top: none;
+  padding: 20px; /* Added padding */
+}
+
+.custom-cancel-button {
+  background-color: transparent;
+  color: #ffffff;
+  border: 1px solid #6c757d;
+  border-radius: 5px; /* Rounded corners */
+  padding: 5px 15px; /* Added padding */
+}
+
+.custom-save-button {
+  background-color: #007bff;
+  border: none;
+  border-radius: 5px; /* Rounded corners */
+  padding: 5px 15px; /* Added padding */
+}
+.skill-input-wrapper {
+  position: relative;
+}
+
+.form-input {
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 10px;
+  border: 1px solid rgba(226, 232, 240, 0.3);
+  border-radius: 5px;
+  background-color: transparent;
+  color: white;
+}
+
+.form-input::placeholder {
+  color: rgba(226, 232, 240, 0.7);
+}
+
+.suggestions-list {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background-color: #343a40;
+  border: 1px solid #555;
+  border-radius: 5px;
+  max-height: 150px;
+  overflow-y: auto;
+  z-index: 10;
+}
+
+.suggestion-item {
+  padding: 8px;
+  cursor: pointer;
+  color: white;
+}
+
+.suggestion-item:hover {
+  background-color: #495057;
+}
+/* Skill Container Styles (Updated to match image) */
+.skills-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 10px;
+  border: 1px solid rgba(226, 232, 240, 0.3); /* More subtle border */
+  border-radius: 10px;
+  padding: 15px;
+  background-color: transparent; /* Remove background color */
+}
+
+.skill-tag {
+  background-color: transparent;
+  color: #ffffff;
+  border: 1px solid rgba(226, 232, 240, 1);
+  border-radius: 20px; /* More rounded */
+  padding: 5px 15px;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  transition: background-color 0.3s;
+}
+
+.skill-tag:hover {
+  background-color: #3d4f63;
+}
+
+.skill-tag button {
+  background: none;
+  border: none;
+  color: rgba(226, 232, 240, 1);
+  font-weight: bold;
+  margin-left: 10px;
+  cursor: pointer;
+  transition: color 0.3s;
+  font-size: 16px;
+}
+
+.skill-tag button:hover {
+  color: #ef4444;
+}
+
+/* New Styles for Text and Maximum Skills */
+.competences-text {
+  color: rgba(226, 232, 240, 1);
+  font-weight: bold; /* Make the "Compétences" text bold */
+  margin-bottom: 10px;
+}
+
+.max-skills {
+  color: rgba(226, 232, 240, 0.7);
+  font-size: 0.8em; /* Smaller font size */
+  margin-top: 10px;
+  text-align: left; /* Align text to the left */
+}
+.custom-modal-content {
+  background-color: rgba(30, 41, 59, 1);
+  border-radius: 10px;
+  color: white;
+}
+
+.custom-modal-header {
+  border-bottom: none;
+}
+
+.custom-modal-header h5 {
+  color: #ffffff;
+}
+
+.btn-close {
+  filter: brightness(0) invert(1); /* White close button */
+}
+
+.custom-modal-body {
+  padding: 20px;
+}
+
+.custom-modal-footer {
+  border-top: none;
+  padding: 20px;
+}
+
+.custom-cancel-button {
+  background-color: transparent;
+  color: #ffffff;
+  border: 1px solid #6c757d;
+  border-radius: 5px;
+  padding: 5px 15px;
+}
+
+.custom-save-button {
+  background-color: #007bff;
+  border: none;
+  border-radius: 5px;
+  padding: 5px 15px;
+}
+
+/* New Styles for Form Inputs */
+.form-group {
+  margin-bottom: 15px;
+}
+
+label {
+  color: rgba(226, 232, 240, 1);
+  display: block;
+  margin-bottom: 5px;
+}
+
+.form-control {
+  border: 1px solid rgba(226, 232, 240, 0.3);
+  border-radius: 5px;
+  background-color: transparent;
+  color: white;
+  padding: 8px;
+  width: 100%;
+}
+
+.form-control::placeholder {
+  color: rgba(226, 232, 240, 0.7);
+}
+
+/* Specific Style for Textarea */
+.custom-textarea {
+  resize: vertical;
+  height: auto;
+}
+
+.custom-select {
+  appearance: none;
+  background-color: rgba(30, 41, 59, 1); /* Add this */
+  color: rgba(226, 232, 240, 1); /* Add this */
+  border: 1px solid rgba(226, 232, 240, 0.3); /* Add this */
+  border-radius: 5px; /* Add this */
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 4 5'%3E%3Cpath fill='%23fff' d='M2 0L0 2h4zm0 5L0 3h4z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.75rem center;
+  background-size: 8px 10px;
+  padding-right: 25px;
+  width: 100%; /* Add this for responsiveness */
+}
+
+/* Style for the options within the select */
+.custom-select option {
+  background-color: rgba(30, 41, 59, 1);
+  color: rgba(226, 232, 240, 1);
+}
+@media (max-width: 1024px) {
+  .sidebar {
+    width: 24%;
+  }
+}
 @media (max-width: 830px) {
   .navbar {
     flex-direction: column;

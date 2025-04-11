@@ -1,0 +1,103 @@
+<body>
+    <header class="navbar">
+        <div class="logo">
+            <img src="assets/images/logo.png" alt="Logo">
+        </div>
+        <nav>
+            <ul class="nav-links">
+                <li><a href="#" class="active">Les offre</a></li>
+                <li><a href="#">Messages</a></li>
+                <li><a href="#">Actualité</a></li>
+                <li><a href="#">Contact</a></li>
+            </ul>
+        </nav>
+        <div class="search-container" style="margin-right: 10px;">
+            <input type="text" placeholder="Search in site">
+            <i class="fa fa-search search-icon"></i>
+        </div>
+        <div class="icons">
+            <i class="fa fa-bell"></i>
+            <div class="user-avatar">
+                <img src="assets/images/default-avatar.png" alt="User Avatar">
+            </div>
+        </div>
+        <!-- Menu mobile -->
+        <button class="menu-toggle" (click)="toggleMenu()">
+            <img src="assets/images/Vector.png" alt="Menu">
+        </button>
+    </header>
+    <div class="profile-container">
+        <div class="sidebar">
+            <ul>
+                <li routerLink="/profil"><i class="fa fa-user"></i> Profil</li>
+                <li class="active"><i class="fa fa-file"></i> Candidatures</li>
+                <li><i class="fa fa-sign-out"></i> Déconnexion</li>
+            </ul>
+        </div>
+        <div class="main-content">
+            <table class="candidature-table">
+                <thead>
+                    <tr>
+                        <th>L'entreprise</th>
+                        <th>Le poste</th>
+                        <th>Statut</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let candidature of candidatures">
+                        <td style="font-weight: 500;"><img [src]="candidature.logo" alt="Logo"
+                                style="width: 50px; margin-right: 5px;">{{
+                            candidature.entreprise }}</td>
+                        <td>{{ candidature.poste }}</td>
+                        <td [style]="getStatusStyle(candidature.statut)">{{ candidature.statut }}</td>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-column footer-logo">
+                <img src="assets/images/Rectangle 43.png" alt="Logo">
+                <div class="newsletter">
+                    <input type="email" placeholder="Entrez votre email...">
+                    <button>➜</button>
+                </div>
+                <div class="social-icons">
+                    <a href="#">🔵</a>
+                    <a href="#">🔘</a>
+                    <a href="#">🔗</a>
+                </div>
+            </div>
+            <div class="footer-column">
+                <h3>Navigation :</h3>
+                <ul>
+                    <li><a href="#">Offres d'emploi</a></li>
+                    <li><a href="#">Offres de stage</a></li>
+                    <li><a href="#">Freelances</a></li>
+                    <li><a href="#">Publier une offre</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h3>À propos :</h3>
+                <ul>
+                    <li><a href="#">Qui sommes-nous ?</a></li>
+                    <li><a href="#">Notre mission</a></li>
+                    <li><a href="#">Contact</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h3>Support :</h3>
+                <ul>
+                    <li><a href="#">FAQ</a></li>
+                    <li><a href="#">Assistance</a></li>
+                    <li><a href="#">Conditions d'utilisation</a></li>
+                    <li><a href="#">Politique de confidentialité</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            © Tous droits réservés.<br>
+            Ce site est une réalisation de la société Yooreed InnoTech.
+        </div>
+    </footer>
+</body>

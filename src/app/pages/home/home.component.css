@@ -64,11 +64,6 @@ body {
   position: relative;
 }
 
-.logo img {
-  height: 5vh;
-  max-height: 40px;
-}
-
 .navbar nav {
   flex: 1;
   padding-top: 15px;

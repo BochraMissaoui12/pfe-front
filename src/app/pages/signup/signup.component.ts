@@ -65,7 +65,6 @@ export class SignupComponent implements OnInit {
       .subscribe((value: string) => {
         if (value?.length >= 2) {
           this.skillService.searchSkills(value).subscribe((res) => {
-            console.log('Suggestions reçues:', res); // Vérifier si les suggestions sont correctement mises à jour
             this.suggestions = res;
           });
         } else {
