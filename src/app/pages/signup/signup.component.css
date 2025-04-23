@@ -12,9 +12,15 @@ body {
 body::-webkit-scrollbar {
   width: 10px;
 }
+.verification-mode {
+  background-color: rgba(226, 232, 240, 1) !important;
+}
 
 body::-webkit-scrollbar-track {
   background: #1e2a38; /* fond sombre */
+}
+body.mat-typography.modal-open.step-9-background {
+  background-color: #e6f7ff !important;
 }
 
 body::-webkit-scrollbar-thumb {
@@ -71,6 +77,32 @@ p {
   background-color: rgba(0, 168, 232, 1);
   transform: translateY(-2px);
   color: #fff;
+}
+.verification-container {
+  padding: 20px;
+  text-align: center;
+}
+
+.code-inputs {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.code-inputs input {
+  border: 1px solid rgba(197, 198, 204, 1);
+  border-radius: 12px;
+  width: 45px;
+  height: 45px;
+  margin: 0 5px;
+  text-align: center;
+  font-size: 1.2em;
+  outline: none; /* Remove default focus outline */
+}
+
+.code-inputs input:hover,
+.code-inputs input:focus {
+  border: 1.5px solid rgba(0, 168, 232, 1);
 }
 
 form {

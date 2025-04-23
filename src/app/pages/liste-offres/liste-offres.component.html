@@ -1,0 +1,239 @@
+<header class="navbar">
+    <div class="logo">
+        <img src="assets/images/logo.png" alt="Logo">
+    </div>
+    <nav>
+        <ul class="nav-links">
+            <li><a href="#" class="active">Les offre</a></li>
+            <li><a href="#">Messages</a></li>
+            <li><a href="#">Actualité</a></li>
+            <li><a href="#">Contact</a></li>
+        </ul>
+    </nav>
+    <div class="search-container" style="margin-right: 10px;">
+        <input type="text" placeholder="Search in site">
+        <i class="fa fa-search search-icon"></i>
+    </div>
+    <div class="icons">
+        <i class="fa fa-bell"></i>
+        <div class="user-avatar">
+            <img src="assets/images/default-avatar.png" alt="User Avatar">
+        </div>
+    </div>
+    <!-- Menu mobile -->
+    <button class="menu-toggle" (click)="toggleMenu()">
+        <img src="assets/images/Vector.png" alt="Menu">
+    </button>
+</header>
+<div class="search-wrapper">
+    <div class="yooreed-search-area">
+        <div class="search-bar">
+            <div class="input-group">
+                <i class="fa fa-search"></i>
+                <input type="text" placeholder="Poste à occuper" [(ngModel)]="positionFilter"
+                    (input)="suggestPositions()" (focus)="showPositionSuggestions = true" autocomplete="off"
+                    (mousedown)="preventBlur = true" (blur)="hidePositionSuggestionsDelayed()"
+                    (mouseup)="preventBlur = false" />
+                <div class="suggestions" *ngIf="showPositionSuggestions">
+                    <div *ngFor="let suggestion of positionSuggestions" (click)="selectPositionSuggestion(suggestion)"
+                        (mousedown)="$event.preventDefault()">
+                        {{ suggestion }}
+                    </div>
+                </div>
+            </div>
+            <!-- Update your location input group -->
+            <div class="input-group">
+                <i class="fa fa-map-marker"></i>
+                <input type="text" placeholder="Localisation" [(ngModel)]="locationFilter" (input)="suggestLocations()"
+                    (focus)="showLocationSuggestions = true" (blur)="hideLocationSuggestionsDelayed()"
+                    autocomplete="off" (mousedown)="preventBlurLocation = true"
+                    (mouseup)="preventBlurLocation = false" />
+                <div class="suggestions" *ngIf="showLocationSuggestions">
+                    <div *ngFor="let suggestion of locationSuggestions" (click)="selectLocationSuggestion(suggestion)"
+                        (mousedown)="$event.preventDefault()">
+                        {{ suggestion }}
+                    </div>
+                </div>
+            </div>
+
+            <button (click)="filterOffers()" (mousedown)="preventBlur = true">
+                <i class="fa fa-arrow-right"></i>
+            </button>
+        </div>
+
+        <div class="filter-options">
+            <button [class.active]="!offerType" (click)="setOfferType('')">
+                Tout
+            </button>
+            <button [class.active]="offerType === 'offre'" (click)="setOfferType('offre')">
+                Offre d'emploi
+            </button>
+            <button [class.active]="offerType === 'stage'" (click)="setOfferType('stage')">
+                Stage
+            </button>
+            <button [class.active]="offerType === 'freelance'" (click)="setOfferType('freelance')">
+                Projet de freelance
+            </button>
+        </div>
+
+    </div>
+</div>
+
+<div class="container">
+    <!-- Sidebar gauche -->
+    <div class="sidebar">
+        <div *ngFor="let offer of pagedOffers; let i = index" [class.active]="selectedOfferIndex === i"
+            (click)="selectOffer(i)" class="offer-item">
+            <div class="offer-header">
+                <div class="offer-header-left">
+                    <div class="offer-company-logo">
+                        <img [src]="offer.logo" alt="Company Logo" />
+                    </div>
+                    <div class="offer-company-name">{{ offer.company }}</div>
+                </div>
+                <div class="offer-date">{{ offer.date }}</div>
+            </div>
+            <h4>{{ offer.title }}</h4>
+            <p class="offer-description" #offerDescription></p>
+            <p style="margin-top: 10px;">
+                <i class="fa fa-map-marker"></i> {{ offer.location }}
+            </p>
+        </div>
+
+
+        <div class="pagination">
+            <button class="page-btn" [disabled]="currentPage === 1" (click)="changePage(currentPage - 1)">
+                &lt;
+            </button>
+            <button *ngFor="let page of getPagesArray()" class="page-btn" [ngClass]="{'active': currentPage === page}"
+                (click)="changePage(page)">
+                {{ page }}
+            </button>
+            <button class="page-btn" [disabled]="currentPage === totalPages" (click)="changePage(currentPage + 1)">
+                &gt;
+            </button>
+        </div>
+
+    </div>
+
+    <!-- Contenu à droite -->
+    <div class="details" *ngIf="!showModal">
+        <div class="details-header">
+            <div class="company-header">
+                <div class="company-logo">
+                    <img [src]="selectedOffer.logo" [alt]="selectedOffer.company + ' logo'" />
+                </div>
+                <div class="company-name">Metz - Lockman</div>
+            </div>
+            <button class="apply-button">Postulez maintenant</button>
+        </div>
+        <h2>{{ selectedOffer.title }}</h2>
+        <p><i class="fa fa-map-marker"></i> {{ selectedOffer.location }}</p>
+        <div class="offer-details">
+            <p><i class="fa fa-users"></i> <strong>Nombre de postes ouverts :</strong> {{ selectedOffer.positions
+                }}</p>
+            <p><i class="fa fa-briefcase"></i> <strong>Expérience :</strong> {{ selectedOffer.experience }}</p>
+            <p><i class="fa fa-file-contract"></i> <strong>Type de contrat :</strong> {{ selectedOffer.contract }}
+            </p>
+        </div>
+        <h3>Description du poste :</h3>
+        <p>{{ selectedOffer.description }}</p>
+        <h3>Responsabilités :</h3>
+        <ul>
+            <li *ngFor="let responsibility of selectedOffer.responsibilities">{{ responsibility }}</li>
+        </ul>
+        <h3>Exigences :</h3>
+        <ul>
+            <li *ngFor="let requirement of selectedOffer.requirements">{{ requirement }}</li>
+        </ul>
+        <h3>Avantages :</h3>
+        <ul>
+            <li *ngFor="let advantage of selectedOffer.advantages">{{ advantage }}</li>
+        </ul>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal" *ngIf="showModal">
+    <div class="modal-content">
+        <span class="close" (click)="closeModal()">&times;</span>
+        <div class="details-header">
+            <div class="company-header">
+                <div class="company-logo">
+                    <img [src]="selectedOffer.logo" [alt]="selectedOffer.company + ' logo'" />
+                </div>
+                <div class="company-name">Metz - Lockman</div>
+            </div>
+        </div>
+        <h2>{{ selectedOffer.title }}</h2>
+        <p><i class="fa fa-map-marker"></i> {{ selectedOffer.location }}</p>
+        <div class="offer-details">
+            <p><i class="fa fa-users"></i> <strong>Nombre de postes ouverts :</strong> {{ selectedOffer.positions
+                }}</p>
+            <p><i class="fa fa-briefcase"></i> <strong>Expérience :</strong> {{ selectedOffer.experience }}</p>
+            <p><i class="fa fa-file-contract"></i> <strong>Type de contrat :</strong> {{ selectedOffer.contract }}
+            </p>
+        </div>
+        <h3>Description du poste :</h3>
+        <p>{{ selectedOffer.description }}</p>
+        <h3>Responsabilités :</h3>
+        <ul>
+            <li *ngFor="let responsibility of selectedOffer.responsibilities">{{ responsibility }}</li>
+        </ul>
+        <h3>Exigences :</h3>
+        <ul>
+            <li *ngFor="let requirement of selectedOffer.requirements">{{ requirement }}</li>
+        </ul>
+        <h3>Avantages :</h3>
+        <ul>
+            <li *ngFor="let advantage of selectedOffer.advantages">{{ advantage }}</li>
+        </ul>
+        <button class="apply-button">Postulez maintenant</button>
+    </div>
+</div>
+<footer class="footer">
+    <div class="footer-container">
+        <div class="footer-column footer-logo">
+            <img src="assets/images/Rectangle 43.png" alt="Logo">
+            <div class="newsletter">
+                <input type="email" placeholder="Entrez votre email...">
+                <button>➜</button>
+            </div>
+            <div class="social-icons">
+                <a href="#">🔵</a>
+                <a href="#">🔘</a>
+                <a href="#">🔗</a>
+            </div>
+        </div>
+        <div class="footer-column">
+            <h3>Navigation :</h3>
+            <ul>
+                <li><a href="#">Offres d'emploi</a></li>
+                <li><a href="#">Offres de stage</a></li>
+                <li><a href="#">Freelances</a></li>
+                <li><a href="#">Publier une offre</a></li>
+            </ul>
+        </div>
+        <div class="footer-column">
+            <h3>À propos :</h3>
+            <ul>
+                <li><a href="#">Qui sommes-nous ?</a></li>
+                <li><a href="#">Notre mission</a></li>
+                <li><a href="#">Contact</a></li>
+            </ul>
+        </div>
+        <div class="footer-column">
+            <h3>Support :</h3>
+            <ul>
+                <li><a href="#">FAQ</a></li>
+                <li><a href="#">Assistance</a></li>
+                <li><a href="#">Conditions d'utilisation</a></li>
+                <li><a href="#">Politique de confidentialité</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        © Tous droits réservés.<br>
+        Ce site est une réalisation de la société Yooreed InnoTech.
+    </div>
+</footer>

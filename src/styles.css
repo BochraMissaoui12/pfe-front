@@ -1,0 +1,4 @@
+body.mat-typography.modal-open {
+  /* More specific selector */
+  padding-right: 0px !important;
+}

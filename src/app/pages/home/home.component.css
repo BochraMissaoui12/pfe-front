@@ -24,7 +24,10 @@ html {
   align-items: center;
   border-radius: 12px 12px 0 0; /* Coins arrondis pour le haut */
 }
-
+.btn-close-black {
+  filter: none !important; /* remove default Bootstrap invert filter */
+  opacity: 1;
+}
 .custom-body {
   background-color: rgba(30, 41, 59, 1); /* Même couleur que le header */
   color: #fff;
@@ -42,17 +45,18 @@ html {
   outline: none;
   transition: transform 0.2s, opacity 0.2s;
 }
+.verification-header {
+  background-color: rgba(226, 232, 240, 1);
+  color: rgba(30, 41, 59, 1);
+}
 
+.verification-body {
+  background-color: rgba(226, 232, 240, 1);
+  color: rgba(30, 41, 59, 1);
+}
 .btn-close:hover {
   transform: scale(1.1);
   opacity: 0.8;
-}
-body {
-  overflow-x: hidden;
-  font-family: "Poppins", sans-serif;
-  background: rgba(30, 41, 59, 1);
-  color: var(--text-color);
-  text-align: center;
 }
 
 .navbar {
@@ -84,7 +88,16 @@ body {
   padding: 1vh;
   transition: 0.3s;
 }
-
+body {
+  overflow-x: hidden;
+  padding: 0;
+}
+.home {
+  font-family: "Poppins", sans-serif;
+  background: rgba(30, 41, 59, 1);
+  color: var(--text-color);
+  text-align: center;
+}
 .nav-links li a.active,
 .nav-links li a:hover {
   color: var(--primary-color);
@@ -386,7 +399,7 @@ body {
 }
 
 /* Button changes */
-.platform-offers .container .cardd:hover a {
+.platform-offers .container .cardd a:hover {
   width: auto;
   padding: 8px 20px;
   border-radius: 50px;
@@ -399,7 +412,7 @@ body {
   display: inline-block;
 }
 /* Change arrow to text on hover */
-.platform-offers .container .cardd:hover a::before {
+.platform-offers .container .cardd a:hover::before {
   content: "Voir Plus  →";
   font-size: 16px;
   transition: transform 0.7s ease-in-out;
@@ -669,7 +682,7 @@ body {
 }
 
 /* Button changes */
-.news-card:hover a {
+.news-card a:hover {
   width: auto;
   padding: 8px 20px;
   border-radius: 50px;
@@ -682,7 +695,7 @@ body {
   display: inline-block;
 }
 /* Change arrow to text on hover */
-.news-card:hover a::before {
+.news-card a:hover::before {
   content: "Voir Plus  →";
   font-size: 16px;
   transition: transform 0.7s ease-in-out;
@@ -837,25 +850,42 @@ body {
   background-color: rgba(226, 232, 240, 1);
   padding: 20px;
 }
+
 .sponsors-title {
   font-size: clamp(1.5rem, 3vw, 2rem);
   font-weight: 800;
   color: #000;
   margin-bottom: 20px;
 }
+
 .sponsors-container {
   display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 40px;
+  overflow-x: auto;
+  width: 100%;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none; /* Hide scrollbar for Firefox */
+  -ms-overflow-style: none; /* Hide scrollbar for IE and Edge */
 }
+
+.sponsors-container::-webkit-scrollbar {
+  display: none; /* Hide scrollbar for Chrome, Safari and Opera */
+}
+
 .sponsor {
+  flex: 0 0 auto;
   max-width: 150px;
+  margin-right: 40px;
+  box-sizing: border-box;
+  padding: 10px;
 }
+
 .sponsor img {
   width: 100%;
   height: auto;
+  display: block;
 }
+
 .footer {
   background-color: #1c2738;
   color: white;
@@ -913,7 +943,6 @@ body {
   outline: none;
   background: transparent;
   flex: 1;
-  padding: 10px;
   border-radius: 30px;
 }
 .newsletter button {

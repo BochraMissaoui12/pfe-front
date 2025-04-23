@@ -1,4 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  OnInit,
+  Output,
+  Renderer2,
+  RendererStyleFlags2,
+  SimpleChanges,
+} from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { debounceTime, distinctUntilChanged } from 'rxjs';
 import { SkillService } from 'src/app/services/SkillService';
@@ -9,11 +17,12 @@ import { SkillService } from 'src/app/services/SkillService';
   styleUrls: ['./signup.component.css'],
 })
 export class SignupComponent implements OnInit {
-  userType: 'entreprise' | 'candidat' | null = null;
-  profileType: 'candidat' | 'chercheur' | 'freelancer' | 'étudiant' | null =
-    null;
+  userType: 'entreprise' | 'candidat' | 'chercheur' | null = null;
+  profileType: 'employé' | 'freelancer' | 'étudiant' | null = null;
   candidatForm: FormGroup;
+  loginForm: FormGroup;
   currentStep: number = 1;
+  @Output() verificationModeChange = new EventEmitter<boolean>();
   entrepriseForm: FormGroup;
   detailsForm: FormGroup;
   idForm: FormGroup;
@@ -22,8 +31,14 @@ export class SignupComponent implements OnInit {
   newSkill: string = '';
   skills: string[] = [];
   suggestions: string[] = [];
-  constructor(private fb: FormBuilder, private skillService: SkillService) {
-    // Step 2 form
+  showVerification: boolean = false;
+  code: string[] = ['', '', '', ''];
+  countdown: number = 59;
+  constructor(
+    private fb: FormBuilder,
+    private skillService: SkillService,
+    private renderer: Renderer2
+  ) {
     this.entrepriseForm = this.fb.group({
       companyName: ['', Validators.required],
       responsable: ['', Validators.required],
@@ -32,7 +47,6 @@ export class SignupComponent implements OnInit {
       confirmPassword: ['', Validators.required],
     });
 
-    // Step 3 form
     this.detailsForm = this.fb.group({
       sector: ['', Validators.required],
       government: ['', Validators.required],
@@ -41,7 +55,6 @@ export class SignupComponent implements OnInit {
       logo: [null, Validators.required],
     });
 
-    // Step 4 form
     this.idForm = this.fb.group({
       identifier: ['', Validators.required],
       rneDocument: [null, Validators.required],
@@ -55,6 +68,10 @@ export class SignupComponent implements OnInit {
       title: ['', Validators.required],
       description: ['', Validators.required],
       skillInput: [''],
+    });
+    this.loginForm = this.fb.group({
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', Validators.required],
     });
   }
 
@@ -75,24 +92,56 @@ export class SignupComponent implements OnInit {
   logIn() {
     this.currentStep = 8;
   }
+  onSubmit() {
+    if (this.loginForm.valid) {
+      this.showVerification = true;
+      this.nextStep();
+      this.startCountdown();
+    } else {
+      Object.keys(this.loginForm.controls).forEach((key) => {
+        this.loginForm.get(key)?.markAsTouched();
+      });
+    }
+  }
+
+  verifyCode() {
+    console.log('Verifying code:', this.code.join(''));
+  }
+  resendCode() {
+    console.log('Resending code');
+    this.countdown = 59;
+    this.startCountdown();
+  }
+
+  startCountdown() {
+    setInterval(() => {
+      if (this.countdown > 0) {
+        this.countdown--;
+      }
+    }, 1000);
+  }
   inscription() {
     this.currentStep = 1;
   }
-  selectUserType(type: 'entreprise' | 'candidat') {
+  selectUserType(type: 'entreprise' | 'candidat' | 'chercheur') {
     this.userType = type;
-    this.currentStep = 2; // Go to step 2 after selecting user type
+    this.currentStep = 2;
   }
-  selectProfile(
-    profileType: 'candidat' | 'chercheur' | 'freelancer' | 'étudiant'
-  ) {
+  selectProfile(profileType: 'employé' | 'freelancer' | 'étudiant') {
     this.profileType = profileType;
     this.currentStep++;
   }
-
+  updateVerificationMode() {
+    this.verificationModeChange.emit(
+      (this.currentStep === 9 || this.currentStep === 6) &&
+        this.showVerification
+    );
+  }
   nextStep() {
-    if (this.currentStep < 8) {
+    if (this.currentStep < 9) {
       this.currentStep++;
     }
+    this.updateVerificationMode();
   }
 
   previousStep() {
@@ -137,23 +186,14 @@ export class SignupComponent implements OnInit {
     if (input.files && input.files.length > 0) {
       const file = input.files[0];
       this.uploadedFileName = file.name;
-      // Tu peux aussi stocker le fichier ou l’envoyer ici
     }
   }
   submitForm() {
-    if (
-      this.entrepriseForm.valid &&
-      this.detailsForm.valid &&
-      this.idForm.valid
-    ) {
-      console.log('Formulaire soumis :', {
-        entreprise: this.entrepriseForm.value,
-        details: this.detailsForm.value,
-        identifiant: this.idForm.value,
-      });
-      alert('Inscription réussie !');
+    if (this.userType == 'entreprise') {
+      this.showVerification = true;
+      this.nextStep();
     } else {
-      alert('Veuillez remplir tous les champs requis !');
+      this.currentStep = 8;
     }
   }
   submitCandidatForm() {

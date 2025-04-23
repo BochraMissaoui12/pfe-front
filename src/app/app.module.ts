@@ -10,9 +10,10 @@ import { HttpClientModule } from '@angular/common/http';
 import { ProfileCandidatComponent } from './pages/profile-candidat/profile-candidat.component';
 import { CandidaturesListComponent } from './pages/candidatures-list/candidatures-list.component';
 import { ProfileEntrepriseComponent } from './pages/profile-entreprise/profile-entreprise.component';
+import { ListeOffresComponent } from './pages/liste-offres/liste-offres.component';
 
 @NgModule({
-  declarations: [AppComponent, HomeComponent, SignupComponent, ProfileCandidatComponent, CandidaturesListComponent, ProfileEntrepriseComponent],
+  declarations: [AppComponent, HomeComponent, SignupComponent, ProfileCandidatComponent, CandidaturesListComponent, ProfileEntrepriseComponent, ListeOffresComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,

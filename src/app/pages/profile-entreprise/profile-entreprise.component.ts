@@ -28,4 +28,7 @@ export class ProfileEntrepriseComponent implements OnInit {
   goToStep1() {
     this.step = 1;
   }
+  goToStep3() {
+    this.step = 3;
+  }
 }

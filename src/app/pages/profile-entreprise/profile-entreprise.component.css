@@ -299,12 +299,15 @@ body {
   border-radius: 10px;
   padding: 20px;
 }
-
+.modal-dialog {
+  max-width: 600px !important;
+}
 /* Style de l'en-tête du modal */
 .modal-header {
   border-bottom: none; /* Supprimer la bordure en bas de l'en-tête */
   padding-bottom: 0;
 }
+
 .btn-close {
   filter: brightness(0) invert(1);
 }
@@ -323,7 +326,7 @@ body {
 }
 
 /* Style des boutons */
-.modal-body .btn {
+.modal-body .btnnn {
   background-color: #e2e8f0; /* Fond des boutons */
   color: #1e293b; /* Texte en bleu foncé */
   border: none;
@@ -333,7 +336,7 @@ body {
   margin-bottom: 10px; /* Espacement entre les boutons */
 }
 
-.modal-body .btn:hover {
+.modal-body .btnnn:hover {
   background-color: rgba(0, 168, 232, 1);
   transform: translateY(-2px);
   color: #fff;
@@ -354,10 +357,6 @@ body {
   margin-bottom: 1rem;
 }
 
-.form-control:focus {
-  box-shadow: 0 0 0 0.1rem rgba(80, 97, 122, 0.25); /* Ombre au focus */
-}
-
 /* Style spécifique pour le textarea (description) */
 textarea.form-control {
   resize: vertical; /* Permet de redimensionner verticalement */
@@ -370,28 +369,17 @@ textarea.form-control {
   background-color: #1aa7ec; /* Bleu clair */
   border-color: #1aa7ec;
   color: #ffffff;
-  border-radius: 0.3rem;
+  border-radius: 16px;
   padding: 0.4rem 1rem;
   font-size: 0.9rem;
-}
-
-.btn-primary:hover {
-  background-color: #118ac5; /* Bleu plus foncé au hover */
-  border-color: #118ac5;
 }
 
 /* Style pour le bouton d'annulation */
-.btn-secondary {
+.btn-secondaryy {
   background-color: transparent; /* Fond transparent */
   border-color: transparent;
-  color: #a3b1c7; /* Gris clair */
-  border-radius: 0.3rem;
   padding: 0.4rem 1rem;
   font-size: 0.9rem;
-}
-
-.btn-secondary:hover {
-  background-color: rgba(255, 255, 255, 0.05); /* Léger fond gris au hover */
 }
 
 /* Ajustements pour le modal header */
@@ -418,7 +406,8 @@ textarea.form-control {
 .modal-footer .btn {
   width: 12rem;
 }
-.btn-secondary {
+.btn-secondaryy {
+  color: rgba(226, 232, 240, 1);
   background-color: transparent;
 }
 
@@ -527,7 +516,6 @@ select.form-control {
   outline: none;
   background: transparent;
   flex: 1;
-  padding: 10px;
   border-radius: 30px;
 }
 

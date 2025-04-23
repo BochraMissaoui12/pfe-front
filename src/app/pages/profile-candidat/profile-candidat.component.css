@@ -692,7 +692,6 @@ label {
   outline: none;
   background: transparent;
   flex: 1;
-  padding: 10px;
   border-radius: 30px;
 }
 .newsletter button {

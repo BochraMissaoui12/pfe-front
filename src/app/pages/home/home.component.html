@@ -1,134 +1,226 @@
-<div class="home">
-    <header class="navbar" data-aos="fade-down" data-aos-duration="1000">
-        <div class="logo">
-            <img src="assets/images/logo.png" alt="Logo">
-        </div>
-        <nav>
-            <ul class="nav-links">
-                <li><a href="#" class="active">Accueil</a></li>
-                <li><a href="#">Emplois & Stages</a></li>
-                <li><a href="#">Publier une offre</a></li>
-                <li><a href="#">Contact</a></li>
-            </ul>
-        </nav>
-        <button class="btn-primary" (click)="openSignupModal()">S'inscrire</button>
-        <div class="modal fade" id="signupModal" tabindex="-1" aria-labelledby="signupModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content" style="background-color: rgba(30, 41, 59, 1);border-radius: 16px;">
-                    <div class="modal-header custom-header">
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body custom-body">
-                        <app-signup></app-signup> <!-- Composant Signup -->
+<body>
+    <div class="home">
+        <header class="navbar" data-aos="fade-down" data-aos-duration="1000">
+            <div class="logo">
+                <img src="assets/images/logo.png" alt="Logo">
+            </div>
+            <nav>
+                <ul class="nav-links">
+                    <li><a href="#" class="active">Accueil</a></li>
+                    <li><a href="#">Emplois & Stages</a></li>
+                    <li><a href="#">Publier une offre</a></li>
+                    <li><a href="#">Contact</a></li>
+                </ul>
+            </nav>
+            <button class="btn-primary" (click)="openSignupModal()">S'inscrire</button>
+            <div class="modal fade" id="signupModal" tabindex="-1" aria-labelledby="signupModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content" style="background-color: rgba(30, 41, 59, 1);border-radius: 16px;">
+                        <div class="modal-header custom-header" [ngClass]="{'verification-header': isVerificationMode}">
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                                [ngClass]="{'btn-close-black': isVerificationMode}"></button>
+                        </div>
+                        <div class="modal-body custom-body" [ngClass]="{'verification-body': isVerificationMode}">
+                            <app-signup (verificationModeChange)="isVerificationMode = $event"></app-signup>
+                            <!-- Composant Signup -->
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <!-- Menu mobile -->
-        <button class="menu-toggle" (click)="toggleMenu()">
-            <img src="assets/images/Vector.png" alt="Menu">
-        </button>
-    </header>
-
-    <section class="hero" data-aos="fade-up" data-aos-duration="1500">
-        <h1>Connectez-vous et développez <br> votre carrière aujourd'hui</h1>
-        <p data-aos="fade-in" data-aos-delay="300">Bienvenue sur notre plateforme de réseautage professionnel. Découvrez
-            des opportunités d’emploi qui correspondent à vos aspirations et connectez-vous
-            avec des professionnels de votre secteur.</p>
-
-        <div class="search-container">
-            <i class="fas fa-search search-icon"></i>
-            <input type="text" placeholder="chercher un emploi">
-            <button class="search-button">
-                <i class="fas fa-arrow-up-right"></i>
+            <!-- Menu mobile -->
+            <button class="menu-toggle" (click)="toggleMenu()">
+                <img src="assets/images/Vector.png" alt="Menu">
             </button>
-        </div>
+        </header>
 
-        <div class="image-container">
-            <!-- Demi-cercle en arrière-plan -->
-            <div class="circle-background"></div>
-            <img src="assets/images/hero-bg.png" alt="Groupe de travail">
-        </div>
-    </section>
-    <section class="partners">
-        <h2 data-aos="fade-down" data-aos-delay="200">Nos Partenaires</h2>
-        <div class="partners-container" data-aos="fade-down" data-aos-delay="300">
-            <div class="partner">
-                <img src="assets/images/us.png" alt="University of Sousse">
-            </div>
-            <div class="partner">
-                <img src="assets/images/utica.png" alt="UTICA">
-            </div>
-            <div class="partner">
-                <img src="assets/images/isitc.png" alt="ISIT">
-            </div>
-            <div class="partner">
-                <img src="assets/images/yooreed.png" alt="YOO REED">
-            </div>
-        </div>
-    </section>
-    <section class="platform-offers">
-        <div class="container">
-            <div class="cardd" data-aos="fade-left" data-aos-duration="1000">
-                <div class="icon"><i class="fas fa-search"></i>
+        <section class="hero" data-aos="fade-up" data-aos-duration="1500">
+            <h1>Connectez-vous et développez <br> votre carrière aujourd'hui</h1>
+            <p data-aos="fade-in" data-aos-delay="300">Bienvenue sur notre plateforme de réseautage professionnel.
+                Découvrez
+                des opportunités d’emploi qui correspondent à vos aspirations et connectez-vous
+                avec des professionnels de votre secteur.</p>
 
+            <div class="search-container">
+                <i class="fas fa-search search-icon"></i>
+                <input type="text" placeholder="chercher un emploi">
+                <button class="search-button">
+                    <i class="fas fa-arrow-up-right"></i>
+                </button>
+            </div>
+
+            <div class="image-container">
+                <!-- Demi-cercle en arrière-plan -->
+                <div class="circle-background"></div>
+                <img src="assets/images/hero-bg.png" alt="Groupe de travail">
+            </div>
+        </section>
+        <section class="partners">
+            <h2 data-aos="fade-down" data-aos-delay="200">Nos Partenaires</h2>
+            <div class="partners-container" data-aos="fade-down" data-aos-delay="300">
+                <div class="partner">
+                    <img src="assets/images/us.png" alt="University of Sousse">
                 </div>
-                <h3>Travaux de recherche</h3>
-                <p>Explorez les dernières avancées et études menées dans divers domaines. Trouvez des ressources
-                    pertinentes pour vos projets académiques et professionnels.</p>
-                <a href="#" class="read-more"></a>
+                <div class="partner">
+                    <img src="assets/images/utica.png" alt="UTICA">
+                </div>
+                <div class="partner">
+                    <img src="assets/images/isitc.png" alt="ISIT">
+                </div>
+                <div class="partner">
+                    <img src="assets/images/yooreed.png" alt="YOO REED">
+                </div>
             </div>
-            <div class="cardd" data-aos="fade-left" data-aos-duration="1000">
-                <div class="icon"><i class="fas fa-file-contract"></i></div>
+        </section>
+        <section class="platform-offers">
+            <div class="container">
+                <div class="cardd" data-aos="fade-left" data-aos-duration="1000">
+                    <div class="icon"><i class="fas fa-search"></i>
 
-                <h3>Appels d’offres</h3>
-                <p>Consultez et soumettez des appels d’offres pour divers secteurs. Une opportunité pour les
-                    entreprises
-                    et prestataires de services d’accéder à de nouveaux marchés.</p>
-                <a href="#" class="read-more"></a>
+                    </div>
+                    <h3>Travaux de recherche</h3>
+                    <p>Explorez les dernières avancées et études menées dans divers domaines. Trouvez des ressources
+                        pertinentes pour vos projets académiques et professionnels.</p>
+                    <a href="#" class="read-more"></a>
+                </div>
+                <div class="cardd" data-aos="fade-left" data-aos-duration="1000">
+                    <div class="icon"><i class="fas fa-file-contract"></i></div>
+
+                    <h3>Appels d’offres</h3>
+                    <p>Consultez et soumettez des appels d’offres pour divers secteurs. Une opportunité pour les
+                        entreprises
+                        et prestataires de services d’accéder à de nouveaux marchés.</p>
+                    <a href="#" class="read-more"></a>
+                </div>
+                <div class="cardd" data-aos="fade-left" data-aos-duration="1000">
+                    <div class="icon"><i class="fas fa-briefcase"></i></div>
+                    <h3>Offres d'emploi</h3>
+                    <p>Découvrez les dernières offres d’emploi publiées par les entreprises. Trouvez le poste qui
+                        correspond
+                        à votre profil et postulez en un clic.</p>
+                    <a href="#" class="read-more"></a>
+                </div>
+                <div class="cardd" data-aos="fade-left" data-aos-duration="1000">
+                    <div class="icon"><i class="fas fa-user-graduate"></i></div>
+                    <h3>Offres de stage</h3>
+                    <p>Accédez à une sélection d’opportunités de stage pour enrichir votre parcours académique
+                        et
+                        professionnel. Un premier pas vers le monde du travail !</p>
+                    <a href="#" class="read-more"></a>
+                </div>
+                <div class="cardd" data-aos="fade-left" data-aos-duration="1000">
+                    <div class="icon"><i class="fas fa-newspaper"></i></div>
+                    <h3>Actualités</h3>
+                    <p>Restez informé des tendances du marché, des innovations et des évolutions dans votre
+                        secteur
+                        d’activité. Un fil d’actualité toujours mis à jour.</p>
+                    <a href="#" class="read-more"></a>
+                </div>
+                <div class="cardd" data-aos="fade-left" data-aos-duration="1000">
+                    <div class="icon"><i class="fas fa-handshake"></i></div>
+                    <h3>Freelances</h3>
+                    <p>Trouvez des missions adaptées à vos compétences et connectez-vous avec des
+                        clients à
+                        la
+                        recherche
+                        d’experts indépendants. Travaillez à votre rythme !</p>
+                    <a href="#" class="read-more"></a>
+                </div>
             </div>
-            <div class="cardd" data-aos="fade-left" data-aos-duration="1000">
-                <div class="icon"><i class="fas fa-briefcase"></i></div>
-                <h3>Offres d'emploi</h3>
-                <p>Découvrez les dernières offres d’emploi publiées par les entreprises. Trouvez le poste qui
-                    correspond
-                    à votre profil et postulez en un clic.</p>
-                <a href="#" class="read-more"></a>
+        </section>
+        <section id="emplois" class="job-listings">
+            <div class="container">
+                <div class="header">
+                    <h1 data-aos="zoom-in" data-aos-delay="200">
+                        Obtenez votre meilleure <br> profession avec <span class="highlight">UTTEC</span>
+                    </h1>
+                    <div class="button-container">
+                        <button class="hover-button">
+                            <span class="icon">↗</span>
+                            <span class="text">Voir Plus ↗</span>
+                        </button>
+                    </div>
+                </div>
+                <div class="grid">
+                    <div class="card" data-aos="zoom-in" data-aos-delay="300">
+                        <div style="display: flex;">
+                            <img src="assets/images/logoo.png" alt="Logo Metz" class="logo">
+                            <div>
+                                <p style="margin-bottom: 0px;font-weight: 400;margin-top: 5px;" class="company">Metz -
+                                    Lockman</p>
+                                <p class="time" style="font-size: 10px;">Sun Apr 08</p>
+                            </div>
+                        </div>
+                        <h2>Customer Solutions Engineer</h2>
+                        <p class="location">📍New York</p>
+                    </div>
+                    <div class="card" data-aos="zoom-in" data-aos-delay="300">
+                        <div style="display: flex;">
+                            <img src="assets/images/logoo.png" alt="Logo Metz" class="logo">
+                            <div>
+                                <p style="margin-bottom: 0px; font-weight: 400;margin-top: 5px;" class="company">Metz -
+                                    Lockman</p>
+                                <p class="time" style="font-size: 10px;">Sun Apr 08</p>
+                            </div>
+                        </div>
+                        <h2>Customer Solutions Engineer</h2>
+                        <p class="location">📍New York</p>
+                    </div>
+                    <div class="card" data-aos="zoom-in" data-aos-delay="300">
+                        <div style="display: flex;">
+                            <img src="assets/images/logoo.png" alt="Logo Metz" class="logo">
+                            <div>
+                                <p style="margin-bottom: 0px;font-weight: 400; margin-top: 5px;font-weight: 400;"
+                                    class="company">Metz -
+                                    Lockman</p>
+                                <p class="time" style="font-size: 10px;">Sun Apr 08</p>
+                            </div>
+                        </div>
+                        <h2>Customer Solutions Engineer</h2>
+                        <p class="location">📍New York</p>
+                    </div>
+                    <div class="card" data-aos="zoom-in" data-aos-delay="300">
+                        <div style="display: flex;">
+                            <img src="assets/images/logoo.png" alt="Logo Metz" class="logo">
+                            <div>
+                                <p style="margin-bottom: 0px;font-weight: 400; margin-top: 5px;" class="company">Metz -
+                                    Lockman</p>
+                                <p class="time" style="font-size: 10px;">Sun Apr 08</p>
+                            </div>
+                        </div>
+                        <h2>Corporate Creative Administrator</h2>
+                        <p class="location">📍Indiana</p>
+                    </div>
+                    <div class="card" data-aos="zoom-in" data-aos-delay="300">
+                        <div style="display: flex;">
+                            <img src="assets/images/logoo.png" alt="Logo Metz" class="logo">
+                            <div>
+                                <p style="margin-bottom: 0px;font-weight: 400; margin-top: 5px;" class="company">Metz -
+                                    Lockman</p>
+                                <p class="time" style="font-size: 10px;">Sun Apr 08</p>
+                            </div>
+                        </div>
+                        <h2>Customer Solutions Engineer</h2>
+                        <p class="location">📍New York</p>
+                    </div>
+                    <div class="card" data-aos="zoom-in" data-aos-delay="300">
+                        <div style="display: flex;">
+                            <img src="assets/images/logoo.png" alt="Logo Metz" class="logo">
+                            <div>
+                                <p style="margin-bottom: 0px;font-weight: 400; margin-top: 5px;" class="company">Metz -
+                                    Lockman</p>
+                                <p class="time" style="font-size: 10px;">Sun Apr 08</p>
+                            </div>
+                        </div>
+                        <h2>Corporate Creative Administrator</h2>
+                        <p class="location">📍Indiana</p>
+                    </div>
+                </div>
             </div>
-            <div class="cardd" data-aos="fade-left" data-aos-duration="1000">
-                <div class="icon"><i class="fas fa-user-graduate"></i></div>
-                <h3>Offres de stage</h3>
-                <p>Accédez à une sélection d’opportunités de stage pour enrichir votre parcours académique
-                    et
-                    professionnel. Un premier pas vers le monde du travail !</p>
-                <a href="#" class="read-more"></a>
-            </div>
-            <div class="cardd" data-aos="fade-left" data-aos-duration="1000">
-                <div class="icon"><i class="fas fa-newspaper"></i></div>
-                <h3>Actualités</h3>
-                <p>Restez informé des tendances du marché, des innovations et des évolutions dans votre
-                    secteur
-                    d’activité. Un fil d’actualité toujours mis à jour.</p>
-                <a href="#" class="read-more"></a>
-            </div>
-            <div class="cardd" data-aos="fade-left" data-aos-duration="1000">
-                <div class="icon"><i class="fas fa-handshake"></i></div>
-                <h3>Freelances</h3>
-                <p>Trouvez des missions adaptées à vos compétences et connectez-vous avec des
-                    clients à
-                    la
-                    recherche
-                    d’experts indépendants. Travaillez à votre rythme !</p>
-                <a href="#" class="read-more"></a>
-            </div>
-        </div>
-    </section>
-    <section id="emplois" class="job-listings">
-        <div class="container">
+        </section>
+        <section class="news-section">
             <div class="header">
-                <h1 data-aos="zoom-in" data-aos-delay="200">
-                    Obtenez votre meilleure <br> profession avec <span class="highlight">UTTEC</span>
-                </h1>
+                <h2 data-aos="fade-left" data-aos-duration="1000">Actualités</h2>
                 <div class="button-container">
                     <button class="hover-button">
                         <span class="icon">↗</span>
@@ -136,216 +228,133 @@
                     </button>
                 </div>
             </div>
-            <div class="grid">
-                <div class="card" data-aos="zoom-in" data-aos-delay="300">
-                    <div style="display: flex;">
-                        <img src="assets/images/logoo.png" alt="Logo Metz" class="logo">
-                        <div>
-                            <p style="margin-bottom: 0px;font-weight: 400;margin-top: 5px;" class="company">Metz -
-                                Lockman</p>
-                            <p class="time" style="font-size: 10px;">Sun Apr 08</p>
-                        </div>
+            <div class="news-container">
+                <div class="news-card" data-aos="fade-left" data-aos-duration="1000">
+                    <img src="assets/images/act2.png" alt="Yooreed Event" class="news-image">
+                    <div class="logo"><img src="assets/images/yooreed.png" alt="Yooreed Logo"></div>
+                    <h3>Yooreed</h3>
+                    <p class="subtitle">Dgitalisation is a must</p>
+                    <p class="description">Une conférence dédiée aux dernières avancées technologiques qui rassembler
+                        les
+                        plus grandes entreprises et donnera lieu à des pan...</p>
+                    <a href="#" class="read-more"></a>
+                </div>
+                <div class="news-card" data-aos="fade-left" data-aos-duration="1000">
+                    <img src="assets/images/act1.png" alt="UTTEC Meeting" class="news-image">
+                    <div class="logo"><img src="assets/images/utica.png" alt="UTTEC Logo"></div>
+                    <h3>UTTEC</h3>
+                    <p class="subtitle">Réunion du comité technologique.</p>
+                    <p class="description">Une conférence dédiée aux dernières avancées technologiques qui rassemblera
+                        les
+                        plus grandes entreprises...</p>
+                    <a href="#" class="read-more"></a>
+                </div>
+                <div class="news-card" data-aos="fade-left" data-aos-duration="1000">
+                    <img src="assets/images/act3.png" alt="UTTEC Congress" class="news-image">
+                    <div class="logo"><img src="assets/images/utica.png" alt="UTTEC Logo"></div>
+                    <h3>UTTEC</h3>
+                    <p class="subtitle">Congré national</p>
+                    <p class="description">Congrès qui réunira les plus grands investisseurs tunisiens et offrira des
+                        opportunités énormes d'investissement rentable</p>
+                    <a href="#" class="read-more"></a>
+                </div>
+            </div>
+        </section>
+        <section style="background-color: white; height: 70px;">
+        </section>
+        <section class="recrutement">
+            <div class="container">
+                <div class="content">
+                    <div class="image" data-aos="fade-right" data-aos-delay="300">
+                        <img src="assets/images/rect.png" alt="Entretien d'embauche">
                     </div>
-                    <h2>Customer Solutions Engineer</h2>
-                    <p class="location">📍New York</p>
-                </div>
-                <div class="card" data-aos="zoom-in" data-aos-delay="300">
-                    <div style="display: flex;">
-                        <img src="assets/images/logoo.png" alt="Logo Metz" class="logo">
-                        <div>
-                            <p style="margin-bottom: 0px; font-weight: 400;margin-top: 5px;" class="company">Metz -
-                                Lockman</p>
-                            <p class="time" style="font-size: 10px;">Sun Apr 08</p>
-                        </div>
+                    <div class="text" data-aos="fade-left" data-aos-delay="300">
+                        <h2>Recrutez les Meilleurs Talents avec UTTEC</h2>
+                        <p>Trouvez les candidats idéaux pour votre entreprise en publiant vos offres d'emploi et de
+                            stage
+                            sur
+                            UTTEC. Bénéficiez d’une plateforme intuitive pour attirer des talents qualifiés et optimiser
+                            votre
+                            processus de recrutement.</p>
+                        <a href="#" class="btn">PUBLIER UNE OFFRE D'EMPLOI</a>
                     </div>
-                    <h2>Customer Solutions Engineer</h2>
-                    <p class="location">📍New York</p>
                 </div>
-                <div class="card" data-aos="zoom-in" data-aos-delay="300">
-                    <div style="display: flex;">
-                        <img src="assets/images/logoo.png" alt="Logo Metz" class="logo">
-                        <div>
-                            <p style="margin-bottom: 0px;font-weight: 400; margin-top: 5px;font-weight: 400;"
-                                class="company">Metz -
-                                Lockman</p>
-                            <p class="time" style="font-size: 10px;">Sun Apr 08</p>
-                        </div>
+            </div>
+        </section>
+        <section class="app">
+            <div class="container">
+                <div class="text-content" data-aos="fade-right" data-aos-delay="300">
+                    <h2>Téléchargez <br> l'Application UTTEC</h2>
+                    <p>Accédez facilement aux dernières offres d'emploi et de stage où que vous soyez. Postulez en un
+                        clic
+                        et restez connecté aux opportunités professionnelles. Téléchargez l’application dès maintenant !
+                    </p>
+                    <div class="buttons">
+                        <img src="assets/images/onstrore.png" alt="Get it on Google Play">
+                        <img src="assets/images/appstore.png" alt="Download on the App Store">
                     </div>
-                    <h2>Customer Solutions Engineer</h2>
-                    <p class="location">📍New York</p>
                 </div>
-                <div class="card" data-aos="zoom-in" data-aos-delay="300">
-                    <div style="display: flex;">
-                        <img src="assets/images/logoo.png" alt="Logo Metz" class="logo">
-                        <div>
-                            <p style="margin-bottom: 0px;font-weight: 400; margin-top: 5px;" class="company">Metz -
-                                Lockman</p>
-                            <p class="time" style="font-size: 10px;">Sun Apr 08</p>
-                        </div>
+                <div class="image-container" data-aos="fade-left" data-aos-delay="300">
+                    <img src="assets/images/Group.png" alt="Application UTTEC">
+                </div>
+            </div>
+        </section>
+        <section class="sponsors-section">
+            <div class="sponsors-title" data-aos="fade-up" data-aos-delay="300">Nos Sponsors</div>
+            <div class="sponsors-container" *ngIf="sponsors.length" #sponsorsContainer>
+                <div class="sponsor" *ngFor="let sponsor of sponsors">
+                    <img [src]="sponsor.imageUrl" alt="{{ sponsor.name }}">
+                </div>
+            </div>
+        </section>
+
+        <section style="background-color: white; height: 50px;">
+        </section>
+        <footer class="footer">
+            <div class="footer-container">
+                <div class="footer-column footer-logo">
+                    <img src="assets/images/Rectangle 43.png" alt="Logo">
+                    <div class="newsletter">
+                        <input type="email" placeholder="Entrez votre email...">
+                        <button>➜</button>
                     </div>
-                    <h2>Corporate Creative Administrator</h2>
-                    <p class="location">📍Indiana</p>
-                </div>
-                <div class="card" data-aos="zoom-in" data-aos-delay="300">
-                    <div style="display: flex;">
-                        <img src="assets/images/logoo.png" alt="Logo Metz" class="logo">
-                        <div>
-                            <p style="margin-bottom: 0px;font-weight: 400; margin-top: 5px;" class="company">Metz -
-                                Lockman</p>
-                            <p class="time" style="font-size: 10px;">Sun Apr 08</p>
-                        </div>
+                    <div class="social-icons">
+                        <a href="#">🔵</a>
+                        <a href="#">🔘</a>
+                        <a href="#">🔗</a>
                     </div>
-                    <h2>Customer Solutions Engineer</h2>
-                    <p class="location">📍New York</p>
                 </div>
-                <div class="card" data-aos="zoom-in" data-aos-delay="300">
-                    <div style="display: flex;">
-                        <img src="assets/images/logoo.png" alt="Logo Metz" class="logo">
-                        <div>
-                            <p style="margin-bottom: 0px;font-weight: 400; margin-top: 5px;" class="company">Metz -
-                                Lockman</p>
-                            <p class="time" style="font-size: 10px;">Sun Apr 08</p>
-                        </div>
-                    </div>
-                    <h2>Corporate Creative Administrator</h2>
-                    <p class="location">📍Indiana</p>
+                <div class="footer-column">
+                    <h3>Navigation :</h3>
+                    <ul>
+                        <li><a href="#">Offres d'emploi</a></li>
+                        <li><a href="#">Offres de stage</a></li>
+                        <li><a href="#">Freelances</a></li>
+                        <li><a href="#">Publier une offre</a></li>
+                    </ul>
                 </div>
-            </div>
-        </div>
-    </section>
-    <section class="news-section">
-        <div class="header">
-            <h2 data-aos="fade-left" data-aos-duration="1000">Actualités</h2>
-            <div class="button-container">
-                <button class="hover-button">
-                    <span class="icon">↗</span>
-                    <span class="text">Voir Plus ↗</span>
-                </button>
-            </div>
-        </div>
-        <div class="news-container">
-            <div class="news-card" data-aos="fade-left" data-aos-duration="1000">
-                <img src="assets/images/act2.png" alt="Yooreed Event" class="news-image">
-                <div class="logo"><img src="assets/images/yooreed.png" alt="Yooreed Logo"></div>
-                <h3>Yooreed</h3>
-                <p class="subtitle">Dgitalisation is a must</p>
-                <p class="description">Une conférence dédiée aux dernières avancées technologiques qui rassembler les
-                    plus grandes entreprises et donnera lieu à des pan...</p>
-                <a href="#" class="read-more"></a>
-            </div>
-            <div class="news-card" data-aos="fade-left" data-aos-duration="1000">
-                <img src="assets/images/act1.png" alt="UTTEC Meeting" class="news-image">
-                <div class="logo"><img src="assets/images/utica.png" alt="UTTEC Logo"></div>
-                <h3>UTTEC</h3>
-                <p class="subtitle">Réunion du comité technologique.</p>
-                <p class="description">Une conférence dédiée aux dernières avancées technologiques qui rassemblera les
-                    plus grandes entreprises...</p>
-                <a href="#" class="read-more"></a>
-            </div>
-            <div class="news-card" data-aos="fade-left" data-aos-duration="1000">
-                <img src="assets/images/act3.png" alt="UTTEC Congress" class="news-image">
-                <div class="logo"><img src="assets/images/utica.png" alt="UTTEC Logo"></div>
-                <h3>UTTEC</h3>
-                <p class="subtitle">Congré national</p>
-                <p class="description">Congrès qui réunira les plus grands investisseurs tunisiens et offrira des
-                    opportunités énormes d'investissement rentable</p>
-                <a href="#" class="read-more"></a>
-            </div>
-        </div>
-    </section>
-    <section style="background-color: white; height: 70px;">
-    </section>
-    <section class="recrutement">
-        <div class="container">
-            <div class="content">
-                <div class="image" data-aos="fade-right" data-aos-delay="300">
-                    <img src="assets/images/rect.png" alt="Entretien d'embauche">
+                <div class="footer-column">
+                    <h3>À propos :</h3>
+                    <ul>
+                        <li><a href="#">Qui sommes-nous ?</a></li>
+                        <li><a href="#">Notre mission</a></li>
+                        <li><a href="#">Contact</a></li>
+                    </ul>
                 </div>
-                <div class="text" data-aos="fade-left" data-aos-delay="300">
-                    <h2>Recrutez les Meilleurs Talents avec UTTEC</h2>
-                    <p>Trouvez les candidats idéaux pour votre entreprise en publiant vos offres d'emploi et de stage
-                        sur
-                        UTTEC. Bénéficiez d’une plateforme intuitive pour attirer des talents qualifiés et optimiser
-                        votre
-                        processus de recrutement.</p>
-                    <a href="#" class="btn">PUBLIER UNE OFFRE D'EMPLOI</a>
+                <div class="footer-column">
+                    <h3>Support :</h3>
+                    <ul>
+                        <li><a href="#">FAQ</a></li>
+                        <li><a href="#">Assistance</a></li>
+                        <li><a href="#">Conditions d'utilisation</a></li>
+                        <li><a href="#">Politique de confidentialité</a></li>
+                    </ul>
                 </div>
             </div>
-        </div>
-    </section>
-    <section class="app">
-        <div class="container">
-            <div class="text-content" data-aos="fade-right" data-aos-delay="300">
-                <h2>Téléchargez <br> l'Application UTTEC</h2>
-                <p>Accédez facilement aux dernières offres d'emploi et de stage où que vous soyez. Postulez en un clic
-                    et restez connecté aux opportunités professionnelles. Téléchargez l’application dès maintenant !</p>
-                <div class="buttons">
-                    <img src="assets/images/onstrore.png" alt="Get it on Google Play">
-                    <img src="assets/images/appstore.png" alt="Download on the App Store">
-                </div>
+            <div class="footer-bottom">
+                © Tous droits réservés.<br>
+                Ce site est une réalisation de la société Yooreed InnoTech.
             </div>
-            <div class="image-container" data-aos="fade-left" data-aos-delay="300">
-                <img src="assets/images/Group.png" alt="Application UTTEC">
-            </div>
-        </div>
-    </section>
-    <section class="sponsors-section">
-        <div class="sponsors-title" data-aos="fade-up" data-aos-delay="300">Nos Sponsors</div>
-        <div class="sponsors-container" data-aos="fade-up" data-aos-delay="300">
-            <div class="sponsor"><img src="assets/images/Rectangle 37.png" alt="Sponsor 1"></div>
-            <div class="sponsor"><img src="assets/images/Rectangle 38.png" alt="Sponsor 2"></div>
-            <div class="sponsor"><img src="assets/images/Rectangle 39.png" alt="Sponsor 3"></div>
-            <div class="sponsor"><img src="assets/images/Rectangle 40.png" alt="Sponsor 4"></div>
-            <div class="sponsor"><img src="assets/images/Rectangle 41.png" alt="Sponsor 5"></div>
-            <div class="sponsor"><img src="assets/images/Rectangle 42.png" alt="Sponsor 6"></div>
-        </div>
-    </section>
-    <section style="background-color: white; height: 50px;">
-    </section>
-    <footer class="footer">
-        <div class="footer-container">
-            <div class="footer-column footer-logo">
-                <img src="assets/images/Rectangle 43.png" alt="Logo">
-                <div class="newsletter">
-                    <input type="email" placeholder="Entrez votre email...">
-                    <button>➜</button>
-                </div>
-                <div class="social-icons">
-                    <a href="#">🔵</a>
-                    <a href="#">🔘</a>
-                    <a href="#">🔗</a>
-                </div>
-            </div>
-            <div class="footer-column">
-                <h3>Navigation :</h3>
-                <ul>
-                    <li><a href="#">Offres d'emploi</a></li>
-                    <li><a href="#">Offres de stage</a></li>
-                    <li><a href="#">Freelances</a></li>
-                    <li><a href="#">Publier une offre</a></li>
-                </ul>
-            </div>
-            <div class="footer-column">
-                <h3>À propos :</h3>
-                <ul>
-                    <li><a href="#">Qui sommes-nous ?</a></li>
-                    <li><a href="#">Notre mission</a></li>
-                    <li><a href="#">Contact</a></li>
-                </ul>
-            </div>
-            <div class="footer-column">
-                <h3>Support :</h3>
-                <ul>
-                    <li><a href="#">FAQ</a></li>
-                    <li><a href="#">Assistance</a></li>
-                    <li><a href="#">Conditions d'utilisation</a></li>
-                    <li><a href="#">Politique de confidentialité</a></li>
-                </ul>
-            </div>
-        </div>
-        <div class="footer-bottom">
-            © Tous droits réservés.<br>
-            Ce site est une réalisation de la société Yooreed InnoTech.
-        </div>
-    </footer>
-</div>
+        </footer>
+    </div>
+</body>

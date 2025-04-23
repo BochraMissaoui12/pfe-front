@@ -74,13 +74,18 @@
                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
                                         style="filter: brightness(0) invert(1);"></button>
                                 </div>
-                                <div class="modal-body" *ngIf="step === 1">
-                                    <h5 class="modal-title text-center" id="publishModalLabel">Publier votre offre
-                                        maintenant</h5>
-                                    <button type="button" class="btn btn-secondary w-100 mb-3 mt-4"
-                                        (click)="goToStep2()">Offre de
-                                        stage</button>
-                                    <button type="button" class="btn btn-secondary w-100">Offres d'emploi</button>
+                                <div class="modal-body" *ngIf="step === 1"
+                                    style="display: flex;flex-direction: column;justify-content: center;">
+                                    <div style="padding: 20px;">
+                                        <h5 class="modal-title text-center" id="publishModalLabel">Publier votre offre
+                                            maintenant</h5>
+                                        <button type="button" class="btnnn btn-secondary w-100 mb-3 mt-4"
+                                            (click)="goToStep2()">Offre de
+                                            stage</button>
+                                        <button type="button" class="btnnn btn-secondary w-100"
+                                            (click)="goToStep3()">Offres
+                                            d'emploi</button>
+                                    </div>
                                 </div>
 
                                 <!-- Step 2: Formulaire d'offre de stage -->
@@ -150,7 +155,79 @@
                                         </div>
 
                                         <div class="modal-footer ff">
-                                            <button type="button" class="btn btn-secondary"
+                                            <button type="button" class="btn btn-secondaryy"
+                                                (click)=" goToStep1()">Annuler</button>
+                                            <button type="button" class="btn btn-primary">Publier</button>
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="modal-body" *ngIf="step === 3">
+                                    <h5 class="modal-title text-center">Ajouter une offre d'emploi</h5>
+                                    <form>
+                                        <div class="row" style="margin-top: 20px;">
+                                            <!-- Ligne 1 -->
+                                            <div class="col-md-6 mb-3">
+                                                <label for="titre" class="form-label">Titre</label>
+                                                <input type="text" id="titre" class="form-control"
+                                                    placeholder="Titre...">
+                                            </div>
+                                            <div class="col-md-6 mb-3">
+                                                <label for="nombrePostes" class="form-label">Nombre de postes
+                                                    ouverts</label>
+                                                <input type="number" id="nombrePostes" class="form-control"
+                                                    placeholder="0...">
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <!-- Ligne 2 -->
+                                            <div class="col-md-6 mb-3">
+                                                <label for="typeStage" class="form-label">Type de contrat</label>
+                                                <input type="text" id="typeStage" class="form-control"
+                                                    placeholder="Type d'emploi...">
+                                            </div>
+                                            <div class="col-md-6 mb-3">
+                                                <label for="niveauEtudes" class="form-label">Niveau d'études</label>
+                                                <input type="text" id="niveauEtudes" class="form-control"
+                                                    placeholder="Niveau d'études...">
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <!-- Ligne 3 -->
+                                            <div class="col-md-6 mb-3">
+                                                <label for="dateOuverture" class="form-label">Date d'ouverture</label>
+                                                <input type="date" id="dateOuverture" class="form-control">
+                                            </div>
+                                            <div class="col-md-6 mb-3">
+                                                <label for="dateExpiration" class="form-label">Date d'expiration</label>
+                                                <input type="date" id="dateExpiration" class="form-control">
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <!-- Ligne 4 -->
+                                            <div class="col-md-6 mb-3">
+                                                <label for="specialite" class="form-label">Spécialité</label>
+                                                <input type="text" id="specialite" class="form-control"
+                                                    placeholder="Secteur de l'offre...">
+                                            </div>
+                                            <div class="col-md-6 mb-3">
+                                                <label for="lieuTravail" class="form-label">Lieu</label>
+                                                <input type="text" id="lieuTravail" class="form-control"
+                                                    placeholder="Lieu de travail...">
+                                            </div>
+                                        </div>
+
+                                        <!-- Description de l'offre (sur une seule ligne) -->
+                                        <div class="mb-3">
+                                            <label for="descriptionOffre" class="form-label">Description de
+                                                l'offre</label>
+                                            <textarea id="descriptionOffre" rows="3" class="form-control"></textarea>
+                                        </div>
+
+                                        <div class="modal-footer ff">
+                                            <button type="button" class="btn btn-secondaryy"
                                                 (click)=" goToStep1()">Annuler</button>
                                             <button type="button" class="btn btn-primary">Publier</button>
                                         </div>
