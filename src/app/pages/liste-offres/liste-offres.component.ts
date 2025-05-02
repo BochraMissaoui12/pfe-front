@@ -293,7 +293,6 @@ export class ListeOffresComponent implements OnInit {
   }
   setOfferType(type: string) {
     this.showPositionSuggestions = false;
-
     this.offerType = type;
     this.filterOffers();
   }

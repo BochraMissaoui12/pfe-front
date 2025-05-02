@@ -1,0 +1,96 @@
+<div class="dashboard-layout">
+    <app-sidebar></app-sidebar>
+    <div class="main-content">
+        <header class="topbar">
+            <div class="left"></div>
+            <div class="right">
+                <button class="icon-btn notification">
+                    <i class="fa fa-bell"></i>
+                </button>
+                <button class="icon-btn logout">
+                    <i class="fa fa-sign-out-alt"></i>
+                </button>
+            </div>
+        </header>
+
+        <div class="list-container">
+            <h2>Liste des candidats</h2>
+
+            <p *ngIf="loading">Chargement en cours...</p>
+            <p *ngIf="errorMessage" class="error-msg">{{ errorMessage }}</p>
+
+            <table *ngIf="!loading && candidats.length > 0">
+                <thead>
+                    <tr>
+                        <th>Nom</th>
+                        <th>Prénom</th>
+                        <th>Titre</th>
+                        <th>Email</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let c of candidats">
+                        <td>{{ c.nom }}</td>
+                        <td>{{ c.prenom }}</td>
+                        <td>{{ c.titre }}</td>
+                        <td>{{ c.email }}</td>
+                        <td>
+                            <button (click)="openDetails(c.id!)">Voir</button>
+                            <button class="btn-delete" (click)="confirmDelete(c.id)" title="Supprimer">
+                                <i class="fa fa-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <p *ngIf="!loading && candidats.length === 0">Aucun candidat trouvé.</p>
+
+            <!-- Modal détails -->
+            <div class="modal" *ngIf="selectedCandidat">
+                <div class="modal-content">
+                    <h3>Détails de {{ selectedCandidat.nom }} {{ selectedCandidat.prenom }}</h3>
+
+                    <p><strong>Titre:</strong> {{ selectedCandidat.titre }}</p>
+                    <p><strong>Email:</strong> {{ selectedCandidat.email }}</p>
+                    <p><strong>Bio:</strong> {{ selectedCandidat.Bio }}</p>
+                    <p><strong>Type:</strong> {{ selectedCandidat.type }}</p>
+                    <p><strong>Compétences:</strong> {{ selectedCandidat.competance.join(', ') }}</p>
+                    <p><strong>CV:</strong>
+                        <a [href]="selectedCandidat.cv" target="_blank" rel="noopener">Voir le CV</a>
+                    </p>
+
+                    <h4>Expériences</h4>
+                    <ul>
+                        <li *ngFor="let exp of selectedCandidat.experience">
+                            {{ exp.poste }} chez {{ exp.entreprise }} ({{ exp.dateDebut }} - {{ exp.dateFin }})
+                        </li>
+                    </ul>
+
+                    <h4>Éducation</h4>
+                    <ul>
+                        <li *ngFor="let edu of selectedCandidat.education">
+                            {{ edu.diplome }} en {{ edu.domaineEtude }} à {{ edu.universite }} ({{ edu.dateDebut }} - {{
+                            edu.dateFin }})
+                        </li>
+                    </ul>
+
+                    <button class="close-btn" (click)="closeDetails()">Fermer</button>
+                </div>
+            </div>
+
+            <!-- Modal confirmation suppression -->
+            <div class="modal" *ngIf="showDeleteConfirm">
+                <div class="modal-content">
+                    <h3>Confirmer la suppression</h3>
+                    <p>Voulez-vous vraiment supprimer ce candidat ?</p>
+                    <div class="modal-actions">
+                        <button (click)="cancelDelete()">Annuler</button>
+                        <button class="delete-btn" (click)="deleteCandidat()">Supprimer</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

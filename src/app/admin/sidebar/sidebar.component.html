@@ -1,0 +1,12 @@
+<nav class="sidebar">
+    <ul>
+        <li routerLink="/accueil" routerLinkActive="active">Accueil</li>
+        <li *ngIf="role == 'SUPERADMIN'" routerLink="/administrateurs" routerLinkActive="active">Administrateurs</li>
+        <li routerLink="/nouveau-comptes" routerLinkActive="active">Nouveau comptes</li>
+        <li routerLink="/entreprises" routerLinkActive="active">Entreprises</li>
+        <li routerLink="/chercheurs" routerLinkActive="active">Chercheurs</li>
+        <li routerLink="/candidats" routerLinkActive="active">Candidats</li>
+        <li routerLink="/evenements-actualites" routerLinkActive="active">Événements & Actualités</li>
+        <li routerLink="/appels-offres" routerLinkActive="active">Appels d'offres</li>
+    </ul>
+</nav>

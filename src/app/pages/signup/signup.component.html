@@ -31,19 +31,21 @@
             </div>
 
             <div class="form-group">
-                <label for="password">Mot de passe</label>
-                <input id="password" formControlName="password" type="password" class="form-input"
+                <label for="motDePasse">Mot de passe</label>
+                <input id="motDePasse" formControlName="motDePasse" type="password" class="form-input"
                     placeholder="Mot de passe" />
-                <div *ngIf="loginForm.get('password')?.invalid && loginForm.get('password')?.touched"
+                <div *ngIf="loginForm.get('motDePasse')?.invalid && loginForm.get('motDePasse')?.touched"
                     class="error-message">
                     Veuillez entrer votre mot de passe.
                 </div>
             </div>
-
-            <button type="submit" class="btn btn-next" style="width: 100%">
-                Se Connecter
+            <button type="submit" [disabled]="isLoading" class="btn btn-next">
+                <span *ngIf="!isLoading">Se connecter</span>
+                <span *ngIf="isLoading">Veuillez patienter...</span>
             </button>
         </form>
+
+        <div *ngIf="isLoading" class="spinner"></div>
         <p>
             Vous n'avez pas un compte ?
             <a (click)="inscription()" class="link" style="cursor: pointer">S'inscrire</a>
@@ -58,17 +60,15 @@
             <input type="text" maxlength="1" [(ngModel)]="code[1]">
             <input type="text" maxlength="1" [(ngModel)]="code[2]">
             <input type="text" maxlength="1" [(ngModel)]="code[3]">
+            <input type="text" maxlength="1" [(ngModel)]="code[4]">
+            <input type="text" maxlength="1" [(ngModel)]="code[5]">
         </div>
-        <p style="color:rgba(30, 41, 59, 1) ;">
-            Vous n'avez pas reçu le code ?
-            <a (click)="resendCode()" class="link" style="cursor: pointer">Renvoyer le code</a>
-        </p>
-        <p style="color:rgba(30, 41, 59, 1) ;">Renvoyer le code dans {{ countdown }}</p>
         <button (click)="verifyCode()" class="btn btn-next">
             Suivant
         </button>
     </div>
 
+    <!-- Entreprise -->
     <!-- Entreprise -->
     <div *ngIf="currentStep === 2 && userType === 'entreprise'" class="container">
         <h2>S'inscrire en tant qu'entreprise</h2>
@@ -76,31 +76,41 @@
         <form [formGroup]="entrepriseForm">
             <div class="form-group">
                 <label for="companyName">Nom entreprise</label>
-                <input id="companyName" formControlName="companyName" type="text" class="form-input"
+                <input id="companyName" formControlName="nom" type="text" class="form-input"
                     placeholder="Nom entreprise" />
+                <div *ngIf="entrepriseForm.get('nom')?.invalid && (entrepriseForm.get('nom')?.dirty || entrepriseForm.get('nom')?.touched)"
+                    class="error-message">
+                    Nom entreprise est requis.
+                </div>
             </div>
 
             <div class="form-group">
                 <label for="responsable">Responsable</label>
                 <input id="responsable" formControlName="responsable" type="text" class="form-input"
                     placeholder="Responsable" />
+                <div *ngIf="entrepriseForm.get('responsable')?.invalid && (entrepriseForm.get('responsable')?.dirty || entrepriseForm.get('responsable')?.touched)"
+                    class="error-message">
+                    Responsable est requis.
+                </div>
             </div>
 
             <div class="form-group">
                 <label for="email">Adresse Email</label>
                 <input id="email" formControlName="email" type="email" class="form-input" placeholder="Adresse Email" />
+                <div *ngIf="entrepriseForm.get('email')?.invalid && (entrepriseForm.get('email')?.dirty || entrepriseForm.get('email')?.touched)"
+                    class="error-message">
+                    Email est requis.
+                </div>
             </div>
 
             <div class="form-group">
                 <label for="password">Mot de passe</label>
-                <input id="password" formControlName="password" type="password" class="form-input"
+                <input id="password" formControlName="motDePasse" type="password" class="form-input"
                     placeholder="Mot de passe" />
-            </div>
-
-            <div class="form-group">
-                <label for="confirmPassword">Confirmer mot de passe</label>
-                <input id="confirmPassword" formControlName="confirmPassword" type="password" class="form-input"
-                    placeholder="Confirmer mot de passe" />
+                <div *ngIf="entrepriseForm.get('motDePasse')?.invalid && (entrepriseForm.get('motDePasse')?.dirty || entrepriseForm.get('motDePasse')?.touched)"
+                    class="error-message">
+                    Mot de passe est requis.
+                </div>
             </div>
 
             <div class="form-buttons">
@@ -124,37 +134,56 @@
                     <img src="assets/images/default-avatar.png" alt="Default" />
                 </ng-container>
             </div>
-            <label class="upload-button">
+            <label class="upload-button" for="logo">
                 <i class="fa fa-upload"></i> Télécharger Le Logo
-                <input type="file" (change)="onLogoUpload($event)" hidden />
+                <input type="file" id="logo" (change)="onLogoUpload($event)" hidden />
             </label>
+            <div *ngIf="entrepriseForm.get('logo')?.invalid && (entrepriseForm.get('logo')?.dirty || entrepriseForm.get('logo')?.touched)"
+                class="error-message">
+                Logo est requis.
+            </div>
         </div>
 
-        <form [formGroup]="detailsForm " class="form-fields">
+        <form [formGroup]="entrepriseForm" class="form-fields">
             <div class="form-group">
                 <label for="sector">Secteur</label>
-                <select id="sector" formControlName="sector" class="form-input">
-                    <option value="">Choisir votre secteur</option>
-                </select>
+                <input type="text" id="sector" formControlName="secteurActivite" class="form-input">
+                <div *ngIf="entrepriseForm.get('secteurActivite')?.invalid && (entrepriseForm.get('secteurActivite')?.dirty || entrepriseForm.get('secteurActivite')?.touched)"
+                    class="error-message">
+                    Secteur est requis.
+                </div>
             </div>
 
             <div class="form-group">
                 <label for="government">Gouvernorat</label>
-                <select id="government" formControlName="government" class="form-input">
+                <select id="government" formControlName="gouvernement" class="form-input">
                     <option value="">Choisir votre Gouvernorat</option>
+                    <option value="sousse">Sousse</option>
+                    <div *ngIf="entrepriseForm.get('gouvernement')?.invalid && (entrepriseForm.get('gouvernement')?.dirty || entrepriseForm.get('gouvernement')?.touched)"
+                        class="error-message">
+                        Gouvernorat est requis.
+                    </div>
                 </select>
             </div>
 
             <div class="form-group">
                 <label for="address">Adresse</label>
-                <input id="address" formControlName="address" type="text" class="form-input"
+                <input id="address" formControlName="adresse" type="text" class="form-input"
                     placeholder="Entrez votre adresse" />
+                <div *ngIf="entrepriseForm.get('adresse')?.invalid && (entrepriseForm.get('adresse')?.dirty || entrepriseForm.get('adresse')?.touched)"
+                    class="error-message">
+                    Adresse est requis.
+                </div>
             </div>
 
             <div class="form-group">
                 <label for="phone">Téléphone</label>
-                <input id="phone" formControlName="phone" type="text" class="form-input"
+                <input id="phone" formControlName="tel" type="text" class="form-input"
                     placeholder="Entrez votre téléphone" />
+                <div *ngIf="entrepriseForm.get('tel')?.invalid && (entrepriseForm.get('tel')?.dirty || entrepriseForm.get('tel')?.touched)"
+                    class="error-message">
+                    Téléphone est requis.
+                </div>
             </div>
 
             <div class="form-buttons">
@@ -163,64 +192,90 @@
             </div>
         </form>
     </div>
+
     <div *ngIf="currentStep === 4 && userType === 'entreprise'" class="container">
         <h2>Votre Identifiant</h2>
-        <form [formGroup]="idForm">
+        <form [formGroup]="entrepriseForm">
             <div class="form-group">
-                <label for="identifier">Identifiant</label>
-                <input formControlName="identifier" id="identifier" type="text" class="form-input"
+                <label for="identifiant">Identifiant</label>
+                <input formControlName="identifiant" id="identifiant" type="text" class="form-input"
                     placeholder="Entrez votre identifiant RNE" />
+                <div *ngIf="entrepriseForm.get('identifiant')?.invalid && (entrepriseForm.get('identifiant')?.dirty || entrepriseForm.get('identifiant')?.touched)"
+                    class="error-message">
+                    Identifiant est requis.
+                </div>
             </div>
-            <div *ngIf="uploadedFileName" class="uploaded-file">
-                <p>📄 Fichier sélectionné : {{ uploadedFileName }}</p>
+            <div class="form-group">
+                <div *ngIf="uploadedFileName" class="uploaded-file">
+                    <p>Fichier : {{ uploadedFileName }}</p>
+                </div>
+                <label class="file-label">
+                    <span style="display: inline-flex; align-items: center; gap: 8px;">
+                        <i class="fa fa-upload"></i> Telecherger Votre Identifiant RNE
+                    </span>
+                    <input type="file" (change)="onRneUpload($event)" hidden />
+                </label>
+                <div *ngIf="entrepriseForm.get('rne')?.invalid && (entrepriseForm.get('rne')?.dirty || entrepriseForm.get('rne')?.touched)"
+                    class="error-message">
+                    RNE est requis.
+                </div>
             </div>
-            <label class="file-label">
-                <span style="display: inline-flex; align-items: center; gap: 8px;">
-                    <i class="fa fa-upload"></i> Télécharger Votre Identifiant RNE
-                </span>
-                <input type="file" (change)="onFileUpload($event)" hidden />
-            </label>
-
             <div class="form-buttons">
                 <button type="button" class="btn btn-prev" (click)="previousStep()">Retour</button>
                 <button type="button" class="btn btn-next" (click)="nextStep()">Suivant</button>
             </div>
         </form>
     </div>
+
     <div *ngIf="currentStep === 5 && userType === 'entreprise'" class="container" style="align-items: center;">
         <div style="width: 85%;">
             <h2 style="text-align: left;">Écrivez maintenant une bio pour parler de vous au monde.</h2>
             <p style="text-align: left;">Aidez les gens à vous connaître en un coup d'œil. Quel est
-                votre domaine ? Expliquez-le clairement, en utilisant des paragraphes ou des puces. Vous
+                votre domaine de prédilection ? Expliquez-le clairement, en utilisant des paragraphes ou des puces. Vous
                 pourrez toujours éditer plus tard ; assurez-vous simplement de relire maintenant.</p>
-            <form [formGroup]="candidatForm" style="width: 100%;">
+            <form [formGroup]="entrepriseForm" style="width: 100%;">
                 <div class="form-group">
                     <label for="description">Votre bio</label>
-                    <textarea id="description" formControlName="description" class="form-input" style="height: 100px;"
+                    <textarea id="description" formControlName="bio" class="form-input" style="height: 100px;"
                         placeholder="Quel est votre domaine ? Expliquez-le clairement"></textarea>
+                    <div *ngIf="entrepriseForm.get('bio')?.invalid && (entrepriseForm.get('bio')?.dirty || entrepriseForm.get('bio')?.touched)"
+                        class="error-message">
+                        Bio est requis.
+                    </div>
                 </div>
                 <div class="form-buttons">
                     <button type="button" class="btn btn-prev" (click)="previousStep()">Retour</button>
-                    <button type="button" class="btn btn-next" (click)="submitForm()">Terminer</button>
+                    <button type="button" class="btn btn-next" (click)="submitForm()">
+                        <span *ngIf="!isLoading">Terminer</span>
+                        <span *ngIf="isLoading">Enregistrement...</span>
+                    </button>
+                </div>
+                <div *ngIf="errorMessage" class="alert alert-danger">
+                    {{ errorMessage }}
+                </div>
+                <div *ngIf="successMessage" class="alert alert-success">
+                    {{ successMessage }}
                 </div>
             </form>
         </div>
     </div>
+
+
     <div *ngIf="currentStep === 6 && userType === 'entreprise'" class="container"
         style="align-items: center; background-color: rgba(226, 232, 240, 1); width: 80%; text-align: center;">
-        <!-- Icône de félicitations -->
-        <img src="assets/images/confetti-icon.png" alt="Félicitations"
+        <!-- IcÃ´ne de fÃ©licitations -->
+        <img src="assets/images/confetti-icon.png" alt="FÃ©licitations"
             style="width: 50px; height: 50px; margin-bottom: 10px;">
 
-        <!-- Texte Félicitations -->
-        <h3 style="color:rgba(30, 41, 59, 1);">Félicitations</h3>
+        <!-- Texte FÃ©licitations -->
+        <h3 style="color:rgba(30, 41, 59, 1);">Félicitations
+        </h3>
         <h2 style="color:rgba(30, 41, 59, 1); font-size: 17px; font-weight: 400;">
             Votre compte entreprise a été créé avec succès !
         </h2>
         <p style="color:rgba(30, 41, 59, 1); font-size: 12px; font-weight: 400;">
-            Un email de confirmation vient de vous être envoyé. Merci de vérifier votre boîte mail et cliquer sur le
-            lien
-            de validation pour activer votre compte.
+            Un email de confirmation vous sera envoyé dès que votre compte sera confirmé.
+            Merci de vérifier votre boîte mail.
         </p>
 
         <!-- Bouton Retour -->
@@ -229,36 +284,67 @@
         </button>
     </div>
 
-    <!-- Candidat -->
-    <div *ngIf="currentStep === 2 && (userType === 'candidat' || userType === 'chercheur')" class="container">
+    <!-- Chercheur -->
+    <div *ngIf="currentStep === 2 && userType === 'chercheur'" class="container">
         <h2>S'inscrire</h2>
         <p>Inscrivez-vous et boostez votre carrière avec UTTEC ! 🚀</p>
-        <form [formGroup]="candidatForm">
+        <form [formGroup]="chercheurForm">
             <div class="form-group">
                 <label for="firstName">Prénom</label>
-                <input id="firstName" formControlName="firstName" type="text" class="form-input"
+                <input id="firstName" formControlName="prenom" type="text" class="form-input"
                     placeholder="Entrez votre prénom" />
+                <div *ngIf="chercheurForm.get('prenom')?.invalid && (chercheurForm.get('prenom')?.dirty || chercheurForm.get('prenom')?.touched)"
+                    class="error-message">
+                    Prénom est requis.
+                </div>
             </div>
             <div class="form-group">
                 <label for="lastName">Nom</label>
-                <input id="lastName" formControlName="lastName" type="text" class="form-input"
+                <input id="lastName" formControlName="nom" type="text" class="form-input"
                     placeholder="Entrez votre nom" />
+                <div *ngIf="chercheurForm.get('nom')?.invalid && (chercheurForm.get('nom')?.dirty || chercheurForm.get('nom')?.touched)"
+                    class="error-message">
+                    Nom est requis.
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="lastName">Domaine</label>
+                <input id="lastName" formControlName="domaine" type="text" class="form-input"
+                    placeholder="Entrez votre domaine" />
+                <div *ngIf="chercheurForm.get('domaine')?.invalid && (chercheurForm.get('domaine')?.dirty || chercheurForm.get('domaine')?.touched)"
+                    class="error-message">
+                    Domaine est requis.
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="lastName">Université</label>
+                <input id="lastName" formControlName="universite" type="text" class="form-input"
+                    placeholder="Entrez votre université" />
+                <div *ngIf="chercheurForm.get('universite')?.invalid && (chercheurForm.get('universite')?.dirty || chercheurForm.get('universite')?.touched)"
+                    class="error-message">
+                    Université est requis.
+                </div>
             </div>
             <div class="form-group">
                 <label for="email">Email</label>
                 <input id="email" formControlName="email" type="email" class="form-input"
                     placeholder="Entrez votre email" />
+                <div *ngIf="chercheurForm.get('email')?.invalid && (chercheurForm.get('email')?.dirty || chercheurForm.get('email')?.touched)"
+                    class="error-message">
+                    Email est requis.
+                </div>
             </div>
             <div class="form-group">
                 <label for="password">Mot de passe</label>
-                <input id="password" formControlName="password" type="password" class="form-input"
+                <input id="password" formControlName="motDePasse" type="password" class="form-input"
                     placeholder="Mot de passe" />
+                <div *ngIf="chercheurForm.get('motDePasse')?.invalid && (chercheurForm.get('motDePasse')?.dirty || chercheurForm.get('motDePasse')?.touched)"
+                    class="error-message">
+                    Mot de passe est requis.
+                </div>
             </div>
-            <div class="form-group">
-                <label for="confirmPassword">Confirmer mot de passe</label>
-                <input id="confirmPassword" formControlName="confirmPassword" type="password" class="form-input"
-                    placeholder="Confirmer mot de passe" />
-            </div>
+
             <div class="form-buttons">
                 <button type="button" class="btn btn-prev" (click)="previousStep()">
                     Retour
@@ -269,29 +355,50 @@
             </div>
         </form>
     </div>
-
-    <div *ngIf="currentStep === 3 && userType === 'candidat'" class="container">
-        <h2>Précisez votre profil</h2>
-        <p>Voulez-vous vous inscrire en tant que candidat, chercheur, freelancer ou étudiant ?</p>
-        <div style="text-align: center;">
-            <button (click)="selectProfile('employé')" class="btn">Employé</button>
-            <button (click)="selectProfile('freelancer')" class="btn">Freelancer</button>
-            <button (click)="selectProfile('étudiant')" class="btn">Étudiant</button>
-            <button type="button" class="btn btn-prev" (click)="previousStep()">Retour</button>
-        </div>
-    </div>
-
     <div *ngIf="currentStep === 3 && userType === 'chercheur'" class="container" style="align-items: center;">
         <div style="width: 85%;">
             <h2 style="text-align: left;">Ajoutez un titre pour dire au monde ce que vous faites.</h2>
             <p style="text-align: left;">Saisissez une description en une seule phrase de vos compétences/expériences
                 professionnelles (par
                 exemple, développeur Web).</p>
-            <form [formGroup]="candidatForm" style="width: 100%;">
+            <form [formGroup]="chercheurForm" style="width: 100%;">
                 <div class="form-group">
                     <label for="title">Votre titre</label>
-                    <input id="title" formControlName="title" type="text" class="form-input"
+                    <input id="title" formControlName="titre" type="text" class="form-input"
                         placeholder='Ex: développeur Web' />
+                    <div *ngIf="chercheurForm.get('titre')?.invalid && (chercheurForm.get('titre')?.dirty || chercheurForm.get('titre')?.touched)"
+                        class="error-message">
+                        Titre est requis.
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Téléphone</label>
+                    <input formControlName="tel" type="text" class="form-input">
+                    <div *ngIf="chercheurForm.get('tel')?.invalid && (chercheurForm.get('tel')?.dirty || chercheurForm.get('tel')?.touched)"
+                        class="error-message">
+                        Téléphone est requis.
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Gouvernorat</label>
+                    <select formControlName="gouvernement" class="form-input">
+                        <option value="">Choisir votre Gouvernorat</option>
+                        <option value="sousse">Sousse</option>
+                        <div *ngIf="chercheurForm.get('gouvernement')?.invalid && (chercheurForm.get('gouvernement')?.dirty || chercheurForm.get('gouvernement')?.touched)"
+                            class="error-message">
+                            Gouvernorat est requis.
+                        </div>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Adresse</label>
+                    <input formControlName="adresse" type="text" class="form-input">
+                    <div *ngIf="chercheurForm.get('adresse')?.invalid && (chercheurForm.get('adresse')?.dirty || chercheurForm.get('adresse')?.touched)"
+                        class="error-message">
+                        Adresse est requis.
+                    </div>
                 </div>
                 <div class="form-buttons">
                     <button type="button" class="btn btn-prev" (click)="previousStep()">Retour</button>
@@ -300,6 +407,101 @@
             </form>
         </div>
     </div>
+
+    <div *ngIf="currentStep === 4 && userType === 'chercheur'" class="container" style="align-items: center;">
+        <div style="width: 85%;">
+            <h2 style="text-align: left;">Écrivez maintenant une bio pour parler de vous au monde.</h2>
+            <p style="text-align: left;">Aidez les gens à vous connaître en un coup d'œil. Quel est
+                votre domaine de prédilection ? Expliquez-le clairement, en utilisant des paragraphes ou des puces. Vous
+                pourrez toujours éditer plus tard ; assurez-vous simplement de relire maintenant.</p>
+            <form [formGroup]="chercheurForm" style="width: 100%;">
+                <div class="form-group">
+                    <label for="description">Votre bio</label>
+                    <textarea id="description" formControlName="bio" class="form-input" style="height: 100px;"
+                        placeholder="Indiquez vos principales compétences, expériences et intérêts."></textarea>
+                    <div *ngIf="chercheurForm.get('bio')?.invalid && (chercheurForm.get('bio')?.dirty || chercheurForm.get('bio')?.touched)"
+                        class="error-message">
+                        Bio est requis.
+                    </div>
+                </div>
+                <div class="form-buttons">
+                    <button type="button" class="btn btn-prev" (click)="previousStep()">Retour</button>
+                    <button type="button" class="btn btn-next" (click)="submitForm()">
+                        <span *ngIf="!isLoading">Terminer</span>
+                        <span *ngIf="isLoading">Enregistrement...</span>
+                    </button>
+                </div>
+                <div *ngIf="errorMessage" class="alert alert-danger">
+                    {{ errorMessage }}
+                </div>
+                <div *ngIf="successMessage" class="alert alert-success">
+                    {{ successMessage }}
+                </div>
+            </form>
+        </div>
+    </div>
+    <!-- candidat -->
+    <div *ngIf="currentStep === 2 && userType === 'candidat'" class="container">
+        <h2>S'inscrire</h2>
+        <p>Inscrivez-vous et boostez votre carrière avec UTTEC ! 🚀</p>
+        <form [formGroup]="candidatForm">
+            <div class="form-group">
+                <label for="firstName">Prénom</label>
+                <input id="firstName" formControlName="prenom" type="text" class="form-input"
+                    placeholder="Entrez votre prénom" />
+                <div *ngIf="candidatForm.get('prenom')?.invalid && candidatForm.get('prenom')?.touched"
+                    class="error-message">
+                    Prénom est requis.
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="lastName">Nom</label>
+                <input id="lastName" formControlName="nom" type="text" class="form-input"
+                    placeholder="Entrez votre nom" />
+                <div *ngIf="candidatForm.get('nom')?.invalid && candidatForm.get('nom')?.touched" class="error-message">
+                    Nom est requis.
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input id="email" formControlName="email" type="email" class="form-input"
+                    placeholder="Entrez votre email" />
+                <div *ngIf="candidatForm.get('email')?.invalid && candidatForm.get('email')?.touched"
+                    class="error-message">
+                    Email est requis.
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="password">Mot de passe</label>
+                <input id="password" formControlName="motDePasse" type="password" class="form-input"
+                    placeholder="Mot de passe" />
+                <div *ngIf="candidatForm.get('motDePasse')?.invalid && candidatForm.get('motDePasse')?.touched"
+                    class="error-message">
+                    Mot de passe est requis.
+                </div>
+            </div>
+
+            <div class="form-buttons">
+                <button type="button" class="btn btn-prev" (click)="previousStep()">
+                    Retour
+                </button>
+                <button type="button" class="btn btn-next" (click)="nextStep()">
+                    Suivant
+                </button>
+            </div>
+        </form>
+    </div>
+    <div *ngIf="currentStep === 3 && userType === 'candidat'" class="container">
+        <h2>Precisez votre profil</h2>
+        <p>Voulez-vous vous inscrire en tant que candidat, chercheur, freelancer ou Ã©tudiant ?</p>
+        <form [formGroup]="candidatForm" style="text-align: center;">
+            <button type="button" class="btn" (click)="selectProfile('employé')">Employé</button>
+            <button type="button" class="btn" (click)="selectProfile('freelancer')">Freelancer</button>
+            <button type="button" class="btn" (click)="selectProfile('étudiant')">Etudiant</button>
+            <button type="button" class="btn btn-prev" (click)="previousStep()">Retour</button>
+        </form>
+    </div>
+
     <div *ngIf="currentStep === 4 && userType === 'candidat'" class="container" style="align-items: center;">
         <div style="width: 85%;">
             <h2 style="text-align: left;">Ajoutez un titre pour dire au monde ce que vous faites.</h2>
@@ -309,28 +511,14 @@
             <form [formGroup]="candidatForm" style="width: 100%;">
                 <div class="form-group">
                     <label for="title">Votre titre</label>
-                    <input id="title" formControlName="title" type="text" class="form-input"
+                    <input id="title" formControlName="titre" type="text" class="form-input"
                         placeholder='Ex: développeur Web' />
+                    <div *ngIf="candidatForm.get('titre')?.invalid && candidatForm.get('titre')?.touched"
+                        class="error-message">
+                        Titre est requis.
+                    </div>
                 </div>
-                <div class="form-buttons">
-                    <button type="button" class="btn btn-prev" (click)="previousStep()">Retour</button>
-                    <button type="button" class="btn btn-next" (click)="nextStep()">Suivant</button>
-                </div>
-            </form>
-        </div>
-    </div>
-    <div *ngIf="currentStep === 4 && userType === 'chercheur'" class="container" style="align-items: center;">
-        <div style="width: 85%;">
-            <h2 style="text-align: left;">Écrivez maintenant une bio pour parler de vous au monde.</h2>
-            <p style="text-align: left;">Aidez les gens à vous connaître en un coup d'œil. Quel est
-                votre domaine de prédilection ? Expliquez-le clairement, en utilisant des paragraphes ou des puces. Vous
-                pourrez toujours éditer plus tard ; assurez-vous simplement de relire maintenant.</p>
-            <form [formGroup]="candidatForm" style="width: 100%;">
-                <div class="form-group">
-                    <label for="description">Votre bio</label>
-                    <textarea id="description" formControlName="description" class="form-input" style="height: 100px;"
-                        placeholder="Indiquez vos principales compétences, expériences et intérêts."></textarea>
-                </div>
+
                 <div class="form-buttons">
                     <button type="button" class="btn btn-prev" (click)="previousStep()">Retour</button>
                     <button type="button" class="btn btn-next" (click)="nextStep()">Suivant</button>
@@ -347,57 +535,21 @@
             <form [formGroup]="candidatForm" style="width: 100%;">
                 <div class="form-group">
                     <label for="description">Votre bio</label>
-                    <textarea id="description" formControlName="description" class="form-input" style="height: 100px;"
+                    <textarea id="description" formControlName="bio" class="form-input" style="height: 100px;"
                         placeholder="Indiquez vos principales compétences, expériences et intérêts."></textarea>
-                </div>
-                <div class="form-buttons">
-                    <button type="button" class="btn btn-prev" (click)="previousStep()">Retour</button>
-                    <button type="button" class="btn btn-next" (click)="nextStep()">Suivant</button>
-                </div>
-            </form>
-        </div>
-    </div>
-    <div *ngIf="currentStep === 5 && userType === 'chercheur'" class="container" style="align-items: center;">
-        <div style="width: 85%;">
-            <h2>Vos compétences ?</h2>
-            <p>
-                Vos compétences montrent aux clients ce que vous pouvez offrir et nous aident à choisir les emplois à
-                vous recommander.
-            </p>
-
-            <!-- Formulaire compétences -->
-            <form [formGroup]="candidatForm" style="width: 100%;">
-                <div class="form-group skill-input-wrapper">
-                    <label for="skillInput">Ajouter une compétence</label>
-                    <input id="skillInput" type="text" formControlName="skillInput"
-                        (keydown.enter)="addSkill(); $event.preventDefault();"
-                        placeholder="Tapez une compétence et appuyez sur Entrée" class="form-input"
-                        autocomplete="off" />
-
-                    <div *ngIf="suggestions.length > 0" class="suggestions-list">
-                        <div *ngFor="let suggestion of suggestions" (click)="addSkill(suggestion)"
-                            class="suggestion-item">
-                            {{ suggestion }}
-                        </div>
+                    <div *ngIf="candidatForm.get('bio')?.invalid && candidatForm.get('bio')?.touched"
+                        class="error-message">
+                        Bio est requis.
                     </div>
                 </div>
-                <!-- Affichage des compétences sélectionnées -->
-                <div class="skills-container">
-                    <span class="skill-tag" *ngFor="let skill of skills; let i = index">
-                        {{ skill }}
-                        <button type="button" (click)="removeSkill(i)">×</button>
-                    </span>
-                </div>
-
-                <!-- Navigation -->
                 <div class="form-buttons">
                     <button type="button" class="btn btn-prev" (click)="previousStep()">Retour</button>
                     <button type="button" class="btn btn-next" (click)="nextStep()">Suivant</button>
                 </div>
-
             </form>
         </div>
     </div>
+
     <div *ngIf="currentStep === 6 && userType === 'candidat'" class="container" style="align-items: center;">
         <div style="width: 85%;">
             <h2>Vos compétences ?</h2>
@@ -414,7 +566,6 @@
                         (keydown.enter)="addSkill(); $event.preventDefault();"
                         placeholder="Tapez une compétence et appuyez sur Entrée" class="form-input"
                         autocomplete="off" />
-
                     <div *ngIf="suggestions.length > 0" class="suggestions-list">
                         <div *ngFor="let suggestion of suggestions" (click)="addSkill(suggestion)"
                             class="suggestion-item">
@@ -439,43 +590,33 @@
             </form>
         </div>
     </div>
-    <div *ngIf="currentStep === 6 && userType === 'chercheur'" class="container">
-        <h2>Importer votre CV</h2>
-        <form [formGroup]="candidatForm">
-            <label class="file-label">
-                <span style="display: inline-flex; align-items: center; gap: 8px;">
-                    <i class="fa fa-upload"></i> Téléverser un CV
-                </span>
-                <input type="file" (change)="onFileUpload($event)" hidden />
-            </label>
-            <div *ngIf="uploadedFileName" class="uploaded-file">
-                <p>📄 Fichier sélectionné : {{ uploadedFileName }}</p>
-            </div>
-
-
-            <div class="form-buttons">
-                <button type="button" class="btn-prev" (click)="previousStep()">Retour</button>
-                <button type="button" class="btn-next" (click)="submitForm()">Terminer</button>
-            </div>
-        </form>
-    </div>
     <div *ngIf="currentStep === 7 && userType === 'candidat'" class="container">
         <h2>Importer votre CV</h2>
         <form [formGroup]="candidatForm">
-            <label class="file-label">
+            <label class="file-label" for="cv">
                 <span style="display: inline-flex; align-items: center; gap: 8px;">
                     <i class="fa fa-upload"></i> Téléverser un CV
                 </span>
-                <input type="file" (change)="onFileUpload($event)" hidden />
+                <input type="file" id="cv" (change)="onCvUpload($event)" hidden />
             </label>
-            <div *ngIf="uploadedFileName" class="uploaded-file">
-                <p>📄 Fichier sélectionné : {{ uploadedFileName }}</p>
+            <div *ngIf="uploadedFileNamee" class="uploaded-file">
+                <p>📄 Fichier sélectionné : {{ uploadedFileNamee }}</p>
             </div>
-
-
+            <div *ngIf="candidatForm.get('cv')?.invalid && candidatForm.get('cv')?.touched" class="error-message">
+                CV est requis.
+            </div>
             <div class="form-buttons">
-                <button type="button" class="btn-prev" (click)="previousStep()">Retour</button>
-                <button type="button" class="btn-next" (click)="submitForm()">Terminer</button>
+                <button type="button" class="btn btn-prev" (click)="previousStep()">Retour</button>
+                <button type="button" class="btn btn-next" (click)="submitCandidatForm()">
+                    <span *ngIf="!isLoading">Terminer</span>
+                    <span *ngIf="isLoading">Enregistrement...</span>
+                </button>
+            </div>
+            <div *ngIf="errorMessage" class="alert alert-danger">
+                {{ errorMessage }}
+            </div>
+            <div *ngIf="successMessage" class="alert alert-success">
+                {{ successMessage }}
             </div>
         </form>
     </div>

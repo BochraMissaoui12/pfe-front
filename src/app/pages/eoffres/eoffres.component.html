@@ -1,0 +1,139 @@
+<body>
+    <header class="navbar">
+        <div class="logo">
+            <img src="assets/images/logo.png" alt="Logo">
+        </div>
+        <nav>
+            <ul class="nav-links">
+                <li><a routerLink="/Eprofil">Profil</a></li>
+                <li><a routerLink="/Eoffres" class="active">Mes Offres</a></li>
+                <li><a routerLink="/Eevenements">Mes Actualité</a></li>
+                <li><a routerLink="/Eproblemes">Mes Probleme Techniques</a></li>
+            </ul>
+        </nav>
+        <div class="search-container" style="margin-right: 10px;">
+            <input type="text" placeholder="Search in site">
+            <i class="fa fa-search search-icon"></i>
+        </div>
+        <div class="icons">
+            <i class="fa fa-bell"></i>
+            <button class="icon-btn logout" (click)="logout()">
+                <i class="fa fa-sign-out-alt"></i>
+            </button>
+        </div>
+
+        <!-- Menu mobile -->
+        <button class="menu-toggle" (click)="toggleMenu()">
+            <img src="assets/images/Vector.png" alt="Menu">
+        </button>
+    </header>
+    <div class="main-content">
+        <div class="offres-container">
+            <h2>Mes Offres</h2>
+            <table class="offres-table">
+                <thead>
+                    <tr>
+                        <th>Titre</th>
+                        <th>Description</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let offre of offres">
+                        <td>{{ offre.titre }}</td>
+                        <td>{{ offre.description }}</td>
+                        <td>
+                            <button class="icon-btn" title="Modifier" (click)="openEditModal(offre)">
+                                <i class="fa fa-edit"></i>
+                            </button>
+                            <button class="icon-btn" title="Supprimer" (click)="deleteOffre(offre.id)">
+                                <i class="fa fa-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                    <tr *ngIf="offres.length === 0">
+                        <td colspan="3">Aucune offre trouvée.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <!-- Modal d'édition -->
+        <div class="modal-backdrop" *ngIf="showEditModal" (click)="closeEditModal()"></div>
+        <div class="modal-custom" *ngIf="showEditModal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Modifier l'offre</h5>
+                    <button type="button" class="btn-close" (click)="closeEditModal()">&times;</button>
+                </div>
+                <form class="ajout-offre-form modal-body" (ngSubmit)="saveEdit()">
+                    <label>Titre</label>
+                    <input class="form-control" [(ngModel)]="editedOffre.titre" name="titre" required />
+
+                    <label>Description</label>
+                    <textarea class="form-control" [(ngModel)]="editedOffre.description" name="description" rows="3"
+                        required></textarea>
+
+                    <label>Responsabilités</label>
+                    <div>
+                        <div *ngFor="let item of editedOffre.Responsabilites; let i = index" class="list-item">
+                            <input class="form-control" [(ngModel)]="editedOffre.Responsabilites[i]" name="resp{{i}}" />
+                            <button type="button" (click)="removeItem('Responsabilites', i)">×</button>
+                        </div>
+                        <button type="button" (click)="addItem('Responsabilites')">Ajouter</button>
+                    </div>
+
+                    <label>Avantages</label>
+                    <div>
+                        <div *ngFor="let item of editedOffre.Avantages; let i = index" class="list-item">
+                            <input class="form-control" [(ngModel)]="editedOffre.Avantages[i]" name="avantage{{i}}" />
+                            <button type="button" (click)="removeItem('Avantages', i)">×</button>
+                        </div>
+                        <button type="button" (click)="addItem('Avantages')">Ajouter</button>
+                    </div>
+
+                    <label>Date Publication</label>
+                    <input type="date" class="form-control" [(ngModel)]="editedOffre.datePublication"
+                        name="datePublication" />
+
+                    <label>Date Expiration</label>
+                    <input type="date" class="form-control" [(ngModel)]="editedOffre.dateExpiration"
+                        name="dateExpiration" />
+
+                    <label>Postes Vacants</label>
+                    <input class="form-control" [(ngModel)]="editedOffre.postsVacants" name="postsVacants" />
+
+                    <label>Spécialité</label>
+                    <input class="form-control" [(ngModel)]="editedOffre.specilite" name="specilite" />
+
+                    <label>Expérience</label>
+                    <input class="form-control" [(ngModel)]="editedOffre.Experience" name="Experience" />
+
+                    <label>Niveau d'Études</label>
+                    <input class="form-control" [(ngModel)]="editedOffre.NiveauEtudes" name="NiveauEtudes" />
+
+                    <label>Localisation</label>
+                    <input class="form-control" [(ngModel)]="editedOffre.localisation" name="localisation" />
+
+                    <label>Type de Temps</label>
+                    <input class="form-control" [(ngModel)]="editedOffre.typeTemps" name="typeTemps" />
+
+                    <label>Type d'Offre</label>
+                    <input class="form-control" [(ngModel)]="editedOffre.typeOffre" name="typeOffre" />
+
+                    <label>Exigences</label>
+                    <div>
+                        <div *ngFor="let item of editedOffre.exigances; let i = index" class="list-item">
+                            <input class="form-control" [(ngModel)]="editedOffre.exigances[i]" name="exigence{{i}}" />
+                            <button type="button" (click)="removeItem('exigances', i)">×</button>
+                        </div>
+                        <button type="button" (click)="addItem('exigances')">Ajouter</button>
+                    </div>
+
+                    <div class="form-buttons">
+                        <button type="submit" class="btn-primary">Enregistrer</button>
+                        <button type="button" class="btn-secondaryy" (click)="closeEditModal()">Annuler</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>

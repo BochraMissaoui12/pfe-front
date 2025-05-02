@@ -9,10 +9,10 @@ export class SkillService {
   constructor(private http: HttpClient) {}
 
   searchSkills(keyword: string): Observable<string[]> {
-    return this.http.get<any>(`${this.apiUrl}&text=${keyword}`).pipe(
-      map((res) => {
-        return res._embedded.results.map((r: any) => r.title);
+    return this.http
+      .get<any>(`${this.apiUrl}&text=${keyword}`, {
+        withCredentials: false, // Désactive les credentials pour cette requête
       })
-    );
+      .pipe(map((res) => res._embedded.results.map((r: any) => r.title)));
   }
 }

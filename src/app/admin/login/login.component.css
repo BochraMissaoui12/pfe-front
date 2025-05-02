@@ -1,0 +1,75 @@
+.login-container {
+  max-width: 360px;
+  margin: 80px auto;
+  padding: 2rem;
+  background: rgba(226, 232, 240, 1);
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  font-family: Arial, sans-serif;
+  color: rgba(30, 41, 59, 1);
+}
+
+h2 {
+  text-align: center;
+  margin-bottom: 1.5rem;
+  color: rgba(0, 168, 232, 1);
+}
+
+.form-group {
+  margin-bottom: 1.2rem;
+  display: flex;
+  flex-direction: column;
+}
+
+label {
+  margin-bottom: 0.4rem;
+  font-weight: 600;
+}
+
+input {
+  padding: 0.5rem 0.8rem;
+  border: 1px solid rgba(30, 41, 59, 0.3);
+  border-radius: 6px;
+  font-size: 1rem;
+  transition: border-color 0.3s ease;
+}
+
+input:focus {
+  border-color: rgba(0, 168, 232, 1);
+  outline: none;
+}
+
+.error {
+  color: #d93025;
+  font-size: 0.85rem;
+  margin-top: 0.3rem;
+}
+
+.error-message {
+  color: #d93025;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+button {
+  width: 100%;
+  padding: 0.7rem;
+  background: rgba(0, 168, 232, 1);
+  border: none;
+  border-radius: 8px;
+  color: white;
+  font-weight: 700;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button:disabled {
+  background: rgba(0, 168, 232, 0.5);
+  cursor: not-allowed;
+}
+
+button:hover:not(:disabled) {
+  background: rgba(0, 140, 190, 1);
+}

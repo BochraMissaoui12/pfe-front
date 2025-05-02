@@ -1,0 +1,107 @@
+<div class="dashboard-layout">
+    <app-sidebar></app-sidebar>
+    <div class="main-content">
+        <header class="topbar">
+            <div class="left"></div>
+            <div class="right">
+                <button class="icon-btn notification"><i class="fa fa-bell"></i></button>
+                <button class="icon-btn logout" (click)="logout()">
+                    <i class="fa fa-sign-out-alt"></i>
+                </button>
+            </div>
+        </header>
+
+        <div class="list-container">
+            <h2>Événements & Actualités</h2>
+            <button class="btn-add" (click)="openModal()">+ Ajouter un événement</button>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Titre</th>
+                        <th>Type</th>
+                        <th>Entreprise</th>
+                        <th>Date</th>
+                        <th>Statut</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let event of evenements">
+                        <td>{{ event.titre }}</td>
+                        <td>{{ event.type }}</td>
+                        <td>{{ event.entrepriseNom }}</td>
+                        <td>{{ event.datePublication | date }}</td>
+                        <td>
+                            <span [class]="event.valide ? 'status-valid' : 'status-pending'">
+                                {{ event.valide ? 'Validé' : 'En attente' }}
+                            </span>
+                        </td>
+                        <td>
+                            <button (click)="openModal(true, event)">✏️</button>
+                            <button (click)="deleteEvenement(event.id)">🗑️</button>
+                            <button *ngIf="!event.valide" (click)="validerEvenement(event.id)">✅ Valider</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <!-- Modal -->
+            <div class="modal" *ngIf="showModal">
+                <div class="modal-content">
+                    <h3>{{ isEditMode ? 'Modifier' : 'Créer' }} un événement</h3>
+                    <form [formGroup]="eventForm" (ngSubmit)="saveEvenement()">
+                        <div *ngIf="loading" class="spinner-overlay">
+                            <div class="spinner"></div>
+                        </div>
+
+                        <label>Titre</label>
+                        <input type="text" formControlName="titre" required />
+
+                        <label>Description</label>
+                        <textarea formControlName="description" required></textarea>
+
+                        <label>Emplacement</label>
+                        <input type="text" formControlName="emplacement" required />
+
+                        <label>Type</label>
+                        <select formControlName="type" required>
+                            <option value="Actualité">Actualité</option>
+                            <option value="Événement">Événement</option>
+                            <option value="Conférence">Conférence</option>
+                        </select>
+                        <label>Entreprise (optionnelle)</label>
+                        <select formControlName="entrepriseId">
+                            <option [value]="null">-- Aucune --</option>
+                            <option *ngFor="let entreprise of entreprises" [value]="entreprise.id">
+                                {{ entreprise.nom }}
+                            </option>
+                        </select>
+
+                        <label>Date</label>
+                        <input type="date" formControlName="datePublication" required />
+
+                        <label>Images (plusieurs)</label>
+                        <input type="file" multiple (change)="onFileSelected($event)" />
+
+                        <div class="image-preview">
+                            <div class="thumb" *ngFor="let img of existingImgs; let i = index">
+                                <img [src]="img" alt="Image existante" />
+                                <button type="button" class="btn-remove" (click)="existingImgs.splice(i,1)">✖</button>
+                            </div>
+                            <div class="thumb" *ngFor="let url of previewUrls">
+                                <img [src]="url" alt="Preview" />
+                            </div>
+                        </div>
+
+                        <div class="modal-actions">
+                            <button type="button" (click)="closeModal()">Annuler</button>
+                            <button type="submit">{{ isEditMode ? 'Modifier' : 'Créer' }}</button>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

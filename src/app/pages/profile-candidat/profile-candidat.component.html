@@ -33,27 +33,72 @@
             <ul>
                 <li class="active"><i class="fa fa-user"></i> Profil</li>
                 <li routerLink="/candidatures"><i class="fa fa-file"></i> Candidatures</li>
-                <li><i class="fa fa-sign-out"></i> Déconnexion</li>
+                <li><i class="fa fa-sign-out" (click)="logout()"></i> Déconnexion</li>
             </ul>
         </div>
         <div class="main-content">
             <div class="header">
                 <img src="assets/images/default-avatar.png" alt="Profile Photo" class="profile-photo" />
-                <div class="header-info">
-                    <h2>Alex Carter</h2>
-                    <p>chercheur</p>
-                    <button class="upload-btn">Téléverser un CV</button>
+                <div class="header-info" style="    width: 100%;">
+                    <div style="display: flex;justify-content: space-between;">
+                        <div>
+                            <h2>{{user.nom}} {{user.prenom}} </h2>
+                            <p>{{user.type}}</p>
+                            <button (click)="openModall()" style="padding: 8px 12px;
+                    margin-right: 8px;
+                    border: 1px solid black;
+                    background-color: transparent;
+                    border-radius: 10px;
+                    cursor: pointer;">Générer un CV</button>
+                            <button (click)="fileInput.click()" style="padding: 8px 12px;
+                    margin-right: 8px;
+                    border: 1px solid black;
+                    background-color: transparent;
+                    border-radius: 10px;
+                    cursor: pointer;">Uploader un CV</button>
+                            <input type="file" #fileInput style="display:none" (change)="onFileSelected($event)"
+                                accept=".pdf,.doc,.docx" />
+                        </div>
+                        <!-- Affichage du CV existant -->
+                        <div *ngIf="user.cv">
+                            <h3>CV existant :</h3>
+                            <a style=" color: #007bff;
+  text-decoration: none;" [href]="user.cv" target="_blank" rel="noopener noreferrer">Voir ton CV</a>
+                        </div>
+                    </div>
+                    <!-- Modale -->
+                    <div class="modal fade" id="Modal" tabindex="-1" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content custom-modal-content">
+                                <div class="modal-header custom-modal-header">
+                                    <span class="close" (click)="closeModall()">&times;</span>
+                                </div>
+                                <div class="modal-body custom-modal-body">
+                                    <h3>Choisissez un template de CV</h3>
+                                    <div>
+                                        <label *ngFor="let t of templates">
+                                            <input type="radio" name="template" [value]="t.id"
+                                                [(ngModel)]="selectedTemplate" />
+                                            {{ t.name }}
+                                        </label>
+                                    </div>
+                                    <button (click)="generateCv()" [disabled]="!selectedTemplate">Générer le CV
+                                        PDF</button>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
                 </div>
             </div>
+
             <div class="section">
                 <div class="section-header">
-                    <h3>Software Engineer | AI Enthusiast</h3>
+                    <h3>Description</h3>
                     <i class="fa fa-pencil edit-icon" (click)="openModal()"></i>
                 </div>
                 <p>
-                    Je suis Alex Carter, ingénieur logiciel et passionné d'IA, spécialisé dans
-                    l'intelligence artificielle et le cloud computing. Je résous des problèmes complexes
-                    et garde une longueur d'avance dans le monde de la technologie.
+                    {{user.bio}}
                 </p>
             </div>
 
@@ -61,7 +106,8 @@
                 <div class="modal-dialog">
                     <div class="modal-content custom-modal-content">
                         <div class="modal-header custom-modal-header">
-                            <h5 class="modal-title" id="editModalLabel">Modifiez votre titre et votre présentation de
+                            <h5 class="modal-title" id="editModalLabel">Modifiez votre titre et votre
+                                présentation de
                                 profil</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
@@ -73,14 +119,16 @@
                                 <li>Présentez vos projets, réalisations et parcours académique</li>
                                 <li>Soyez clair, concis et veillez à éviter toute erreur</li>
                             </ul>
-                            <textarea class="form-control custom-textarea"
-                                rows="6">Je suis Alex Carter, ingénieur logiciel et passionné d'IA...</textarea>
-                            <small class="character-count" style="font-size: 10px;">4655 caractères restants</small>
+                            <textarea class="form-control" [(ngModel)]="user.bio" rows="6"></textarea>
+
+                            <small class="character-count" style="font-size: 10px;">4655 caractères
+                                restants</small>
                         </div>
                         <div class="modal-footer custom-modal-footer">
                             <button type="button" class="btn btn-secondary custom-cancel-button"
                                 data-bs-dismiss="modal">Annuler</button>
-                            <button type="button" class="btn btn-primary custom-save-button">Sauvegarder</button>
+                            <button type="button" class="btn btn-primary"
+                                (click)="updateUserInfo()">Sauvegarder</button>
                         </div>
                     </div>
                 </div>
@@ -91,7 +139,10 @@
                     <i class="fa fa-pencil edit-icon" (click)="openSkillsModal()"></i>
                 </div>
                 <div class="skills">
-                    <span *ngFor="let skill of skills">{{ skill }}</span>
+                    <span *ngFor="let skill of user.competance; let i = index">
+                        {{ skill }}
+                        <button (click)="removeSkill(i)" style="border: none;background: transparent;">x</button>
+                    </span>
                 </div>
             </div>
 
@@ -133,8 +184,7 @@
                         <div class="modal-footer custom-modal-footer">
                             <button type="button" class="btn btn-secondary custom-cancel-button"
                                 data-bs-dismiss="modal">Annuler</button>
-                            <button type="button" class="btn btn-primary custom-save-button"
-                                data-bs-dismiss="modal">Sauvegarder</button>
+                            <button type="button" class="btn btn-primary" (click)="updateSkills()">Sauvegarder</button>
                         </div>
                     </div>
                 </div>
@@ -147,8 +197,8 @@
                 </div>
                 <ul class="experience-list">
                     <li *ngFor="let experience of experiences; let i = index">
-                        {{ experience.position }} at {{ experience.company }} ({{ experience.startDate }} - {{
-                        experience.endDate }})
+                        {{ experience.poste }} at {{ experience.entreprise }} ({{ experience.dateDebut }} - {{
+                        experience.dateFin }})
                         <div class="list-actions">
                             <i style="color:rgba(226, 232, 240, 1) ; cursor: pointer;" class="fa fa-trash delete-icon"
                                 (click)="deleteExperience(i)"></i>
@@ -171,19 +221,19 @@
                                 <div class="form-group">
                                     <label for="company">Entreprise</label>
                                     <input type="text" class="form-control custom-input" id="company"
-                                        formControlName="company" placeholder="Nom de l'entreprise">
+                                        formControlName="entreprise" placeholder="Nom de l'entreprise">
                                 </div>
 
                                 <div class="form-group">
                                     <label for="position">Poste occupé</label>
                                     <input type="text" class="form-control custom-input" id="position"
-                                        formControlName="position" placeholder="Ex: Développeur Web, Chef de Projet...">
+                                        formControlName="poste" placeholder="Ex: Développeur Web, Chef de Projet...">
                                 </div>
 
                                 <div class="form-group">
                                     <label for="startDate">Dates de début (optionnel)</label>
                                     <select class="form-control custom-select" id="startDate"
-                                        formControlName="startDate">
+                                        formControlName="dateDebut">
                                         <option value="">De</option>
                                         <option *ngFor="let year of years" [value]="year">{{ year }}</option>
                                     </select>
@@ -191,7 +241,7 @@
 
                                 <div class="form-group">
                                     <label for="endDate">Dates de fin (optionnel)</label>
-                                    <select class="form-control custom-select" id="endDate" formControlName="endDate">
+                                    <select class="form-control custom-select" id="endDate" formControlName="dateFin">
                                         <option value="">à</option>
                                         <option *ngFor="let year of years" [value]="year">{{ year }}</option>
                                     </select>
@@ -201,8 +251,8 @@
                         <div class="modal-footer custom-modal-footer">
                             <button type="button" class="btn btn-secondary custom-cancel-button"
                                 data-bs-dismiss="modal">Annuler</button>
-                            <button type="button" class="btn btn-primary custom-save-button" (click)="saveExperience()"
-                                data-bs-dismiss="modal">Sauvegarder</button>
+                            <button type="button" class="btn btn-primary custom-save-button"
+                                (click)="updateExperience()" data-bs-dismiss="modal">Sauvegarder</button>
                         </div>
                     </div>
                 </div>
@@ -216,7 +266,7 @@
                 </div>
                 <ul class="experience-list">
                     <li *ngFor="let education of educations; let i = index">
-                        {{ education.degree }} - {{ education.university }}
+                        {{ education.diplome }} - {{ education.universite }}
                         <div class="list-actions">
                             <i style="color:rgba(226, 232, 240, 1) ; cursor: pointer;" class="fa fa-trash delete-icon"
                                 (click)="deleteEducation(i)"></i>
@@ -239,14 +289,14 @@
                                 <div class="form-group">
                                     <label for="university">Université</label>
                                     <input type="text" class="form-control custom-input" id="university"
-                                        formControlName="university"
+                                        formControlName="universite"
                                         placeholder="Ex: Institut Supérieur des Beaux-Arts de Sousse">
                                 </div>
 
                                 <div class="form-group">
                                     <label for="startDate">Dates de début</label>
                                     <select class="form-control custom-select" id="startDate"
-                                        formControlName="startDate">
+                                        formControlName="dateDebut">
                                         <option value="">De</option>
                                         <option *ngFor="let year of years" [value]="year">{{ year }}</option>
                                     </select>
@@ -254,7 +304,7 @@
 
                                 <div class="form-group">
                                     <label for="endDate">Dates de fin</label>
-                                    <select class="form-control custom-select" id="endDate" formControlName="endDate">
+                                    <select class="form-control custom-select" id="endDate" formControlName="dateFin">
                                         <option value="">à (ou année d'obtention du diplôme prévue)</option>
                                         <option *ngFor="let year of years" [value]="year">{{ year }}</option>
                                     </select>
@@ -263,13 +313,13 @@
                                 <div class="form-group">
                                     <label for="degree">Diplôme</label>
                                     <input type="text" class="form-control custom-input" id="degree"
-                                        formControlName="degree" placeholder="Diplôme">
+                                        formControlName="diplome" placeholder="Diplôme">
                                 </div>
 
                                 <div class="form-group">
                                     <label for="fieldOfStudy">Domaine d'études</label>
                                     <input type="text" class="form-control custom-input" id="fieldOfStudy"
-                                        formControlName="fieldOfStudy" placeholder="Ex: Informatique">
+                                        formControlName="domaineEtude" placeholder="Ex: Informatique">
                                 </div>
 
 
@@ -279,7 +329,7 @@
                                 <button type="button" class="btn btn-secondary custom-cancel-button"
                                     data-bs-dismiss="modal">Annuler</button>
                                 <button type="button" class="btn btn-primary custom-save-button"
-                                    (click)="saveEducation()" data-bs-dismiss="modal">Sauvegarder</button>
+                                    (click)="updateEducation()" data-bs-dismiss="modal">Sauvegarder</button>
                             </div>
                         </div>
                     </div>

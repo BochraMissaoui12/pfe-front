@@ -1,0 +1,100 @@
+<div class="dashboard-layout">
+    <app-sidebar></app-sidebar>
+    <div class="main-content">
+        <header class="topbar">
+            <div class="left"></div>
+            <div class="right">
+                <button class="icon-btn notification">
+                    <i class="fa fa-bell"></i>
+                </button>
+                <button class="icon-btn logout" (click)="logout()">
+                    <i class="fa fa-sign-out-alt"></i>
+                </button>
+
+            </div>
+        </header>
+
+        <div class="list-container">
+            <h2>Nouveaux comptes (Entreprises non activées)</h2>
+
+            <p *ngIf="loading">Chargement en cours...</p>
+            <p *ngIf="errorMessage" class="error-msg">{{ errorMessage }}</p>
+
+            <table *ngIf="!loading && entreprisesNonActivees.length > 0">
+                <thead>
+                    <tr>
+                        <th>Logo</th>
+                        <th>Nom</th>
+                        <th>Email</th>
+                        <th>Secteur d'activité</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let e of entreprisesNonActivees">
+                        <td>
+                            <img [src]="e.logoUrl" alt="Logo" class="logo-table" />
+                        </td>
+                        <td>{{ e.nom }}</td>
+                        <td>{{ e.email }}</td>
+                        <td>{{ e.secteurActivite }}</td>
+                        <td class="actions-cell">
+                            <button (click)="openDetails(e.id)" class="btn-view">Voir</button>
+                            <button (click)="askActivate(e.id)" class="btn-activate">Activer</button>
+                            <button class="btn-delete" (click)="confirmDelete(e.id)" title="Supprimer">
+                                <i class="fa fa-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <p *ngIf="!loading && entreprisesNonActivees.length === 0">Aucun nouveau compte à activer.</p>
+            <!-- Modal confirmation activation -->
+            <div class="modal" *ngIf="showActivateConfirm">
+                <div class="modal-content">
+                    <h3>Confirmer l'activation</h3>
+                    <p>Voulez-vous vraiment activer cette entreprise ?</p>
+                    <div class="modal-actions">
+                        <button (click)="cancelActivate()">Annuler</button>
+                        <button class="activate-btn" (click)="confirmActivate()">Activer</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modal détails entreprise -->
+            <div class="modal" *ngIf="selectedEntreprise">
+                <div class="modal-content">
+                    <h3>Détails de {{ selectedEntreprise.nom }}</h3>
+                    <img *ngIf="selectedEntreprise.logoUrl" [src]="selectedEntreprise.logoUrl" alt="Logo"
+                        class="logo-modal" />
+                    <p><strong>Email:</strong> {{ selectedEntreprise.email }}</p>
+                    <p><strong>Secteur:</strong> {{ selectedEntreprise.secteurActivite }}</p>
+                    <p><strong>Responsable:</strong> {{ selectedEntreprise.Responsable }}</p>
+                    <p><strong>RNE:</strong> <a [href]="selectedEntreprise.rne" target="_blank" rel="noopener">Voir le
+                            RNE</a>
+                    </p>
+                    <p><strong>Bio:</strong> {{ selectedEntreprise.bio }}</p>
+                    <p><strong>Identifiant:</strong> {{ selectedEntreprise.Identifiant }}</p>
+                    <p><strong>Téléphone:</strong> {{ selectedEntreprise.tel }}</p>
+                    <p><strong>Rôle:</strong> {{ selectedEntreprise.role }}</p>
+                    <p><strong>Gouvernement:</strong> {{ selectedEntreprise.gouvernement }}</p>
+                    <p><strong>Adresse:</strong> {{ selectedEntreprise.adresse }}</p>
+                    <button class="close-btn" (click)="closeDetails()">Fermer</button>
+                </div>
+            </div>
+
+            <!-- Modal confirmation suppression -->
+            <div class="modal" *ngIf="showDeleteConfirm">
+                <div class="modal-content">
+                    <h3>Confirmer la suppression</h3>
+                    <p>Voulez-vous vraiment supprimer cette entreprise ?</p>
+                    <div class="modal-actions">
+                        <button (click)="cancelDelete()">Annuler</button>
+                        <button class="delete-btn" (click)="deleteEntreprise()">Supprimer</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

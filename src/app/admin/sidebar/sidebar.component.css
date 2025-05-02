@@ -1,0 +1,56 @@
+.sidebar {
+  background: rgba(30, 41, 59, 1);
+  color: white;
+  width: 240px;
+  min-height: 100vh;
+  padding: 2rem 1rem;
+  font-family: Arial, sans-serif;
+}
+
+.sidebar ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.sidebar ul li {
+  margin: 1.2rem 0;
+  padding: 0.7rem 1.2rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.sidebar ul li:hover,
+.sidebar ul li.active {
+  background: rgba(0, 168, 232, 1);
+  color: white;
+}
+.topbar {
+  height: 64px;
+  background: white;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  border-bottom: 1px solid rgba(226, 232, 240, 1);
+  padding: 0 1rem;
+  font-family: Arial, sans-serif;
+}
+
+.icon-btn {
+  background: none;
+  border: none;
+  margin: 0 0.5rem;
+  font-size: 1.4rem;
+  cursor: pointer;
+  color: rgba(30, 41, 59, 1);
+  transition: color 0.3s ease;
+}
+
+.icon-btn.notification {
+  color: rgba(0, 168, 232, 1);
+}
+
+.icon-btn.logout:hover {
+  color: rgba(0, 168, 232, 1);
+}

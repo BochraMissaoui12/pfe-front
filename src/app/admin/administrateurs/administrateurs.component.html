@@ -1,0 +1,86 @@
+<div class="dashboard-layout">
+    <app-sidebar></app-sidebar>
+    <div class="main-content">
+        <header class="topbar">
+            <div class="left"></div>
+            <div class="right">
+                <button class="icon-btn notification">
+                    <i class="fa fa-bell"></i>
+                </button>
+                <button class="icon-btn logout" (click)="logout()">
+                    <i class="fa fa-sign-out-alt"></i>
+                </button>
+
+            </div>
+        </header>
+        <div class="administrateurs-container">
+            <h2>Gestion des Administrateurs</h2>
+
+
+            <form [formGroup]="adminForm" (ngSubmit)="submitForm()" class="admin-form">
+                <div class="form-row">
+                    <label>Nom</label>
+                    <input formControlName="nom" type="text" />
+                </div>
+                <div class="form-row">
+                    <label>Prénom</label>
+                    <input formControlName="prenom" type="text" />
+                </div>
+                <div class="form-row">
+                    <label>Email</label>
+                    <input formControlName="email" type="email" />
+                </div>
+                <div class="form-row">
+                    <label>Téléphone</label>
+                    <input formControlName="tel" type="text" />
+                </div>
+                <div class="form-row">
+                    <label>Gouvernement</label>
+                    <input formControlName="gouvernement" type="text" />
+                </div>
+                <div class="form-row">
+                    <label>Adresse</label>
+                    <input formControlName="adresse" type="text" />
+                </div>
+                <div class="form-row" *ngIf="!isEditMode">
+                    <label>Mot de passe</label>
+                    <input formControlName="motDePasse" type="password" />
+                </div>
+
+                <button type="submit" [disabled]="adminForm.invalid">
+                    {{ isEditMode ? 'Mettre à jour' : 'Ajouter' }}
+                </button>
+                <button type="button" (click)="resetForm()" *ngIf="isEditMode">Annuler</button>
+            </form>
+
+            <hr />
+
+            <h3>Liste des Administrateurs</h3>
+            <table class="admin-table">
+                <thead>
+                    <tr>
+                        <th>Nom</th>
+                        <th>Prénom</th>
+                        <th>Email</th>
+                        <th>Téléphone</th>
+                        <th>Gouvernement</th>
+                        <th>Adresse</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let admin of admins">
+                        <td>{{ admin.nom }}</td>
+                        <td>{{ admin.prenom }}</td>
+                        <td>{{ admin.email }}</td>
+                        <td>{{ admin.tel }}</td>
+                        <td>{{ admin.gouvernement }}</td>
+                        <td>{{ admin.adresse }}</td>
+                        <td>
+                            <button (click)="editAdmin(admin)">✏️</button>
+                            <button (click)="deleteAdmin(admin.id)">🗑️</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>

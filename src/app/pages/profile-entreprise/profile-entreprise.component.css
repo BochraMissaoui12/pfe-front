@@ -182,6 +182,10 @@ body {
   border-radius: 10px;
   margin-bottom: 10px;
 }
+.logoo {
+  border-radius: 20px;
+  max-width: 200px;
+}
 
 .logo {
   height: auto;
@@ -334,6 +338,130 @@ body {
   padding: 10px; /* Espacement intérieur */
   font-size: 1rem;
   margin-bottom: 10px; /* Espacement entre les boutons */
+}
+/* Style général des champs de formulaire uniquement pour le formulaire d'ajout d'offre */
+.ajout-offre-form .form-control,
+.ajout-offre-form select.form-control {
+  border: 1px solid rgba(226, 232, 240, 0.7);
+  background-color: rgba(30, 41, 59, 1);
+  color: rgba(226, 232, 240, 1);
+  height: calc(1.5em + 0.75rem + 2px);
+  padding: 0.375rem 0.75rem;
+  line-height: 1.5;
+  border-radius: 12px;
+  font-size: 0.9rem;
+  width: 100%;
+  box-sizing: border-box;
+  margin-bottom: 1rem;
+  transition: border-color 0.3s ease;
+}
+
+.ajout-offre-form .form-control:focus,
+.ajout-offre-form select.form-control:focus {
+  border-color: #1aa7ec;
+  outline: none;
+  box-shadow: 0 0 5px rgba(26, 167, 236, 0.5);
+}
+
+/* Placeholder */
+.ajout-offre-form .form-control::placeholder {
+  color: rgba(226, 232, 240, 0.7);
+  font-size: 0.75rem;
+  font-weight: 400;
+}
+
+/* Textarea spécifique */
+.ajout-offre-form textarea.form-control {
+  resize: vertical;
+  min-height: 100px;
+}
+
+/* Select arrow */
+.ajout-offre-form select.form-control {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 4 5'%3E%3Cpath fill='%23a3b1c7' d='M2 0L0 2h4zm0 5L0 3h4z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.5rem center;
+  background-size: 8px 10px;
+  padding-right: 1.75rem;
+}
+
+/* Labels */
+.ajout-offre-form label {
+  display: block;
+  color: rgba(226, 232, 240, 1);
+  font-size: 0.85rem;
+  margin-bottom: 0.3rem;
+  font-weight: 500;
+}
+
+/* Boutons d’ajout/suppression dans les formArray */
+.ajout-offre-form button[type="button"] {
+  background-color: transparent;
+  border: 1px solid rgba(226, 232, 240, 0.5);
+  color: rgba(226, 232, 240, 0.8);
+  border-radius: 20px;
+  padding: 0.3rem 0.8rem;
+  font-size: 0.8rem;
+  margin-left: 0.5rem;
+  margin-bottom: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.ajout-offre-form button[type="button"]:hover {
+  background-color: rgba(226, 232, 240, 0.1);
+  color: #ffffff;
+}
+
+/* Bouton de soumission */
+.ajout-offre-form button[type="submit"] {
+  background-color: #1aa7ec;
+  border: none;
+  color: #ffffff;
+  border-radius: 20px;
+  padding: 0.6rem 1.5rem;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+  display: block;
+}
+.icon-btn {
+  background: none;
+  border: none;
+  margin-top: 5px;
+  font-size: 1.2rem;
+  cursor: pointer;
+  color: rgba(30, 41, 59, 1);
+  transition: color 0.3s ease;
+}
+.ajout-offre-form button[type="submit"]:hover {
+  background-color: #0089c7;
+  transform: translateY(-2px);
+}
+
+/* Messages d’erreur */
+.ajout-offre-form .error {
+  color: #ff6b6b;
+  font-size: 0.8rem;
+  margin-top: -0.5rem;
+  margin-bottom: 1rem;
+}
+
+/* Form arrays (responsabilités, avantages, exigences) */
+.ajout-offre-form [formArrayName] {
+  margin-bottom: 1.5rem;
+  padding: 1rem;
+  border: 1px solid rgba(226, 232, 240, 0.2);
+  border-radius: 8px;
+  background-color: rgba(30, 41, 59, 0.5);
+}
+
+.ajout-offre-form [formArrayName] > label {
+  margin-bottom: 1rem;
+  color: #1aa7ec;
 }
 
 .modal-body .btnnn:hover {
