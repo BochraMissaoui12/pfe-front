@@ -290,7 +290,20 @@ body {
   background-color: rgba(30, 41, 59, 1);
   border-radius: 10px;
 }
+.btn-primary {
+  background: rgba(0, 168, 232, 1);
+  border: none;
+  padding: 1vh 2vw;
+  border-radius: 36px;
+  color: rgba(30, 41, 59, 1);
+  font-weight: 400;
+  cursor: pointer;
+  transition: 0.3s;
+}
 
+.btn-primary:hover {
+  background: #0078cc;
+}
 .custom-modal-header {
   border-bottom: none;
 }

@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { EntrepriseService } from 'src/app/services/EntrepriseService';
+import { NotificationService } from 'src/app/services/NotificationService';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-entreprises',
@@ -14,15 +16,53 @@ export class EntreprisesComponent implements OnInit {
   entrepriseToDeleteId: string | null = null;
   loading = false;
   errorMessage = '';
-
+  candidaturesOffreSelectionnee: any[] = [];
+  notifications: any[] = [];
+  showNotifications: boolean = false;
+  offreSelectionneePourCandidatures: any = null;
   constructor(
+    private notificationService: NotificationService,
     private entrepriseService: EntrepriseService,
     private router: Router
   ) {}
 
   ngOnInit(): void {
     this.loadEntreprises();
+    this.loadNotifications();
   }
+  loadNotifications() {
+    this.notificationService.getNonConsultees().subscribe({
+      next: (data) => (this.notifications = data),
+      error: () => (this.notifications = []),
+    });
+  }
+
+  toggleNotifications() {
+    this.showNotifications = !this.showNotifications;
+    if (this.showNotifications) {
+      this.loadNotifications();
+    }
+  }
+
+  async consulterNotification(notification: any) {
+    const result = await Swal.fire({
+      title: 'Êtes-vous sûr ?',
+      text: 'Voulez-vous vraiment marquer cette notification comme consultée ?',
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonText: 'Oui, marquer comme consultée',
+      cancelButtonText: 'Annuler',
+    });
+    if (result.isConfirmed) {
+      this.notificationService
+        .marquerCommeConsulte(notification.id)
+        .subscribe(() => {
+          this.loadNotifications();
+          Swal.fire('Notification consultée', '', 'success');
+        });
+    }
+  }
+
   logout() {
     localStorage.removeItem('token');
     this.router.navigate(['/login']);

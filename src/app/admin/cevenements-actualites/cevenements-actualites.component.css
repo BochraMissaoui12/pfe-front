@@ -3,6 +3,79 @@
   height: 100vh;
   font-family: Arial, sans-serif;
 }
+.icon-btn.notification {
+  position: relative;
+  font-size: 1.2em;
+}
+
+.notif-badge {
+  position: absolute;
+  top: -5px;
+  right: -7px;
+  background: #e53e3e;
+  color: #fff;
+  font-size: 0.75em;
+  font-weight: bold;
+  border-radius: 50%;
+  padding: 1px 6px;
+  min-width: 16px;
+  text-align: center;
+  z-index: 10;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.13);
+}
+
+.notif-dropdown {
+  position: absolute;
+  right: 8px;
+  top: 40px;
+  background: #fff;
+  min-width: 220px;
+  max-width: 90vw;
+  max-height: 250px;
+  overflow-y: auto;
+  border-radius: 8px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+  z-index: 1001;
+  padding: 0.2em 0;
+}
+
+.notif-item {
+  padding: 0.5em 1em;
+  border-bottom: 1px solid #f1f1f1;
+  cursor: pointer;
+  max-width: 500px;
+  font-size: 0.95em;
+  transition: background 0.15s;
+}
+
+.notif-item:hover {
+  background: #f0f6ff;
+}
+
+.notif-item strong {
+  color: #2563eb;
+  font-size: 1em;
+}
+
+.notif-date {
+  float: right;
+  color: #888;
+  font-size: 0.8em;
+  margin-left: 8px;
+}
+
+.notif-msg {
+  color: #222;
+  font-size: 0.95em;
+  margin-top: 2px;
+}
+
+.notif-empty {
+  padding: 0.7em;
+  text-align: center;
+  color: #888;
+  font-size: 0.95em;
+}
 
 .main-content {
   flex: 1;

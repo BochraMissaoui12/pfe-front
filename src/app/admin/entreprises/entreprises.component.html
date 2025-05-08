@@ -4,9 +4,20 @@
         <header class="topbar">
             <div class="left"></div>
             <div class="right">
-                <button class="icon-btn notification">
+                <button class="icon-btn notification" (click)="toggleNotifications()">
                     <i class="fa fa-bell"></i>
+                    <span *ngIf="notifications.length > 0" class="notif-badge">{{ notifications.length }}</span>
                 </button>
+                <div class="notif-dropdown" *ngIf="showNotifications">
+                    <div *ngIf="notifications.length === 0" class="notif-empty">
+                        Aucune nouvelle notification.
+                    </div>
+                    <div *ngFor="let notif of notifications" class="notif-item" (click)="consulterNotification(notif)">
+                        <strong>{{ notif.titre }}</strong>
+                        <span class="notif-date">{{ notif.dateCreation | date:'short' }}</span>
+                        <div class="notif-msg">{{ notif.message }}</div>
+                    </div>
+                </div>
                 <button class="icon-btn logout" (click)="logout()">
                     <i class="fa fa-sign-out-alt"></i>
                 </button>
@@ -28,7 +39,6 @@
                         <th>Email</th>
                         <th>Secteur</th>
                         <th>Responsable</th>
-                        <th>Active</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
@@ -61,12 +71,12 @@
                         class="logo-modal" />
                     <p><strong>Email:</strong> {{ selectedEntreprise.email }}</p>
                     <p><strong>Secteur:</strong> {{ selectedEntreprise.secteurActivite }}</p>
-                    <p><strong>Responsable:</strong> {{ selectedEntreprise.Responsable }}</p>
+                    <p><strong>Responsable:</strong> {{ selectedEntreprise.responsable }}</p>
                     <p><strong>RNE:</strong> <a [href]="selectedEntreprise.rne" target="_blank" rel="noopener">Voir le
                             RNE</a>
                     </p>
                     <p><strong>Bio:</strong> {{ selectedEntreprise.bio }}</p>
-                    <p><strong>Identifiant:</strong> {{ selectedEntreprise.Identifiant }}</p>
+                    <p><strong>Identifiant:</strong> {{ selectedEntreprise.identifiant }}</p>
                     <p><strong>Téléphone:</strong> {{ selectedEntreprise.tel }}</p>
                     <p><strong>Rôle:</strong> {{ selectedEntreprise.role }}</p>
                     <p><strong>Gouvernement:</strong> {{ selectedEntreprise.gouvernement }}</p>

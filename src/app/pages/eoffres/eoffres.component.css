@@ -1,3 +1,5 @@
+@import url("https://fonts.googleapis.com/css2?family=Oxanium:wght@200..800&family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap");
+
 .navbar {
   display: flex;
   justify-content: space-between;
@@ -16,6 +18,42 @@
 .logo {
   height: auto;
 }
+.modal-custom {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: white;
+  z-index: 1000;
+  width: 80%;
+  max-width: 800px;
+  border-radius: 8px;
+}
+.candidature-card {
+  border: 1px solid #eee;
+  border-radius: 8px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  background: #fafbfc;
+}
+/* Force le z-index de SweetAlert2 au-dessus de tes modals custom */
+
+.candidature-card h4 {
+  margin-top: 0.5rem;
+}
+.candidature-card ul {
+  margin: 0 0 1rem 1.5rem;
+}
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 999;
+}
+
 .nav-links {
   list-style: none;
   display: flex;
@@ -217,9 +255,10 @@
 }
 
 .main-content {
+  height: 100vh;
   display: flex;
   justify-content: center;
-  align-items: center;
+
   background-color: rgba(226, 232, 240, 1);
   padding: 5%;
 }
@@ -440,4 +479,203 @@
 
 .ajout-offre-form button[type="button"]:hover {
   background-color: rgba(0, 168, 232, 1);
+}
+.footer {
+  background-color: #1c2738;
+  color: white;
+  padding-top: 40px;
+  padding-bottom: 0px;
+  text-align: center;
+}
+.footer-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  max-width: 1200px;
+  margin: auto;
+}
+.footer-column {
+  text-align: left;
+  padding-bottom: 20px;
+  margin: 10px;
+  min-width: 200px;
+}
+.footer-column h3 {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+.footer-column ul {
+  list-style: none;
+  padding: 0;
+}
+.footer-column ul li {
+  margin: 5px 0;
+}
+.footer-column ul li a {
+  font-weight: 400;
+  color: white;
+  text-decoration: none;
+}
+.footer-logo {
+  text-align: left;
+}
+.footer-logo img {
+  max-width: 130px;
+}
+.newsletter {
+  display: flex;
+  align-items: center;
+  background-color: #eef1f5;
+  border-radius: 30px;
+  padding: 5px 10px;
+  max-width: 250px;
+  margin: 10px auto;
+}
+.newsletter input {
+  border: none;
+  outline: none;
+  background: transparent;
+  flex: 1;
+  border-radius: 30px;
+}
+.newsletter button {
+  background-color: #1c2738;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+.social-icons {
+  margin-top: 10px;
+}
+.social-icons a {
+  margin: 0 10px;
+  color: white;
+  font-size: 20px;
+  text-decoration: none;
+}
+.footer-bottom {
+  margin-top: 20px;
+  color: #000;
+  padding-top: 10px;
+  padding-bottom: 15px;
+  border-top: 1px solid #ccc;
+  font-size: 12px;
+  background-color: white;
+}
+.candidature-card {
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 1.5rem 2rem 1.5rem 2rem;
+  margin-bottom: 2rem;
+  background: #fff;
+  box-shadow: 0 2px 8px rgba(0, 168, 232, 0.06);
+  font-family: "Poppins", Arial, sans-serif;
+}
+
+.candidature-card p,
+.candidature-card li {
+  color: #1e293b;
+  font-size: 1rem;
+  margin-bottom: 0.3rem;
+}
+
+.candidature-card h4 {
+  font-size: 1.1rem;
+  color: #1aa7ec;
+  margin-top: 1rem;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+}
+
+.candidature-card ul {
+  margin-left: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.candidature-card label {
+  font-weight: 500;
+  margin-right: 0.5rem;
+}
+
+.candidature-card select,
+.candidature-card textarea {
+  border: 1px solid #cbd5e1;
+  border-radius: 7px;
+  padding: 0.5rem;
+  font-size: 1rem;
+  margin-bottom: 0.7rem;
+  background: #f8fafc;
+  color: #1e293b;
+  width: 100%;
+  max-width: 350px;
+  transition: border 0.2s;
+}
+
+.candidature-card select:focus,
+.candidature-card textarea:focus {
+  border-color: #1aa7ec;
+  outline: none;
+}
+
+.candidature-card textarea {
+  min-height: 60px;
+  resize: vertical;
+}
+
+.candidature-card .actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.candidature-card button {
+  background-color: #1aa7ec;
+  color: #fff;
+  border: none;
+  border-radius: 7px;
+  padding: 0.5rem 1.2rem;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.candidature-card button:disabled {
+  background: #e2e8f0;
+  color: #b0b7c3;
+  cursor: not-allowed;
+}
+
+.candidature-card a {
+  color: #1aa7ec;
+  text-decoration: underline;
+  font-weight: 500;
+}
+
+.candidature-card a:hover {
+  color: #0d8ecf;
+}
+
+@media (max-width: 600px) {
+  .candidature-card {
+    padding: 1rem;
+  }
+  .candidature-card select,
+  .candidature-card textarea {
+    max-width: 100%;
+  }
+  .candidature-card .actions {
+    flex-direction: column;
+    gap: 0.5rem;
+    align-items: stretch;
+  }
 }

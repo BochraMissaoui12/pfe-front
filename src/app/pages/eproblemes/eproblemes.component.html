@@ -1,0 +1,86 @@
+<body>
+    <header class="navbar">
+        <div class="logo">
+            <img src="assets/images/logo.png" alt="Logo">
+        </div>
+        <nav>
+            <ul class="nav-links">
+                <li><a routerLink="/">Accueil</a></li>
+                <li><a routerLink="/Eoffres">Mes Offres</a></li>
+                <li><a routerLink="/Eproblemes" class="active">Mes Problemes & Solutions</a></li>
+                <li><a routerLink="/Eevenements">Mes Actualité</a></li>
+            </ul>
+        </nav>
+        <button class="btn-primary" routerLink="/Eprofil" style="background: rgba(0, 168, 232, 1);
+        border: none;
+        padding: 1vh 2vw;
+        border-radius: 36px;
+        color: rgba(30, 41, 59, 1);
+        font-weight: 400;
+        cursor: pointer;
+        transition: 0.3s;">Votre profil</button>
+
+        <div class="icons">
+            <button class="icon-btn logout" (click)="logout()">
+                <i class="fa fa-sign-out-alt"></i>
+            </button>
+        </div>
+        <!-- Menu mobile -->
+        <button class="menu-toggle" (click)="toggleMenu()">
+            <img src="assets/images/Vector.png" alt="Menu">
+        </button>
+    </header>
+    <div class="main-content">
+        <h2 style="text-align: center;">Mes problèmes techniques</h2>
+
+        <div *ngIf="problemes.length === 0">Aucun problème technique trouvé.</div>
+
+        <div class="problemes-grid">
+            <div *ngFor="let p of problemes" class="probleme-card">
+                <span class="badge-statut" [ngClass]="{'resolu': p.statut === 'Résolu'}">{{ p.statut }}</span>
+
+                <p><strong>Description :</strong> {{ p.description }}</p>
+
+                <div *ngIf="p.fichiersUrls?.length > 0">
+                    <p><strong>Fichiers :</strong></p>
+                    <ul>
+                        <li *ngFor="let url of p.fichiersUrls">
+                            <a [href]="url" target="_blank">{{ url }}</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="card-actions">
+                    <button (click)="voirReponses(p)">Voir les réponses</button>
+                    <button (click)="supprimerProbleme(p.id)" class="btn-delete">Supprimer</button>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Modal réponses -->
+        <div class="modal-backdrop" *ngIf="showReponsesModal"></div>
+        <div class="modal-custom" *ngIf="showReponsesModal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>Réponses au problème</h3>
+                    <button (click)="closeReponsesModal()">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <p><strong>Problème :</strong> {{ selectedProbleme?.description }}</p>
+                    <div *ngIf="reponses.length === 0">Aucune réponse pour ce problème.</div>
+                    <div *ngFor="let r of reponses" class="reponse-card">
+                        <p><strong>Nom :</strong> {{ r.nomUtilisateur }}</p>
+                        <p><strong>Email :</strong> {{ r.emailUtilisateur }}</p>
+                        <p><strong>Solution :</strong> {{ r.solution }}</p>
+                        <div *ngIf="r.fichiersUrls?.length > 0">
+                            <p><strong>Fichiers :</strong></p>
+                            <ul>
+                                <li *ngFor="let url of r.fichiersUrls">
+                                    <a [href]="url" target="_blank">{{ url }}</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>

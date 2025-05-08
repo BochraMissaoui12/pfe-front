@@ -5,6 +5,12 @@ import {
   QueryList,
   ViewChildren,
 } from '@angular/core';
+import * as bootstrap from 'bootstrap';
+import { forkJoin, of } from 'rxjs';
+import { CandidatureService } from 'src/app/services/CandidatureService';
+import { EntrepriseService } from 'src/app/services/EntrepriseService';
+import { OffreService } from 'src/app/services/OffreService';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-liste-offres',
@@ -15,208 +21,11 @@ export class ListeOffresComponent implements OnInit {
   menuOpen = false;
   pageSize = 6; // Number of items per page
   currentPage = 1; // Current page number
-  offers = [
-    {
-      title: 'Customer Solutions Engineer',
-      position: 'Solutions Engineer',
-      location: 'New York',
-      positions: 2,
-      experience: '+2',
-      contract: 'CDI',
-      description:
-        'Nous recherchons un designer UI/UX senior Réaliser des études Nous recherchons un designer UI/UX senior Réaliser des études utilisateurs et tests d’utilisabilité Collaborer avec les développeurs et l’équipe marketing des études utilisateurs et tests d’utilisabilité Collaborer avec les développeurs et l’équipe marketing',
-      responsibilities: [
-        'Concevoir des interfaces conviviales',
-        'Créer des wireframes, prototypes et composants d’interface utilisateur',
-        'Collaborer avec les développeurs et l’équipe marketing',
-        'Réaliser des études utilisateurs et tests d’utilisabilité',
-      ],
-      requirements: [
-        'Plus de 3 ans d’expérience en conception UI/UX',
-        'Maîtrise de Figma, Adobe XD ou Sketch',
-        'Vaste portefeuille de projets de design',
-        'Bonnes compétences en communication et travail d’équipe',
-      ],
-      advantages: [
-        'Télétravail possible',
-        'Horaires flexibles',
-        'Opportunités d’évolution professionnelle',
-        'Environnement créatif',
-      ],
-      company: 'Metz - Lockman',
-      date: 'Sun Apr 06',
-      logo: 'assets/images/entreprise.png',
-      type: 'offre',
-    },
-    {
-      title: 'Corporate Creative Administrator',
-      position: 'Creative Administrator',
-      location: 'Indiana',
-      positions: 3,
-      experience: '+1',
-      contract: 'CDD',
-      description: 'Nous recherchons un administrateur créatif...',
-      responsibilities: [
-        'Gérer les projets créatifs',
-        'Coordonner les équipes',
-        'Assurer le suivi des budgets',
-      ],
-      requirements: [
-        'Expérience en gestion de projet',
-        'Bonne communication',
-        'Sens de l’organisation',
-      ],
-      advantages: ['Formation continue', 'Primes de performance'],
-      company: 'Kihn Group',
-      date: 'Sun Apr 06',
-      logo: 'assets/images/entreprise.png',
-      type: 'offre',
-    },
-    {
-      title: 'Direct Directives Orchestrator',
-      position: 'Directives Orchestrator',
-      location: 'Georgia',
-      positions: 1,
-      experience: '+5',
-      contract: 'Freelance',
-      description: 'Nous recherchons un orchestrateur de directives...',
-      responsibilities: [
-        'Orchestrer les directives',
-        'Gérer les priorités',
-        'Assurer la qualité',
-      ],
-      requirements: [
-        'Expérience en orchestration',
-        'Leadership',
-        'Gestion du temps',
-      ],
-      advantages: ['Rémunération attractive', 'Flexibilité'],
-      company: 'Wunsch Inc',
-      date: 'Sun Apr 06',
-      logo: 'assets/images/entreprise.png',
-      type: 'freelance',
-    },
-    {
-      title: 'Human Group Analyst',
-      position: 'Group Analyst',
-      location: 'Maryland',
-      positions: 5,
-      experience: '+2',
-      contract: 'CDI',
-      description: 'Nous recherchons un analyste de groupe humain...',
-      responsibilities: [
-        'Analyser les données',
-        'Rédiger des rapports',
-        'Présenter les résultats',
-      ],
-      requirements: [
-        'Expérience en analyse',
-        'Maîtrise des outils statistiques',
-        'Esprit critique',
-      ],
-      advantages: ['Mutuelle santé', 'Tickets restaurant'],
-      company: 'Spencer - Rowe',
-      date: 'Sun Apr 06',
-      logo: 'assets/images/entreprise.png',
-      type: 'offre',
-    },
-    {
-      title: 'Principal Directives Facilitator',
-      position: 'Directives Facilitator',
-      location: 'Tennessee',
-      positions: 2,
-      experience: '+3',
-      contract: 'CDD',
-      description: 'Nous recherchons un facilitateur de directives...',
-      responsibilities: [
-        'Faciliter les réunions',
-        'Animer les ateliers',
-        'Rédiger les comptes rendus',
-      ],
-      requirements: [
-        'Expérience en facilitation',
-        'Bonne communication',
-        'Sens de l’écoute',
-      ],
-      advantages: ['Formations', 'Événements d’équipe'],
-      company: 'Blick - Von',
-      date: 'Sun Apr 06',
-      logo: 'assets/images/entreprise.png',
-      type: 'stage',
-    },
-    {
-      title: 'Principal Directives Facilitator',
-      position: 'Directives Facilitator',
-      location: 'Tennessee',
-      positions: 2,
-      experience: '+3',
-      contract: 'CDD',
-      description: 'Nous recherchons un facilitateur de directives...',
-      responsibilities: [
-        'Faciliter les réunions',
-        'Animer les ateliers',
-        'Rédiger les comptes rendus',
-      ],
-      requirements: [
-        'Expérience en facilitation',
-        'Bonne communication',
-        'Sens de l’écoute',
-      ],
-      advantages: ['Formations', 'Événements d’équipe'],
-      company: 'Blick - Von',
-      date: 'Sun Apr 06',
-      logo: 'assets/images/entreprise.png',
-      type: 'stage',
-    },
-    {
-      title: 'Principal Directives Facilitator',
-      position: 'Directives Facilitator',
-      location: 'Tennessee',
-      positions: 2,
-      experience: '+3',
-      contract: 'CDD',
-      description: 'Nous recherchons un facilitateur de directives...',
-      responsibilities: [
-        'Faciliter les réunions',
-        'Animer les ateliers',
-        'Rédiger les comptes rendus',
-      ],
-      requirements: [
-        'Expérience en facilitation',
-        'Bonne communication',
-        'Sens de l’écoute',
-      ],
-      advantages: ['Formations', 'Événements d’équipe'],
-      company: 'Blick - Von',
-      date: 'Sun Apr 06',
-      logo: 'assets/images/entreprise.png',
-      type: 'stage',
-    },
-    {
-      title: 'Principal Directives Facilitator',
-      position: 'Directives Facilitator',
-      location: 'Tennessee',
-      positions: 2,
-      experience: '+3',
-      contract: 'CDD',
-      description: 'Nous recherchons un facilitateur de directives...',
-      responsibilities: [
-        'Faciliter les réunions',
-        'Animer les ateliers',
-        'Rédiger les comptes rendus',
-      ],
-      requirements: [
-        'Expérience en facilitation',
-        'Bonne communication',
-        'Sens de l’écoute',
-      ],
-      advantages: ['Formations', 'Événements d’équipe'],
-      company: 'Blick - Von',
-      date: 'Sun Apr 06',
-      logo: 'assets/images/entreprise.png',
-      type: 'stage',
-    },
-  ];
+  offers: any[] = [];
+  isVerificationMode = false;
+  showMotivationModal = false;
+  motivationText = '';
+  candidatureLoading = false;
   filteredOffers: any[] = [];
   positionFilter: string = '';
   locationFilter: string = '';
@@ -230,72 +39,167 @@ export class ListeOffresComponent implements OnInit {
   showLocationSuggestions = false;
   preventBlurLocation = false;
   preventBlur = false;
+  acceptCommission = false;
+  isCandidat = false;
+  role!: any;
+  isConnected = false;
+  budgetPropose: number | null = null;
   @ViewChildren('offerDescription') offerDescriptions!: QueryList<ElementRef>;
+  constructor(
+    private offreService: OffreService,
+    private candidatureService: CandidatureService,
+    private entrepriseService: EntrepriseService
+  ) {}
 
-  ngAfterViewInit() {
-    this.offerDescriptions.forEach((element: ElementRef, index: number) => {
-      const description = this.offers[index].description;
-      const maxLength = 100; // Adjust as needed
-      if (description.length > maxLength) {
-        element.nativeElement.textContent =
-          description.substring(0, maxLength) + '...';
-      } else {
-        element.nativeElement.textContent = description;
+  ngOnInit(): void {
+    this.loadOffresValidees();
+    const token = localStorage.getItem('token');
+    if (token) {
+      try {
+        const payload = JSON.parse(atob(token.split('.')[1]));
+        this.role = payload.role;
+        this.isConnected = true;
+      } catch (e) {
+        this.isConnected = false;
+        this.role = null;
       }
+    } else {
+      this.isConnected = false;
+      this.role = null;
+    }
+  }
+  getProfileRoute(): string {
+    switch (this.role) {
+      case 'CANDIDAT':
+        return '/profil';
+      case 'ENTREPRISE':
+        return '/Eprofil';
+      case 'CHERCHEUR':
+        return '/Cprofil';
+      default:
+        return '/profil';
+    }
+  }
+  decodeToken(token: string): any {
+    try {
+      const payload = token.split('.')[1];
+      const decodedPayload = atob(payload);
+      return JSON.parse(decodedPayload);
+    } catch (e) {
+      return null;
+    }
+  }
+  loadOffresValidees(): void {
+    this.offreService.getOffresValidees().subscribe({
+      next: (data) => {
+        // Mappe les offres
+        this.offers = data.map((offre) => ({
+          id: offre.id,
+          title: offre.titre,
+          description: offre.description,
+          responsibilities: offre.responsabilites || [],
+          advantages: offre.avantages || [],
+          date: offre.datePublication,
+          dateExpiration: offre.dateExpiration,
+          positions: offre.postsVacants,
+          specilite: offre.specilite,
+          experience: offre.experience,
+          niveauEtudes: offre.niveauEtudes,
+          location: offre.localisation,
+          typeTemps: offre.typeTemps,
+          validee: offre.validee,
+          contract: offre.typeOffre,
+          requirements: offre.exigances || [],
+          entrepriseId: offre.entrepriseId,
+          company: '', // sera rempli après
+          logo: '', // sera rempli après
+        }));
+
+        const entrepriseRequests = this.offers.map((offer) =>
+          offer.entrepriseId
+            ? this.entrepriseService.getEntrepriseById(offer.entrepriseId)
+            : of(null)
+        );
+
+        forkJoin(entrepriseRequests).subscribe((entreprises) => {
+          entreprises.forEach((entreprise, i) => {
+            if (entreprise) {
+              this.offers[i].company = entreprise.nom || 'Entreprise inconnue';
+              this.offers[i].logo =
+                entreprise.logoUrl || 'assets/images/entreprise.png';
+            } else {
+              this.offers[i].company = 'Entreprise inconnue';
+              this.offers[i].logo = 'assets/images/entreprise.png';
+            }
+          });
+          this.filteredOffers = [...this.offers];
+          this.selectedOffer =
+            this.filteredOffers.length > 0 ? this.filteredOffers[0] : null;
+        });
+      },
+      error: () => {
+        // Gérer l'erreur
+      },
     });
   }
-  ngOnInit() {
-    this.filteredOffers = [...this.offers];
-    this.selectedOffer = this.filteredOffers[0];
+  openSignupModal() {
+    const modalElement = document.getElementById('signupModal');
+    if (modalElement) {
+      const modal = new bootstrap.Modal(modalElement);
+      modal.show();
+    } else {
+      console.error('Élément modal non trouvé');
+    }
   }
   suggestPositions() {
-    if (this.positionFilter == '') {
+    if (!this.positionFilter.trim()) {
       this.positionSuggestions = [];
       this.showPositionSuggestions = false;
       return;
     }
     const term = this.positionFilter.toLowerCase();
-    if (!term) {
-      this.positionSuggestions = [];
-      this.showPositionSuggestions = false;
-      return;
-    }
     const positions = this.offers
-      .map((o) => o.position)
+      .map((o) => o.title)
       .filter((pos) => pos.toLowerCase().includes(term));
     this.positionSuggestions = Array.from(new Set(positions)).slice(0, 10);
     this.showPositionSuggestions = this.positionSuggestions.length > 0;
   }
-  selectPositionSuggestion(suggestion: string) {
-    this.positionFilter = suggestion;
-    this.showPositionSuggestions = false;
-  }
+
   filterOffers() {
+    console.log(this.offers);
     this.suggestPositions();
     this.filteredOffers = this.offers.filter((offer) => {
       const positionMatch =
         !this.positionFilter ||
-        offer.position
-          .toLowerCase()
-          .includes(this.positionFilter.toLowerCase());
+        offer.title.toLowerCase().includes(this.positionFilter.toLowerCase());
       const locationMatch =
         !this.locationFilter ||
         offer.location
           .toLowerCase()
           .includes(this.locationFilter.toLowerCase());
-      const typeMatch = !this.offerType || offer.type === this.offerType;
+      const typeMatch = !this.offerType || offer.contract === this.offerType;
       return positionMatch && locationMatch && typeMatch;
     });
     this.showPositionSuggestions = false;
     this.selectedOfferIndex = 0;
     this.selectedOffer =
       this.filteredOffers.length > 0 ? this.filteredOffers[0] : null;
+    this.currentPage = 1; // Revenir à la première page après filtre
   }
+
   setOfferType(type: string) {
-    this.showPositionSuggestions = false;
     this.offerType = type;
     this.filterOffers();
   }
+  getAll() {
+    this.offerType = '';
+    this.loadOffresValidees();
+  }
+  selectPositionSuggestion(suggestion: string) {
+    this.positionFilter = suggestion;
+    this.showPositionSuggestions = false;
+  }
+
   selectOffer(index: number) {
     this.selectedOfferIndex = index;
     this.selectedOffer = this.filteredOffers[index];
@@ -324,25 +228,23 @@ export class ListeOffresComponent implements OnInit {
     }, 200);
   }
   suggestLocations() {
-    if (this.locationFilter === '') {
+    if (!this.locationFilter.trim()) {
       this.locationSuggestions = [];
       this.showLocationSuggestions = false;
       return;
     }
-
     const term = this.locationFilter.toLowerCase();
     const locations = this.offers
       .map((o) => o.location)
       .filter((loc) => loc.toLowerCase().includes(term));
-
     this.locationSuggestions = Array.from(new Set(locations)).slice(0, 10);
     this.showLocationSuggestions = this.locationSuggestions.length > 0;
   }
 
-  // Add this method
   selectLocationSuggestion(suggestion: string) {
     this.locationFilter = suggestion;
     this.showLocationSuggestions = false;
+    this.filterOffers();
   }
 
   // Update the existing blur handler
@@ -353,6 +255,7 @@ export class ListeOffresComponent implements OnInit {
       }
     }, 200);
   }
+
   get pagedOffers() {
     const startIndex = (this.currentPage - 1) * this.pageSize;
     return this.filteredOffers.slice(startIndex, startIndex + this.pageSize);
@@ -371,6 +274,126 @@ export class ListeOffresComponent implements OnInit {
   getPagesArray(): number[] {
     return Array(this.totalPages)
       .fill(0)
-      .map((x, i) => i + 1);
+      .map((_, i) => i + 1);
+  }
+  getUserRole(): string | null {
+    const token = localStorage.getItem('token');
+    if (!token) return null;
+    const decoded: any = this.decodeToken(token);
+    return decoded.role || null;
+  }
+
+  getUserId(): string | null {
+    const token = localStorage.getItem('token');
+    if (!token) return null;
+    const decoded: any = this.decodeToken(token);
+    return decoded.id || null;
+  }
+
+  onApplyClick() {
+    const role = this.getUserRole();
+    if (!role) {
+      Swal.fire({
+        icon: 'info',
+        title: 'Connexion requise',
+        text: 'Veuillez vous connecter pour postuler.',
+        confirmButtonText: 'Se connecter',
+      }).then(() => {
+        this.openSignupModal();
+      });
+      return;
+    }
+    if (role !== 'CANDIDAT') {
+      Swal.fire({
+        icon: 'warning',
+        title: 'Accès refusé',
+        text: 'Seuls les candidats peuvent postuler à une offre.',
+        confirmButtonText: 'OK',
+      });
+      return;
+    }
+    this.showMotivationModal = true;
+    this.motivationText = '';
+  }
+  isCandidatureInvalid(): boolean {
+    if (!this.motivationText || !this.motivationText.trim()) return true;
+
+    if (this.selectedOffer?.contract === 'freelance') {
+      if (!this.budgetPropose || this.budgetPropose <= 0) return true;
+      if (!this.acceptCommission) return true;
+    }
+
+    return false;
+  }
+
+  submitCandidature() {
+    if (!this.motivationText.trim()) {
+      Swal.fire({
+        icon: 'warning',
+        title: 'Motivation requise',
+        text: 'Merci de renseigner votre motivation.',
+        confirmButtonText: 'OK',
+      });
+      return;
+    }
+
+    if (this.selectedOffer.contract === 'freelance') {
+      if (this.budgetPropose === null || this.budgetPropose <= 0) {
+        Swal.fire({
+          icon: 'warning',
+          title: 'Budget requis',
+          text: 'Merci d’indiquer votre budget proposé pour ce projet freelance.',
+          confirmButtonText: 'OK',
+        });
+        return;
+      }
+
+      if (!this.acceptCommission) {
+        Swal.fire({
+          icon: 'warning',
+          title: 'Commission obligatoire',
+          text: 'Vous devez accepter la commission de 10% du site pour postuler à cette offre freelance.',
+          confirmButtonText: 'OK',
+        });
+        return;
+      }
+    }
+
+    this.candidatureLoading = true;
+    const candidature: any = {
+      utilisateurId: this.getUserId()!,
+      offreId: this.selectedOffer.id,
+      motivation: this.motivationText,
+      entrepriseId: this.selectedOffer.entrepriseId,
+    };
+
+    if (this.selectedOffer.contract === 'freelance') {
+      candidature.budgetPropose = this.budgetPropose;
+    }
+
+    this.candidatureService.postuler(candidature).subscribe({
+      next: () => {
+        this.showMotivationModal = false;
+        this.motivationText = '';
+        this.budgetPropose = null;
+        this.acceptCommission = false; // reset checkbox
+        this.candidatureLoading = false;
+        Swal.fire({
+          icon: 'success',
+          title: 'Candidature envoyée',
+          text: 'Votre candidature a été envoyée avec succès !',
+          confirmButtonText: 'OK',
+        });
+      },
+      error: () => {
+        Swal.fire({
+          icon: 'error',
+          title: 'Erreur',
+          text: 'Erreur lors de la soumission de la candidature.',
+          confirmButtonText: 'OK',
+        });
+        this.candidatureLoading = false;
+      },
+    });
   }
 }

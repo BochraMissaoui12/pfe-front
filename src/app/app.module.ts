@@ -24,6 +24,12 @@ import { CevenementsActualitesComponent } from './admin/cevenements-actualites/c
 import { AppelsOffresComponent } from './admin/appels-offres/appels-offres.component';
 import { AdministrateursComponent } from './admin/administrateurs/administrateurs.component';
 import { EoffresComponent } from './pages/eoffres/eoffres.component';
+import { OffresComponent } from './admin/offres/offres.component';
+import { ProblemeTechniquesComponent } from './admin/probleme-techniques/probleme-techniques.component';
+import { FileNamePipe } from './services/file-name.pipe';
+import { ProblemesComponent } from './pages/problemes/problemes.component';
+import { ProfilChercheurComponent } from './pages/profil-chercheur/profil-chercheur.component';
+import { EproblemesComponent } from './pages/eproblemes/eproblemes.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -44,6 +50,12 @@ import { EoffresComponent } from './pages/eoffres/eoffres.component';
     AppelsOffresComponent,
     AdministrateursComponent,
     EoffresComponent,
+    OffresComponent,
+    FileNamePipe,
+    ProblemeTechniquesComponent,
+    ProblemesComponent,
+    ProfilChercheurComponent,
+    EproblemesComponent,
   ],
   imports: [
     BrowserModule,

@@ -315,6 +315,88 @@ body {
   display: flex;
   justify-content: center;
 }
+.candidatures-container {
+  background: #fff;
+  border-radius: 20px;
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.12);
+  padding: 2.5rem 2rem;
+  max-width: 1200px;
+}
+
+.candidatures-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0 12px;
+}
+
+.candidatures-table th,
+.candidatures-table td {
+  padding: 1rem 1.2rem;
+  text-align: left;
+  background: #f8fafc;
+  border-radius: 8px;
+}
+
+.candidatures-table th {
+  background: #f1f5f9;
+  color: #334155;
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+
+.candidature-logo {
+  width: 38px;
+  height: 38px;
+  border-radius: 8px;
+  object-fit: cover;
+  margin-right: 10px;
+  vertical-align: middle;
+  background: #f1f5f9;
+  box-shadow: 0 1px 4px rgba(30, 41, 59, 0.08);
+}
+
+.entreprise-name {
+  font-weight: 500;
+  color: #1e293b;
+  vertical-align: middle;
+}
+
+.statut-accepte {
+  color: #22c55e;
+  background: #dcfce7;
+  padding: 0.3em 1em;
+  border-radius: 8px;
+  font-weight: 600;
+}
+.statut-preselectionne {
+  color: #e3b605;
+  background: #fef9c3;
+  padding: 0.3em 1em;
+  border-radius: 8px;
+  font-weight: 600;
+}
+.statut-refuse {
+  color: #dc2626;
+  background: #fee2e2;
+  padding: 0.3em 1em;
+  border-radius: 8px;
+  font-weight: 600;
+}
+.statut-attente {
+  color: #475569;
+  background: #f1f5f9;
+  padding: 0.3em 1em;
+  border-radius: 8px;
+  font-weight: 600;
+}
+
+.loading-spinner,
+.no-candidatures {
+  text-align: center;
+  color: #64748b;
+  padding: 2rem 0;
+  font-size: 1.1rem;
+}
 
 /* Font Awesome Icons */
 @import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css");
@@ -381,7 +463,20 @@ body {
   max-width: 250px;
   margin: 10px auto;
 }
+.btn-primary {
+  background: rgba(0, 168, 232, 1);
+  border: none;
+  padding: 1vh 2vw;
+  border-radius: 36px;
+  color: rgba(30, 41, 59, 1);
+  font-weight: 400;
+  cursor: pointer;
+  transition: 0.3s;
+}
 
+.btn-primary:hover {
+  background: #0078cc;
+}
 .newsletter input {
   border: none;
   outline: none;

@@ -5,28 +5,21 @@
         </div>
         <nav>
             <ul class="nav-links">
-                <li><a href="#" class="active">Les offre</a></li>
-                <li><a href="#">Messages</a></li>
-                <li><a href="#">Actualité</a></li>
+                <li><a href="#">Accueil</a></li>
+                <li><a href="#" routerLink="/liste-offres">Postuler à des offres</a></li>
+                <li><a href="#">Événements & Actualités</a></li>
                 <li><a href="#">Contact</a></li>
+
             </ul>
         </nav>
-        <div class="search-container" style="margin-right: 10px;">
-            <input type="text" placeholder="Search in site">
-            <i class="fa fa-search search-icon"></i>
-        </div>
-        <div class="icons">
-            <i class="fa fa-bell"></i>
-            <div class="user-avatar">
-                <img src="assets/images/default-avatar.png" alt="User Avatar">
-            </div>
-        </div>
+        <!-- Bouton dynamique -->
+        <button class="btn-primary" routerLink="/profil">Votre profil</button>
+
         <!-- Menu mobile -->
         <button class="menu-toggle" (click)="toggleMenu()">
             <img src="assets/images/Vector.png" alt="Menu">
         </button>
     </header>
-
 
     <div class="profile-container">
         <div class="sidebar">

@@ -6,13 +6,52 @@
             </div>
             <nav>
                 <ul class="nav-links">
-                    <li><a href="#" class="active">Accueil</a></li>
-                    <li><a href="#">Emplois & Stages</a></li>
-                    <li><a href="#">Publier une offre</a></li>
-                    <li><a href="#">Contact</a></li>
+                    <li><a routerLink="/" class="active">Accueil</a></li>
+
+                    <!-- Navbar CANDIDAT -->
+                    <ng-container *ngIf="role === 'CANDIDAT'">
+                        <li><a routerLink="/liste-offres">Postuler à des offres</a></li>
+                        <li><a href="#">Événements & Actualités</a></li>
+                        <li><a href="#">Contact</a></li>
+                    </ng-container>
+
+                    <!-- Navbar ENTREPRISE -->
+                    <ng-container *ngIf="role === 'ENTREPRISE'">
+                        <li><a routerLink="/Eoffres">Mes Offres</a></li>
+                        <li><a routerLink="/Eproblemes">Mes Problemes & Solutions</a></li>
+                        <li><a routerLink="/Eevenements">Mes Actualité</a></li>
+                    </ng-container>
+
+                    <!-- Navbar CHERCHEUR -->
+                    <ng-container *ngIf="role === 'CHERCHEUR'">
+                        <li><a href="#">Mes recherches</a></li>
+                        <li><a href="#">Collaborations</a></li>
+                        <li><a href="#">Contact</a></li>
+                    </ng-container>
+
+                    <!-- Navbar par défaut ou non connecté -->
+                    <!-- Navbar par défaut ou non connecté -->
+                    <ng-container *ngIf="!role || role === 'ADMIN' || role === 'SUPERADMIN'">
+                        <li><a href="#">Emplois & Stages</a></li>
+                        <li><a href="#">Publier une offre</a></li>
+                        <li><a href="#">Contact</a></li>
+                    </ng-container>
                 </ul>
             </nav>
-            <button class="btn-primary" (click)="openSignupModal()">S'inscrire</button>
+            <!-- Bouton dynamique -->
+            <button class="btn-primary" *ngIf="!isConnected || role === 'ADMIN' || role === 'SUPERADMIN'"
+                (click)="openSignupModal()">S'inscrire</button>
+            <button class="btn-primary"
+                *ngIf="isConnected && (role === 'CHERCHEUR' || role === 'ENTREPRISE' || role === 'CANDIDAT')"
+                [routerLink]="
+          role === 'CHERCHEUR' ? '/chercheur-profil' :
+          role === 'ENTREPRISE' ? '/Eprofil' :
+          role === 'CANDIDAT' ? '/profil' :
+          null
+        ">
+                Votre profil
+            </button>
+
             <div class="modal fade" id="signupModal" tabindex="-1" aria-labelledby="signupModalLabel"
                 aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered">
@@ -41,13 +80,13 @@
                 des opportunités d’emploi qui correspondent à vos aspirations et connectez-vous
                 avec des professionnels de votre secteur.</p>
 
-            <div class="search-container">
+            <!-- <div class="search-container">
                 <i class="fas fa-search search-icon"></i>
                 <input type="text" placeholder="chercher un emploi">
                 <button class="search-button">
                     <i class="fas fa-arrow-up-right"></i>
                 </button>
-            </div>
+            </div> -->
 
             <div class="image-container">
                 <!-- Demi-cercle en arrière-plan -->
@@ -110,10 +149,10 @@
                 </div>
                 <div class="cardd" data-aos="fade-left" data-aos-duration="1000">
                     <div class="icon"><i class="fas fa-newspaper"></i></div>
-                    <h3>Actualités</h3>
-                    <p>Restez informé des tendances du marché, des innovations et des évolutions dans votre
-                        secteur
-                        d’activité. Un fil d’actualité toujours mis à jour.</p>
+                    <h3>Problèmes Techniques</h3>
+                    <p> Notre site permet aux utilisateurs de signaler, suivre et gérer efficacement les difficultés
+                        Techniques
+                        rencontrées au sein des entreprises</p>
                     <a href="#" class="read-more"></a>
                 </div>
                 <div class="cardd" data-aos="fade-left" data-aos-duration="1000">
@@ -134,7 +173,7 @@
                     <h1 data-aos="zoom-in" data-aos-delay="200">
                         Obtenez votre meilleure <br> profession avec <span class="highlight">UTTEC</span>
                     </h1>
-                    <div class="button-container" routerLink="/offres">
+                    <div class="button-container" routerLink="/liste-offres">
                         <button class="hover-button">
                             <span class="icon">↗</span>
                             <span class="text">Voir Plus ↗</span>

@@ -4,12 +4,103 @@
         <header class="topbar">
             <div class="left"></div>
             <div class="right">
-                <button class="icon-btn notification">
+                <button class="icon-btn notification" (click)="toggleNotifications()">
                     <i class="fa fa-bell"></i>
+                    <span *ngIf="notifications.length > 0" class="notif-badge">{{ notifications.length }}</span>
                 </button>
+                <div class="notif-dropdown" *ngIf="showNotifications">
+                    <div *ngIf="notifications.length === 0" class="notif-empty">
+                        Aucune nouvelle notification.
+                    </div>
+                    <div *ngFor="let notif of notifications" class="notif-item" (click)="consulterNotification(notif)">
+                        <strong>{{ notif.titre }}</strong>
+                        <span class="notif-date">{{ notif.dateCreation | date:'short' }}</span>
+                        <div class="notif-msg">{{ notif.message }}</div>
+                    </div>
+                </div>
                 <button class="icon-btn logout" (click)="logout()">
                     <i class="fa fa-sign-out-alt"></i>
                 </button>
-
             </div>
         </header>
+
+        <div class="appels-table-container">
+            <div class="header-row">
+                <h2>Liste des Appels d'Offres</h2>
+                <button class="btn-add" (click)="openAddModal()">
+                    <i class="fa fa-plus"></i> Ajouter
+                </button>
+            </div>
+            <table class="appels-table">
+                <thead>
+                    <tr>
+                        <th>Promoteur</th>
+                        <th>Pays</th>
+                        <th>Type</th>
+                        <th>Description</th>
+                        <th>Publié le</th>
+                        <th>Expire le</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let appel of appels">
+                        <td>{{ appel.promoteur }}</td>
+                        <td>{{ appel.pays }}</td>
+                        <td>{{ appel.type }}</td>
+                        <td>{{ appel.description }}</td>
+                        <td>{{ appel.publieLe | date:'mediumDate' }}</td>
+                        <td>{{ appel.expireLe | date:'mediumDate' }}</td>
+                        <td>
+                            <button class="btn-action edit" (click)="openEditModal(appel)">
+                                <i class="fa fa-edit"></i>
+                            </button>
+                            <button class="btn-action delete" (click)="deleteAppel(appel)">
+                                <i class="fa fa-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="modal" *ngIf="showModal">
+                <div class="modal-content">
+                    <button (click)="closeModal()" class="close-btn">&times;</button>
+                    <h3>{{ isEdit ? 'Modifier' : 'Ajouter' }} un Appel d'Offre</h3>
+                    <form [formGroup]="appelForm" (ngSubmit)="submitForm()">
+                        <div class="form-row">
+                            <label>Pays :</label>
+                            <input formControlName="pays" type="text" required />
+                        </div>
+                        <div class="form-row">
+                            <label>Promoteur :</label>
+                            <input formControlName="promoteur" type="text" required />
+                        </div>
+                        <div class="form-row">
+                            <label>Type :</label>
+                            <input formControlName="type" type="text" required />
+                        </div>
+                        <div class="form-row">
+                            <label>Description :</label>
+                            <textarea formControlName="description" required></textarea>
+                        </div>
+                        <div class="form-row">
+                            <label>Publié le :</label>
+                            <input formControlName="publieLe" type="date" required />
+                        </div>
+                        <div class="form-row">
+                            <label>Expire le :</label>
+                            <input formControlName="expireLe" type="date" required />
+                        </div>
+                        <div class="modal-actions">
+                            <button type="submit" [disabled]="appelForm.invalid || loading">
+                                {{ isEdit ? 'Enregistrer' : 'Ajouter' }}
+                            </button>
+                            <button type="button" class="btn-cancel" (click)="closeModal()">Annuler</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>

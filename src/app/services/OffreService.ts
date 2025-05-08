@@ -16,6 +16,9 @@ export class OffreService {
   getOffresByEntrepriseId(entrepriseId: string): Observable<any[]> {
     return this.http.get<any[]>(`${this.apiUrl}/entreprise/${entrepriseId}`);
   }
+  getOffresValidees(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/validees`);
+  }
 
   getOffreById(id: string): Observable<any> {
     return this.http.get<any>(`${this.apiUrl}/${id}`);
@@ -27,5 +30,11 @@ export class OffreService {
 
   deleteOffre(id: string): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/${id}`);
+  }
+  getAllOffres(): Observable<any[]> {
+    return this.http.get<any[]>(this.apiUrl);
+  }
+  validerOffre(id: string): Observable<any> {
+    return this.http.put<any>(`${this.apiUrl}/valider/${id}`, {});
   }
 }

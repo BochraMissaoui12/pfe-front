@@ -5,18 +5,21 @@
         </div>
         <nav>
             <ul class="nav-links">
-                <li><a routerLink="/Eprofil" class="active">Profil</a></li>
+                <li><a routerLink="/">Accueil</a></li>
                 <li><a routerLink="/Eoffres">Mes Offres</a></li>
+                <li><a routerLink="/Eproblemes">Mes Problemes & Solutions</a></li>
                 <li><a routerLink="/Eevenements">Mes Actualité</a></li>
-                <li><a routerLink="/Eproblemes">Mes Probleme Techniques</a></li>
             </ul>
         </nav>
-        <div class="search-container" style="margin-right: 10px;">
-            <input type="text" placeholder="Search in site">
-            <i class="fa fa-search search-icon"></i>
-        </div>
+        <button class="btn-primary" routerLink="/Eprofil" style="background: rgba(0, 168, 232, 1);
+        border: none;
+        padding: 1vh 2vw;
+        border-radius: 36px;
+        color: rgba(30, 41, 59, 1);
+        font-weight: 400;
+        cursor: pointer;
+        transition: 0.3s;">Votre profil</button>
         <div class="icons">
-            <i class="fa fa-bell"></i>
             <button class="icon-btn logout" (click)="logout()">
                 <i class="fa fa-sign-out-alt"></i>
             </button>
@@ -49,7 +52,13 @@
                             </p>
                         </div>
                     </div>
+
+
                 </div>
+                <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#probleme">
+                    Problème technique ?
+                </button>
+
                 <div class="edit-icon" data-bs-toggle="modal" data-bs-target="#editHeaderModal">
                     <i class="fa fa-pencil"></i>
                 </div>
@@ -80,6 +89,39 @@
                 </div>
             </div>
         </div>
+        <div class="modal fade" id="probleme" tabindex="-1" aria-hidden="true" aria-labelledby="problemeLabel">
+            <div class="modal-dialog">
+                <form (ngSubmit)="submitProbleme()" [formGroup]="problemeForms" class="modal-content" novalidate>
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="problemeLabel">Signaler un problème technique</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fermer"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label class="form-label" for="description">Description *</label>
+                            <textarea id="description" class="form-control" formControlName="description" rows="3"
+                                required></textarea>
+                            <div *ngIf="problemeForms.get('description')?.invalid && (problemeForms.get('description')?.touched || problemeForms.get('description')?.dirty)"
+                                class="text-danger">
+                                La description est obligatoire.
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label" for="file">Ajouter un fichier (optionnel)</label>
+                            <input id="file" type="file" (change)="onFileSelected($event)" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary" [disabled]="loading">
+                            {{ loading ? 'Envoi...' : 'Envoyer' }}
+                        </button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+
         <div class="modal fade" id="editHeaderModal" tabindex="-1" aria-labelledby="editHeaderModalLabel"
             aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">

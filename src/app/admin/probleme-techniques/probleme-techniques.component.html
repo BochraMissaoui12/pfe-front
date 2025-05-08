@@ -1,0 +1,186 @@
+<div class="dashboard-layout">
+    <app-sidebar></app-sidebar>
+    <div class="main-content">
+        <header class="topbar">
+            <div class="left"></div>
+            <div class="right">
+                <button class="icon-btn notification" (click)="toggleNotifications()">
+                    <i class="fa fa-bell"></i>
+                    <span *ngIf="notifications.length > 0" class="notif-badge">{{ notifications.length }}</span>
+                </button>
+                <div class="notif-dropdown" *ngIf="showNotifications">
+                    <div *ngIf="notifications.length === 0" class="notif-empty">
+                        Aucune nouvelle notification.
+                    </div>
+                    <div *ngFor="let notif of notifications" class="notif-item" (click)="consulterNotification(notif)">
+                        <strong>{{ notif.titre }}</strong>
+                        <span class="notif-date">{{ notif.dateCreation | date:'short' }}</span>
+                        <div class="notif-msg">{{ notif.message }}</div>
+                    </div>
+                </div>
+                <button class="icon-btn logout" (click)="logout()">
+                    <i class="fa fa-sign-out-alt"></i>
+                </button>
+            </div>
+        </header>
+
+        <div class="problemes-techniques">
+
+            <button class="btn-primary" (click)="openAddModal()">
+                <i class="fa fa-plus"></i> Ajouter un problème
+            </button>
+
+            <hr />
+
+            <h3>Liste des problèmes</h3>
+            <div class="problemes-list">
+                <div class="probleme-card" *ngFor="let p of paginatedProblemes">
+                    <div class="card-header">
+                        <span class="entreprise-nom">{{ getEntrepriseNom(p.entrepriseId) }}</span>
+
+                        <span class="statut" [ngClass]="{
+                      'status-en-attente': p.statut === 'En attente',
+                      'status-resolu': p.statut === 'Résolu',
+                      'status-publie': p.statut === 'Publié'
+                    }">{{ p.statut }}</span>
+                    </div>
+                    <div class="card-body">
+                        <h4>{{ p.description }}</h4>
+                        <div class="infos-row">
+                            <span class="date">{{ p.dateCreation | date:'short' }}</span>
+                            <span class="publie" *ngIf="p.publieSurSite">Publié</span>
+                        </div>
+                        <div class="fichiers" *ngIf="p.fichiersUrls?.length > 0">
+                            <span>Fichiers :</span>
+                            <a *ngFor="let url of p.fichiersUrls" [href]="url" target="_blank" rel="noopener noreferrer"
+                                class="file-link">
+                                {{ url | fileName }}
+                            </a>
+                        </div>
+                        <div *ngIf="!p.fichiersUrls?.length" class="no-files">Aucun fichier</div>
+                    </div>
+                    <div class="card-actions">
+                        <button class="btn-edit" (click)="openEditModal(p)">
+                            <i class="fa fa-edit"></i>
+                        </button>
+                        <button class="btn-delete" (click)="deleteProbleme(p.id)">
+                            <i class="fa fa-trash"></i>
+                        </button>
+                        <button *ngIf="p.statut !== 'Publié'" class="btn-repondre"
+                            (click)="openReponseModal(p)">Répondre</button>
+                        <button class="btn-view" (click)="openListeReponsesModal(p)">Voir les réponses</button>
+                    </div>
+                </div>
+                <div *ngIf="problemes.length === 0" class="empty-state">Aucun problème technique trouvé.</div>
+            </div>
+            <div class="pagination-controls" *ngIf="totalPages > 1">
+                <button (click)="prevPage()" [disabled]="currentPage === 1">Précédent</button>
+
+                <button *ngFor="let page of [].constructor(totalPages); let i = index" (click)="goToPage(i + 1)"
+                    [class.active]="currentPage === i + 1">
+                    {{ i + 1 }}
+                </button>
+
+                <button (click)="nextPage()" [disabled]="currentPage === totalPages">Suivant</button>
+            </div>
+
+            <!-- Modal : Ajouter / Modifier problème -->
+            <div class="modal" *ngIf="showModal">
+                <div class="modal-content">
+                    <h2>{{ isEditMode ? 'Modifier un problème' : 'Ajouter un problème' }}</h2>
+                    <form (submit)="saveProbleme(); $event.preventDefault()" class="form-modal">
+
+                        <label>Description :</label>
+                        <textarea [(ngModel)]="problemeForm.description" name="description" required rows="4"
+                            placeholder="Décrivez le problème..."></textarea>
+
+                        <label>Entreprise :</label>
+                        <select [(ngModel)]="problemeForm.entrepriseId" name="entrepriseId" required>
+                            <option value="" disabled>Choisir une entreprise</option>
+                            <option *ngFor="let e of entreprises" [value]="e.id">{{ e.nom }}</option>
+                        </select>
+
+                        <label>Statut :</label>
+                        <select [(ngModel)]="problemeForm.statut" name="statut" required>
+                            <option>En attente</option>
+                            <option>Résolu</option>
+                            <option>Publié</option>
+                        </select>
+
+                        <label class="checkbox-label">
+                            <input type="checkbox" [(ngModel)]="problemeForm.publieSurSite" name="publieSurSite" />
+                            Publié sur le site
+                        </label>
+
+                        <label>Fichiers associés :</label>
+                        <div *ngIf="problemeForm.fichiersUrls?.length > 0; else noFilesModal" class="files-list">
+                            <a *ngFor="let url of problemeForm.fichiersUrls" [href]="url" target="_blank"
+                                rel="noopener noreferrer" class="file-link">
+                                {{ url | fileName }}
+                            </a>
+                        </div>
+                        <ng-template #noFilesModal>
+                            <span class="no-files">Aucun fichier associé</span>
+                        </ng-template>
+
+                        <label>Ajouter un fichier (optionnel) :</label>
+                        <input type="file" (change)="onFileSelected($event)" />
+
+                        <div class="modal-buttons">
+                            <button type="submit" class="btn-primary">
+                                {{ isEditMode ? 'Enregistrer' : 'Ajouter' }}
+                            </button>
+                            <button type="button" class="btn-secondary" (click)="cancelModal()">Annuler</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Modal : Répondre au problème (admin) -->
+            <div class="modal" *ngIf="showReponseModal">
+                <div class="modal-content">
+                    <h2>Répondre au problème</h2>
+                    <p><strong>Problème :</strong> {{ problemeEnCours?.description }}</p>
+                    <form (submit)="envoyerReponseProbleme(); $event.preventDefault()" class="form-modal">
+                        <label>Solution :</label>
+                        <textarea [(ngModel)]="reponseForm.solution" name="solution" rows="5" required></textarea>
+                        <label>Ajouter un fichier (optionnel) :</label>
+                        <input type="file" (change)="onReponseFileSelected($event)" />
+                        <div class="modal-buttons">
+                            <button type="submit" class="btn-primary">Envoyer</button>
+                            <button type="button" class="btn-secondary" (click)="cancelReponseModal()">Annuler</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Modal : Liste des réponses -->
+            <div class="modal" *ngIf="showListeReponsesModal">
+                <div class="modal-content">
+                    <h2>Réponses au problème</h2>
+                    <div *ngIf="reponsesProbleme.length > 0; else noReponses">
+                        <ul class="liste-reponses">
+                            <li *ngFor="let r of reponsesProbleme">
+                                <p><strong>Utilisateur :</strong> {{ r.nomUtilisateur || 'Admin' }}</p>
+                                <p><strong>Email :</strong> {{ r.emailUtilisateur || 'admin@example.com' }}</p>
+                                <p><strong>Solution :</strong> {{ r.solution }}</p>
+                                <div *ngIf="r.fichiersUrls?.length > 0">
+                                    <strong>Fichiers :</strong>
+                                    <a *ngFor="let url of r.fichiersUrls" [href]="url" target="_blank"
+                                        rel="noopener noreferrer" class="file-link">
+                                        {{ url.split('/').pop() }}
+                                    </a>
+                                </div>
+                                <hr />
+                            </li>
+                        </ul>
+                    </div>
+                    <ng-template #noReponses>
+                        <p>Aucune réponse pour ce problème.</p>
+                    </ng-template>
+                    <button class="btn-secondary" (click)="closeListeReponsesModal()">Fermer</button>
+                </div>
+            </div>
+
+        </div>
+    </div>

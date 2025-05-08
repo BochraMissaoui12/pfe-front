@@ -1,0 +1,123 @@
+<body>
+    <div class="home">
+        <header class="navbar" data-aos="fade-down" data-aos-duration="1000">
+            <div class="logo">
+                <img src="assets/images/logo.png" alt="Logo">
+            </div>
+            <nav>
+                <ul class="nav-links">
+                    <li><a routerLink="/" class="active">Accueil</a></li>
+
+                    <!-- Navbar CANDIDAT -->
+                    <ng-container *ngIf="role === 'CANDIDAT'">
+                        <li><a routerLink="/liste-offres">Postuler à des offres</a></li>
+                        <li><a href="#">Événements & Actualités</a></li>
+                        <li><a href="#">Contact</a></li>
+                    </ng-container>
+
+                    <!-- Navbar ENTREPRISE -->
+                    <ng-container *ngIf="role === 'ENTREPRISE'">
+                        <li><a routerLink="/Eoffres">Mes Offres</a></li>
+                        <li><a routerLink="/Ecandidatures">Les Candidatures</a></li>
+                        <li><a routerLink="/Eevenements">Mes Actualité</a></li>
+                    </ng-container>
+
+                    <!-- Navbar CHERCHEUR -->
+                    <ng-container *ngIf="role === 'CHERCHEUR'">
+                        <li><a href="#">Mes recherches</a></li>
+                        <li><a href="#">Collaborations</a></li>
+                        <li><a href="#">Contact</a></li>
+                    </ng-container>
+
+                    <!-- Navbar par défaut ou non connecté -->
+                    <!-- Navbar par défaut ou non connecté -->
+                    <ng-container *ngIf="!role || role === 'ADMIN' || role === 'SUPERADMIN'">
+                        <li><a href="#">Emplois & Stages</a></li>
+                        <li><a href="#">Publier une offre</a></li>
+                        <li><a href="#">Contact</a></li>
+                    </ng-container>
+                </ul>
+            </nav>
+            <!-- Bouton dynamique -->
+            <button class="btn-primary" *ngIf="!isConnected || role === 'ADMIN' || role === 'SUPERADMIN'"
+                (click)="openSignupModal()">S'inscrire</button>
+            <button class="btn-primary"
+                *ngIf="isConnected && (role === 'CHERCHEUR' || role === 'ENTREPRISE' || role === 'CANDIDAT')"
+                [routerLink]="
+          role === 'CHERCHEUR' ? '/chercheur-profil' :
+          role === 'ENTREPRISE' ? '/Eprofil' :
+          role === 'CANDIDAT' ? '/profil' :
+          null
+        ">
+                Votre profil
+            </button>
+
+            <div class="modal fade" id="signupModal" tabindex="-1" aria-labelledby="signupModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content" style="background-color: rgba(30, 41, 59, 1);border-radius: 16px;">
+                        <div class="modal-header custom-header" [ngClass]="{'verification-header': isVerificationMode}">
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                                [ngClass]="{'btn-close-black': isVerificationMode}"></button>
+                        </div>
+                        <div class="modal-body custom-body" [ngClass]="{'verification-body': isVerificationMode}">
+                            <app-signup (verificationModeChange)="isVerificationMode = $event"></app-signup>
+                            <!-- Composant Signup -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Menu mobile -->
+            <button class="menu-toggle" (click)="toggleMenu()">
+                <img src="assets/images/Vector.png" alt="Menu">
+            </button>
+        </header>
+        <div class="problemes-publies-section">
+            <h1 class="section-title">Problèmes Techniques Publiés</h1>
+            <div *ngIf="loading" class="loading">Chargement...</div>
+            <div class="problemes-grid">
+                <div class="probleme-card" *ngFor="let p of problemes">
+                    <div class="card-header">
+                        <div class="entreprise-info" *ngIf="getEntreprise(p) as entreprise">
+                            <img [src]="entreprise.logoUrl" alt="{{ entreprise.nom }}" class="entreprise-logo" />
+                            <span class="entreprise-nom">{{ entreprise.nom }}</span>
+                        </div>
+
+                        <span class="date">{{ p.dateCreation | date:'short' }}</span>
+                    </div>
+                    <div class="card-body">
+                        <h6 style="font-weight: 400;">{{ p.description }}</h6>
+                        <div class="fichiers" *ngIf="p.fichiersUrls?.length > 0">
+                            <span>Fichiers :</span>
+                            <a *ngFor="let url of p.fichiersUrls" [href]="url" target="_blank" rel="noopener noreferrer"
+                                class="file-link">
+                                {{ url.split('/').pop() }}
+                            </a>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <form (submit)="envoyerReponse(p); $event.preventDefault()" class="reponse-form">
+
+                            <input type="text" [(ngModel)]="reponses[p.id].nomUtilisateur"
+                                name="nomUtilisateur-{{p.id}}" placeholder="Votre nom complet" required />
+
+                            <input type="email" [(ngModel)]="reponses[p.id].emailUtilisateur"
+                                name="emailUtilisateur-{{p.id}}" placeholder="Votre email" required />
+
+                            <textarea [(ngModel)]="reponses[p.id].solution" name="solution-{{p.id}}"
+                                placeholder="Votre solution..." required></textarea>
+
+                            <input type="file" (change)="onFileSelected(p.id, $event)" />
+
+                            <button type="submit" class="btnny btn-primary" [disabled]="envoiEnCours[p.id]">
+                                {{ envoiEnCours[p.id] ? 'Envoi...' : 'Envoyer la solution' }}
+                            </button>
+                        </form>
+
+                    </div>
+                </div>
+                <div *ngIf="!loading && problemes.length === 0" class="empty-state">
+                    Aucun problème technique publié pour le moment.
+                </div>
+            </div>
+        </div>

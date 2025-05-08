@@ -18,7 +18,9 @@ import * as bootstrap from 'bootstrap';
 export class HomeComponent implements OnInit, AfterViewInit {
   menuOpen = false;
   isVerificationMode = false;
-
+  isCandidat = false;
+  role!: any;
+  isConnected = false;
   @ViewChild('sponsorsContainer') sponsorsContainer!: ElementRef;
 
   sponsors = [
@@ -37,8 +39,34 @@ export class HomeComponent implements OnInit, AfterViewInit {
   ];
 
   constructor(private cdr: ChangeDetectorRef) {}
-
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    const token = localStorage.getItem('token');
+    if (token) {
+      try {
+        const payload = JSON.parse(atob(token.split('.')[1]));
+        this.role = payload.role;
+        this.isConnected = true;
+      } catch (e) {
+        this.isConnected = false;
+        this.role = null;
+      }
+    } else {
+      this.isConnected = false;
+      this.role = null;
+    }
+  }
+  getProfileRoute(): string {
+    switch (this.role) {
+      case 'CANDIDAT':
+        return '/profil';
+      case 'ENTREPRISE':
+        return '/Eprofil';
+      case 'CHERCHEUR':
+        return '/Cprofil';
+      default:
+        return '/profil';
+    }
+  }
 
   ngAfterViewInit() {
     setTimeout(() => {

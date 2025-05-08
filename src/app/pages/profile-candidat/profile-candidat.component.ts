@@ -28,6 +28,8 @@ export class ProfileCandidatComponent implements OnInit {
   years: number[] = [];
   user: any;
   isModalOpen = false;
+  isCandidat = false;
+  isConnected = false;
   templates = [
     { id: 1, name: 'Template Moderne' },
     { id: 2, name: 'Template Classique' },

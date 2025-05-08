@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AdminService } from 'src/app/services/AdminService';
+import { NotificationService } from 'src/app/services/NotificationService';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -15,8 +16,12 @@ export class AdministrateursComponent implements OnInit {
   isEditMode = false;
   editingAdminId: string | null = null;
   message: string = '';
-
+  candidaturesOffreSelectionnee: any[] = [];
+  notifications: any[] = [];
+  showNotifications: boolean = false;
+  offreSelectionneePourCandidatures: any = null;
   constructor(
+    private notificationService: NotificationService,
     private adminService: AdminService,
     private fb: FormBuilder,
     private router: Router
@@ -34,7 +39,41 @@ export class AdministrateursComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadAdmins();
+    this.loadNotifications();
   }
+  loadNotifications() {
+    this.notificationService.getNonConsultees().subscribe({
+      next: (data) => (this.notifications = data),
+      error: () => (this.notifications = []),
+    });
+  }
+
+  toggleNotifications() {
+    this.showNotifications = !this.showNotifications;
+    if (this.showNotifications) {
+      this.loadNotifications();
+    }
+  }
+
+  async consulterNotification(notification: any) {
+    const result = await Swal.fire({
+      title: 'Êtes-vous sûr ?',
+      text: 'Voulez-vous vraiment marquer cette notification comme consultée ?',
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonText: 'Oui, marquer comme consultée',
+      cancelButtonText: 'Annuler',
+    });
+    if (result.isConfirmed) {
+      this.notificationService
+        .marquerCommeConsulte(notification.id)
+        .subscribe(() => {
+          this.loadNotifications();
+          Swal.fire('Notification consultée', '', 'success');
+        });
+    }
+  }
+
   logout() {
     localStorage.removeItem('token');
     this.router.navigate(['/login']);

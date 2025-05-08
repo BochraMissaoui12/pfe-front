@@ -12,6 +12,7 @@ import { UtilisateurService } from 'src/app/services/UtilisateurService';
 import Swal from 'sweetalert2';
 import * as bootstrap from 'bootstrap';
 import { OffreService } from 'src/app/services/OffreService';
+import { ProblemeTechniqueService } from 'src/app/services/ProblemeTechniqueService';
 
 @Component({
   selector: 'app-profile-entreprise',
@@ -21,19 +22,22 @@ import { OffreService } from 'src/app/services/OffreService';
 export class ProfileEntrepriseComponent implements OnInit {
   menuOpen = false;
   step = 1;
+  entrepriseId!: any;
   entreprise: any;
   loading = true;
   error = false;
   offreForm!: FormGroup;
   headerForm: FormGroup;
   bioForm: FormGroup;
-
+  problemeForms!: FormGroup;
+  selectedFile?: File;
   constructor(
     private utilisateurService: UtilisateurService,
     private route: ActivatedRoute,
     private entrepriseService: EntrepriseService,
     private fb: FormBuilder,
     private router: Router,
+    private problemeService: ProblemeTechniqueService,
     private offreService: OffreService
   ) {
     // Formulaire header
@@ -65,6 +69,7 @@ export class ProfileEntrepriseComponent implements OnInit {
       }
       const id = decodedToken.id;
       const role = decodedToken.role;
+      this.entrepriseId = id;
       if (!sessionStorage.getItem('reloaded')) {
         sessionStorage.setItem('reloaded', 'true');
         window.location.reload();
@@ -72,6 +77,9 @@ export class ProfileEntrepriseComponent implements OnInit {
       } else {
         sessionStorage.removeItem('reloaded');
       }
+      this.problemeForms = this.fb.group({
+        description: ['', Validators.required],
+      });
       this.utilisateurService.getUtilisateurByIdAndRole(id, role).subscribe({
         next: (data) => {
           this.entreprise = data;
@@ -91,7 +99,7 @@ export class ProfileEntrepriseComponent implements OnInit {
             responsabilites: new FormArray([]),
             avantages: new FormArray([]),
             exigances: new FormArray([]),
-            entrepriseId: new FormControl(this.entreprise.id),
+            entrepriseId: new FormControl(this.entreprise?.id),
           });
         },
         error: (err) => {
@@ -104,6 +112,73 @@ export class ProfileEntrepriseComponent implements OnInit {
       this.loading = false;
     }
   }
+  onFileSelected(event: any) {
+    if (event.target.files.length > 0) {
+      this.selectedFile = event.target.files[0];
+    }
+  }
+
+  submitProbleme() {
+    const form = this.problemeForms;
+    if (form.invalid) {
+      form.markAllAsTouched();
+      return;
+    }
+
+    Swal.fire({
+      title: "Confirmer l'envoi",
+      text: 'Voulez-vous vraiment signaler ce problème technique ?',
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonText: 'Oui, envoyer',
+      cancelButtonText: 'Annuler',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.loading = true;
+
+        const problemeData: any = {
+          description: form.value.description,
+          entrepriseId: this.entrepriseId,
+          fichiersUrls: [],
+        };
+
+        const observable = this.selectedFile
+          ? this.problemeService.createProblemeWithFile(
+              problemeData,
+              this.selectedFile
+            )
+          : this.problemeService.createProblemeWithFile(problemeData);
+
+        observable.subscribe({
+          next: (res) => {
+            console.log('Problème créé avec succès', res);
+            this.loading = false;
+            Swal.fire(
+              'Succès',
+              'Problème technique signalé avec succès.',
+              'success'
+            );
+            form.reset();
+            this.selectedFile = undefined;
+
+            // Fermer le modal Bootstrap
+            const modalEl = document.getElementById('probleme');
+            if (modalEl) {
+              // @ts-ignore
+              const modal = bootstrap.Modal.getInstance(modalEl);
+              modal?.hide();
+            }
+          },
+          error: (err) => {
+            console.error("Erreur lors de l'envoi du problème", err);
+            this.loading = false;
+            Swal.fire('Erreur', "Erreur lors de l'envoi du problème.", 'error');
+          },
+        });
+      }
+    });
+  }
+
   logout() {
     localStorage.removeItem('token');
     this.router.navigate(['/']);

@@ -4,23 +4,71 @@
     </div>
     <nav>
         <ul class="nav-links">
-            <li><a href="#">Accueil</a></li>
-            <li><a href="#" class="active">Emplois & Stages</a></li>
-            <li><a href="#">Publier une offre</a></li>
-            <li><a href="#">Contact</a></li>
+            <li><a routerLink="/" class="active">Accueil</a></li>
+
+            <!-- Navbar CANDIDAT -->
+            <ng-container *ngIf="role === 'CANDIDAT'">
+                <li><a routerLink="/liste-offres">Postuler à des offres</a></li>
+                <li><a href="#">Événements & Actualités</a></li>
+                <li><a href="#">Contact</a></li>
+            </ng-container>
+
+            <!-- Navbar ENTREPRISE -->
+            <ng-container *ngIf="role === 'ENTREPRISE'">
+                <li><a routerLink="/Eoffres">Mes Offres</a></li>
+                <li><a routerLink="/Eproblemes">Mes Problemes & Solutions</a></li>
+                <li><a routerLink="/Eevenements">Mes Actualité</a></li>
+            </ng-container>
+
+            <!-- Navbar CHERCHEUR -->
+            <ng-container *ngIf="role === 'CHERCHEUR'">
+                <li><a href="#">Mes recherches</a></li>
+                <li><a href="#">Collaborations</a></li>
+                <li><a href="#">Contact</a></li>
+            </ng-container>
+
+            <!-- Navbar par défaut ou non connecté -->
+            <ng-container *ngIf="!role || role === 'ADMIN' || role === 'SUPERADMIN'">
+                <li><a href="#">Emplois & Stages</a></li>
+                <li><a href="#">Publier une offre</a></li>
+                <li><a href="#">Contact</a></li>
+            </ng-container>
         </ul>
     </nav>
-    <div class="icons">
-        <i class="fa fa-bell"></i>
-        <div class="user-avatar">
-            <img src="assets/images/default-avatar.png" alt="User Avatar">
-        </div>
-    </div>
+    <!-- Bouton dynamique -->
+    <button class="btn-primary" *ngIf="!isConnected || role === 'ADMIN' || role === 'SUPERADMIN'"
+        (click)="openSignupModal()">S'inscrire</button>
+    <button class="btn-primary"
+        *ngIf="isConnected && (role === 'CHERCHEUR' || role === 'ENTREPRISE' || role === 'CANDIDAT')" [routerLink]="
+          role === 'CHERCHEUR' ? '/chercheur-profil' :
+          role === 'ENTREPRISE' ? '/Eprofil' :
+          role === 'CANDIDAT' ? '/profil' :
+          null
+        ">
+        Votre profil
+    </button>
+
+
+
     <!-- Menu mobile -->
     <button class="menu-toggle" (click)="toggleMenu()">
         <img src="assets/images/Vector.png" alt="Menu">
     </button>
 </header>
+
+<div class="modal fade" id="signupModal" tabindex="-1" aria-labelledby="signupModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content" style="background-color: rgba(30, 41, 59, 1);border-radius: 16px;">
+            <div class="modal-header custom-header" [ngClass]="{'verification-header': isVerificationMode}">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                    [ngClass]="{'btn-close-black': isVerificationMode}"></button>
+            </div>
+            <div class="modal-body custom-body" [ngClass]="{'verification-body': isVerificationMode}">
+                <app-signup (verificationModeChange)="isVerificationMode = $event"></app-signup>
+            </div>
+        </div>
+    </div>
+</div>
 <div class="search-wrapper">
     <div class="yooreed-search-area">
         <div class="search-bar">
@@ -58,10 +106,10 @@
         </div>
 
         <div class="filter-options">
-            <button [class.active]="!offerType" (click)="setOfferType('')">
+            <button [class.active]="!offerType" (click)="getAll()">
                 Tout
             </button>
-            <button [class.active]="offerType === 'offre'" (click)="setOfferType('offre')">
+            <button [class.active]="offerType === 'emploi'" (click)="setOfferType('emploi')">
                 Offre d'emploi
             </button>
             <button [class.active]="offerType === 'stage'" (click)="setOfferType('stage')">
@@ -76,26 +124,27 @@
 </div>
 
 <div class="container">
-    <!-- Sidebar gauche -->
     <div class="sidebar">
         <div *ngFor="let offer of pagedOffers; let i = index" [class.active]="selectedOfferIndex === i"
             (click)="selectOffer(i)" class="offer-item">
             <div class="offer-header">
                 <div class="offer-header-left">
                     <div class="offer-company-logo">
-                        <img [src]="offer.logo" alt="Company Logo" />
+                        <img [src]="offer.logo" alt="Logo entreprise" />
                     </div>
-                    <div class="offer-company-name">{{ offer.company }}</div>
+                    <div class="offer-company-name">{{ offer.company || 'Entreprise' }}</div>
                 </div>
-                <div class="offer-date">{{ offer.date }}</div>
+                <div class="offer-date">{{ offer.date | date:'dd/MM/yyyy' }}</div>
             </div>
             <h4>{{ offer.title }}</h4>
-            <p class="offer-description" #offerDescription></p>
+            <p class="offer-description">
+                {{ offer.description ? (offer.description | slice:0:100) + (offer.description.length > 100 ? '...' : '')
+                : '' }}
+            </p>
             <p style="margin-top: 10px;">
                 <i class="fa fa-map-marker"></i> {{ offer.location }}
             </p>
         </div>
-
 
         <div class="pagination">
             <button class="page-btn" [disabled]="currentPage === 1" (click)="changePage(currentPage - 1)">
@@ -109,83 +158,121 @@
                 &gt;
             </button>
         </div>
-
     </div>
 
     <!-- Contenu à droite -->
-    <div class="details" *ngIf="!showModal">
+    <div class="details" *ngIf="!showModal && selectedOffer">
         <div class="details-header">
             <div class="company-header">
                 <div class="company-logo">
                     <img [src]="selectedOffer.logo" [alt]="selectedOffer.company + ' logo'" />
                 </div>
-                <div class="company-name">Metz - Lockman</div>
+                <div class="company-name">{{ selectedOffer.company || 'Entreprise' }}</div>
             </div>
+            <button class="apply-button" (click)="onApplyClick()">Postulez maintenant</button>
+        </div>
+        <h2>{{ selectedOffer.title }}</h2>
+        <p><i class="fa fa-map-marker"></i> {{ selectedOffer.location }}</p>
+        <div class="offer-details">
+            <p><i class="fa fa-users"></i> <strong>Nombre de postes ouverts :</strong> {{ selectedOffer.positions }}</p>
+            <p><i class="fa fa-briefcase"></i> <strong>Expérience :</strong> {{ selectedOffer.experience }}</p>
+            <p><i class="fa fa-file-contract"></i> <strong>Type de contrat :</strong> {{ selectedOffer.contract }}</p>
+        </div>
+        <h3>Description du poste :</h3>
+        <p>{{ selectedOffer.description }}</p>
+        <h3>Responsabilités :</h3>
+        <ul>
+            <li *ngFor="let responsibility of selectedOffer.responsibilities">{{ responsibility }}</li>
+        </ul>
+        <h3>Exigences :</h3>
+        <ul>
+            <li *ngFor="let requirement of selectedOffer.requirements">{{ requirement }}</li>
+        </ul>
+        <h3>Avantages :</h3>
+        <ul>
+            <li *ngFor="let advantage of selectedOffer.advantages">{{ advantage }}</li>
+        </ul>
+    </div>
+    <!-- Modal -->
+    <div class="modall" *ngIf="showModal && selectedOffer">
+        <div class="modal-content">
+            <span class="close" (click)="closeModal()">&times;</span>
+            <div class="details-header">
+                <div class="company-header">
+                    <div class="company-logo">
+                        <img [src]="selectedOffer.logo" [alt]="selectedOffer.company + ' logo'" />
+                    </div>
+                    <div class="company-name">{{ selectedOffer.company || 'Entreprise' }}</div>
+                </div>
+            </div>
+            <h2>{{ selectedOffer.title }}</h2>
+            <p><i class="fa fa-map-marker"></i> {{ selectedOffer.location }}</p>
+            <div class="offer-details">
+                <p><i class="fa fa-users"></i> <strong>Nombre de postes ouverts :</strong> {{ selectedOffer.positions }}
+                </p>
+                <p><i class="fa fa-briefcase"></i> <strong>Expérience :</strong> {{ selectedOffer.experience }}</p>
+                <p><i class="fa fa-file-contract"></i> <strong>Type de contrat :</strong> {{ selectedOffer.contract }}
+                </p>
+            </div>
+            <h3>Description du poste :</h3>
+            <p>{{ selectedOffer.description }}</p>
+            <h3>Responsabilités :</h3>
+            <ul>
+                <li *ngFor="let responsibility of selectedOffer.responsibilities">{{ responsibility }}</li>
+            </ul>
+            <h3>Exigences :</h3>
+            <ul>
+                <li *ngFor="let requirement of selectedOffer.requirements">{{ requirement }}</li>
+            </ul>
+            <h3>Avantages :</h3>
+            <ul>
+                <li *ngFor="let advantage of selectedOffer.advantages">{{ advantage }}</li>
+            </ul>
             <button class="apply-button">Postulez maintenant</button>
         </div>
-        <h2>{{ selectedOffer.title }}</h2>
-        <p><i class="fa fa-map-marker"></i> {{ selectedOffer.location }}</p>
-        <div class="offer-details">
-            <p><i class="fa fa-users"></i> <strong>Nombre de postes ouverts :</strong> {{ selectedOffer.positions
-                }}</p>
-            <p><i class="fa fa-briefcase"></i> <strong>Expérience :</strong> {{ selectedOffer.experience }}</p>
-            <p><i class="fa fa-file-contract"></i> <strong>Type de contrat :</strong> {{ selectedOffer.contract }}
-            </p>
-        </div>
-        <h3>Description du poste :</h3>
-        <p>{{ selectedOffer.description }}</p>
-        <h3>Responsabilités :</h3>
-        <ul>
-            <li *ngFor="let responsibility of selectedOffer.responsibilities">{{ responsibility }}</li>
-        </ul>
-        <h3>Exigences :</h3>
-        <ul>
-            <li *ngFor="let requirement of selectedOffer.requirements">{{ requirement }}</li>
-        </ul>
-        <h3>Avantages :</h3>
-        <ul>
-            <li *ngFor="let advantage of selectedOffer.advantages">{{ advantage }}</li>
-        </ul>
     </div>
-</div>
-
-<!-- Modal -->
-<div class="modal" *ngIf="showModal">
-    <div class="modal-content">
-        <span class="close" (click)="closeModal()">&times;</span>
-        <div class="details-header">
-            <div class="company-header">
-                <div class="company-logo">
-                    <img [src]="selectedOffer.logo" [alt]="selectedOffer.company + ' logo'" />
+    <div class="modern-modal" *ngIf="showMotivationModal">
+        <div class="modern-modal-content">
+            <button class="modern-close" (click)="showMotivationModal = false" aria-label="Fermer">&times;</button>
+            <div class="modern-modal-header">
+                <img [src]="selectedOffer?.logo || 'assets/images/entreprise.png'" alt="Logo entreprise"
+                    class="modern-modal-logo" />
+                <div>
+                    <h2 class="modern-modal-title">{{ selectedOffer?.title }}</h2>
+                    <p class="modern-modal-company">{{ selectedOffer?.company }}</p>
                 </div>
-                <div class="company-name">Metz - Lockman</div>
             </div>
+            <form (ngSubmit)="submitCandidature()">
+                <div class="modern-form-group">
+                    <label for="motivationText" class="modern-label">Votre motivation</label>
+                    <textarea id="motivationText" [(ngModel)]="motivationText" name="motivationText" rows="5"
+                        class="modern-textarea" placeholder="Expliquez pourquoi vous êtes le bon candidat"
+                        required></textarea>
+                </div>
+
+                <div *ngIf="selectedOffer?.contract === 'freelance'" class="modern-form-group">
+                    <label for="budgetPropose" class="modern-label">Votre budget proposé (en DT)</label>
+                    <input id="budgetPropose" type="number" min="1" [(ngModel)]="budgetPropose" name="budgetPropose"
+                        class="modern-input" placeholder="Ex: 100" required />
+                </div>
+
+                <div *ngIf="selectedOffer?.contract === 'freelance'" class="modern-form-group">
+                    <label>
+                        <input type="checkbox" [(ngModel)]="acceptCommission" name="acceptCommission" />
+                        J'accepte la commission de 10% prélevée par le site sur ce projet freelance.
+                    </label>
+                </div>
+
+                <button [disabled]="isCandidatureInvalid() || candidatureLoading" class="modern-submit">
+                    {{ candidatureLoading ? 'Envoi...' : 'Envoyer ma candidature' }}
+                </button>
+            </form>
+
         </div>
-        <h2>{{ selectedOffer.title }}</h2>
-        <p><i class="fa fa-map-marker"></i> {{ selectedOffer.location }}</p>
-        <div class="offer-details">
-            <p><i class="fa fa-users"></i> <strong>Nombre de postes ouverts :</strong> {{ selectedOffer.positions
-                }}</p>
-            <p><i class="fa fa-briefcase"></i> <strong>Expérience :</strong> {{ selectedOffer.experience }}</p>
-            <p><i class="fa fa-file-contract"></i> <strong>Type de contrat :</strong> {{ selectedOffer.contract }}
-            </p>
-        </div>
-        <h3>Description du poste :</h3>
-        <p>{{ selectedOffer.description }}</p>
-        <h3>Responsabilités :</h3>
-        <ul>
-            <li *ngFor="let responsibility of selectedOffer.responsibilities">{{ responsibility }}</li>
-        </ul>
-        <h3>Exigences :</h3>
-        <ul>
-            <li *ngFor="let requirement of selectedOffer.requirements">{{ requirement }}</li>
-        </ul>
-        <h3>Avantages :</h3>
-        <ul>
-            <li *ngFor="let advantage of selectedOffer.advantages">{{ advantage }}</li>
-        </ul>
-        <button class="apply-button">Postulez maintenant</button>
     </div>
+
+
+
 </div>
 <footer class="footer">
     <div class="footer-container">

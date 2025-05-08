@@ -1,0 +1,284 @@
+<div class="dashboard-layout">
+    <app-sidebar></app-sidebar>
+    <div class="main-content">
+        <header class="topbar">
+            <div class="left"></div>
+            <div class="right">
+                <button class="icon-btn notification" (click)="toggleNotifications()">
+                    <i class="fa fa-bell"></i>
+                    <span *ngIf="notifications.length > 0" class="notif-badge">{{ notifications.length }}</span>
+                </button>
+                <div class="notif-dropdown" *ngIf="showNotifications">
+                    <div *ngIf="notifications.length === 0" class="notif-empty">
+                        Aucune nouvelle notification.
+                    </div>
+                    <div *ngFor="let notif of notifications" class="notif-item" (click)="consulterNotification(notif)">
+                        <strong>{{ notif.titre }}</strong>
+                        <span class="notif-date">{{ notif.dateCreation | date:'short' }}</span>
+                        <div class="notif-msg">{{ notif.message }}</div>
+                    </div>
+                </div>
+
+
+                <button class="icon-btn logout" (click)="logout()">
+                    <i class="fa fa-sign-out-alt"></i>
+                </button>
+            </div>
+        </header>
+
+        <div class="content">
+            <h2>Gestion des Offres</h2>
+            <button (click)="ajouterOffre()" style="margin-bottom: 10px;">
+                <i class="fas fa-plus"></i> Ajouter une offre
+            </button>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Entreprise</th>
+                        <th>Titre</th>
+                        <th>Date Publication</th>
+                        <th>Localisation</th>
+                        <th>Validée</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let offre of paginatedOffres">
+                        <td>{{ offre.entrepriseNom }}</td>
+                        <td>{{ offre.titre }}</td>
+                        <td>{{ offre.datePublication }}</td>
+                        <td>{{ offre.localisation }}</td>
+                        <td>{{ offre.validee ? 'Oui' : 'Non' }}</td>
+                        <td>
+                            <button (click)="openModal(offre)">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                            <button (click)="valider(offre.id)" *ngIf="!offre.validee" style="background-color: green;">
+                                <i class="fas fa-check"></i> Valider
+                            </button>
+                            <button (click)="voirCandidatures(offre)" *ngIf="offre.validee">
+                                <i class="fas fa-users"></i> Voir les candidatures
+                            </button>
+
+                            <button (click)="supprimer(offre.id)" style="background-color: red;">
+                                <i class="fas fa-trash-alt"></i>
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+
+            </table>
+            <div class="pagination-controls" style="margin-top: 10px; text-align: center;">
+                <span
+                    style="cursor:pointer; font-size: 1.5em; margin-right: 20px; color: {{currentPage === 1 ? '#ccc' : '#333'}};"
+                    (click)="goToPage(currentPage - 1)" [class.disabled]="currentPage === 1"
+                    [style.pointerEvents]="currentPage === 1 ? 'none' : 'auto'" title="Page précédente">
+                    <i class="fa fa-arrow-left"></i>
+                </span>
+                <span>Page {{ currentPage }} / {{ totalPages }}</span>
+                <span
+                    style="cursor:pointer; font-size: 1.5em; margin-left: 20px; color: {{currentPage === totalPages ? '#ccc' : '#333'}};"
+                    (click)="goToPage(currentPage + 1)" [class.disabled]="currentPage === totalPages"
+                    [style.pointerEvents]="currentPage === totalPages ? 'none' : 'auto'" title="Page suivante">
+                    <i class="fa fa-arrow-right"></i>
+                </span>
+            </div>
+
+
+
+        </div>
+        <!-- Modal Candidatures par Offre -->
+        <div class="modal" *ngIf="showCandidaturesModal">
+            <div class="modal-content" style="max-width: 800px;">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <h3>Candidatures pour l'offre : {{ offreSelectionneePourCandidatures?.titre }}</h3>
+                    <button class="close" (click)="fermerCandidaturesModal()">&times;</button>
+                </div>
+                <div *ngIf="candidaturesOffreSelectionnee.length === 0">
+                    <p>Aucune candidature pour cette offre.</p>
+                </div>
+                <div *ngFor="let c of candidaturesOffreSelectionnee" class="candidature-card">
+                    <p><strong>Statut :</strong> {{ c.statut }}</p>
+                    <p><strong>Motivation :</strong> {{ c.motivation }}</p>
+                    <div *ngIf="c.candidat">
+                        <p><strong>Nom :</strong> {{ c.candidat.nom }} {{ c.candidat.prenom }}</p>
+                        <p><strong>Email :</strong> {{ c.candidat.email }}</p>
+                        <p><strong>Téléphone :</strong> {{ c.candidat.tel }}</p>
+                        <p><strong>Adresse :</strong> {{ c.candidat.adresse }}</p>
+                        <p>
+                            <strong>CV :</strong>
+                            <a [href]="c.candidat.cv" target="_blank" *ngIf="c.candidat.cv">Voir CV</a>
+                        </p>
+                        <h4>Compétences :</h4>
+                        <ul>
+                            <li *ngFor="let comp of c.candidat.competance">{{ comp }}</li>
+                        </ul>
+                        <h4>Expériences :</h4>
+                        <ul>
+                            <li *ngFor="let exp of c.candidat.experience">
+                                {{ exp.intitule }} - {{ exp.entreprise }} ({{ exp.dateDebut }} - {{ exp.dateFin ||
+                                'Présent' }})
+                            </li>
+                        </ul>
+                        <h4>Formations :</h4>
+                        <ul>
+                            <li *ngFor="let edu of c.candidat.education">
+                                {{ edu.diplome }} - {{ edu.etablissement }} ({{ edu.anneeObtention }})
+                            </li>
+                        </ul>
+                    </div>
+                    <hr>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal -->
+        <div class="modal" *ngIf="showModal">
+            <div class="modal-content">
+                <div *ngIf="formMode === 'view'">
+                    <h3>{{ selectedOffre?.titre }}</h3>
+                    <p><strong>Description:</strong> {{ selectedOffre?.description }}</p>
+                    <p><strong>Spécialité:</strong> {{ selectedOffre?.specilite }}</p>
+                    <p><strong>Expérience:</strong> {{ selectedOffre?.experience }}</p>
+                    <p><strong>Niveau d'études:</strong> {{ selectedOffre?.niveauEtudes }}</p>
+                    <p><strong>Type:</strong> {{ selectedOffre?.typeOffre }} | {{ selectedOffre?.typeTemps }}</p>
+                    <p><strong>Avantages:</strong> {{ selectedOffre?.avantages?.join(', ') }}</p>
+                    <p><strong>Responsabilités:</strong> {{ selectedOffre?.responsabilites?.join(', ') }}</p>
+                    <p><strong>Exigences:</strong> {{ selectedOffre?.exigances?.join(', ') }}</p>
+                    <button (click)="editOffre(selectedOffre)">Modifier</button>
+                </div>
+
+                <!-- ... début de ton code identique ... -->
+
+                <div *ngIf="formMode === 'add' || formMode === 'edit'">
+                    <div class="modal-header">
+                        <h3 *ngIf="formMode === 'add'">Ajouter une offre</h3>
+                        <h3 *ngIf="formMode === 'edit'">Modifier l'offre</h3>
+                        <button type="button" class="close" (click)="closeModal()">&times;</button>
+                    </div>
+                    <form [formGroup]="offreForm" (ngSubmit)="onSubmit()">
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <label>Titre *</label>
+                                <input type="text" class="form-control" formControlName="titre" />
+                                <div *ngIf="offreForm.get('titre')?.invalid && offreForm.get('titre')?.touched"
+                                    class="text-danger">
+                                    Le titre est requis.
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Description *</label>
+                                <textarea class="form-control" formControlName="description"></textarea>
+                            </div>
+                            <!-- Spécialité -->
+                            <div class="form-group">
+                                <label>Spécialité *</label>
+                                <select class="form-control" formControlName="specilite">
+                                    <option value="" disabled>Choisissez une spécialité</option>
+                                    <option>Informatique</option>
+                                    <option>Marketing</option>
+                                    <option>Comptabilité</option>
+                                    <option>Ressources humaines</option>
+                                    <option>Design</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Expérience *</label>
+                                <input type="text" class="form-control" formControlName="experience" />
+                            </div>
+                            <!-- Niveau d'études -->
+                            <div class="form-group">
+                                <label>Niveau d'études *</label>
+                                <select class="form-control" formControlName="niveauEtudes">
+                                    <option value="" disabled>Choisissez un niveau</option>
+                                    <option>Bac</option>
+                                    <option>Licence</option>
+                                    <option>Master</option>
+                                    <option>Ingenieurie</option>
+                                    <option>Doctorat</option>
+                                </select>
+                            </div>
+                            <!-- Type d'offre -->
+                            <div class="form-group">
+                                <label>Type d'offre *</label>
+                                <select class="form-control" formControlName="typeOffre">
+                                    <option value="" disabled>Choisissez un type</option>
+                                    <option>Stage</option>
+                                    <option>Emploi</option>
+                                    <option>Freelance</option>
+                                </select>
+                            </div>
+                            <!-- Type de temps -->
+                            <div class="form-group">
+                                <label>Type de temps *</label>
+                                <select class="form-control" formControlName="typeTemps">
+                                    <option value="" disabled>Choisissez un type</option>
+                                    <option>Temps plein</option>
+                                    <option>Temps partiel</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Localisation *</label>
+                                <input type="text" class="form-control" formControlName="localisation" />
+                            </div>
+
+                            <!-- Avantages -->
+                            <div class="form-group">
+                                <label>Avantages</label>
+                                <div formArrayName="avantages">
+                                    <div *ngFor="let avantage of avantages.controls; let i = index"
+                                        class="input-group mb-2">
+                                        <input [formControlName]="i" class="form-control" />
+                                        <button type="button" class="btn btn-danger" (click)="supprimerAvantage(i)"
+                                            *ngIf="avantages.length > 1">-</button>
+                                    </div>
+                                    <button type="button" class="btn btn-secondary" (click)="ajouterAvantage()">Ajouter
+                                        un avantage</button>
+                                </div>
+                            </div>
+
+                            <!-- Responsabilités -->
+                            <div class="form-group">
+                                <label>Responsabilités</label>
+                                <div formArrayName="responsabilites">
+                                    <div *ngFor="let resp of responsabilites.controls; let i = index"
+                                        class="input-group mb-2">
+                                        <input [formControlName]="i" class="form-control" />
+                                        <button type="button" class="btn btn-danger"
+                                            (click)="supprimerResponsabilite(i)"
+                                            *ngIf="responsabilites.length > 1">-</button>
+                                    </div>
+                                    <button type="button" class="btn btn-secondary"
+                                        (click)="ajouterResponsabilite()">Ajouter une responsabilité</button>
+                                </div>
+                            </div>
+
+                            <!-- Exigences -->
+                            <div class="form-group">
+                                <label>Exigences</label>
+                                <div formArrayName="exigances">
+                                    <div *ngFor="let exig of exigances.controls; let i = index"
+                                        class="input-group mb-2">
+                                        <input [formControlName]="i" class="form-control" />
+                                        <button type="button" class="btn btn-danger" (click)="supprimerExigance(i)"
+                                            *ngIf="exigances.length > 1">-</button>
+                                    </div>
+                                    <button type="button" class="btn btn-secondary" (click)="ajouterExigance()">Ajouter
+                                        une exigence</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" (click)="closeModal()">Annuler</button>
+                            <button type="submit" class="btn btn-success" *ngIf="formMode === 'add'">Publier
+                                l'offre</button>
+                            <button type="submit" class="btn btn-warning" *ngIf="formMode === 'edit'">Modifier
+                                l'offre</button>
+                        </div>
+                    </form>
+                </div>
+
+
+            </div>
+        </div>
