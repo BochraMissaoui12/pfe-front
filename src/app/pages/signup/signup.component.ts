@@ -42,6 +42,20 @@ export class SignupComponent implements OnInit {
   cvName: string | null = null;
   isLoading: boolean = false;
   successMessage: string | null = null;
+  domainesExpertise: string[] = [
+    'Informatique',
+    'Marketing',
+    'Ressources Humaines',
+    'Finance',
+    'Vente',
+    'Gestion de projet',
+    'Design',
+    'Data Science',
+    'Ingénierie',
+    'Santé',
+    'Éducation',
+    'Juridique',
+  ];
   errorMessage: string | null = null;
   constructor(
     private fb: FormBuilder,
@@ -83,6 +97,7 @@ export class SignupComponent implements OnInit {
       email: ['', [Validators.required, Validators.email]],
       motDePasse: ['', Validators.required],
       titre: ['', Validators.required],
+      domaineExpertise: ['', Validators.required],
       photo: [null],
       type: ['', Validators.required],
       skillInput: [''],
@@ -193,7 +208,7 @@ export class SignupComponent implements OnInit {
     } else if (role.includes('ENTREPRISE')) {
       this.router.navigate(['/Eprofil']);
     } else if (role.includes('CHERCHEUR')) {
-      this.router.navigate(['/profil']);
+      this.router.navigate(['/Cprofil']);
     } else {
       this.router.navigate(['/']);
     }
@@ -398,6 +413,10 @@ export class SignupComponent implements OnInit {
         formData.append('titre', this.candidatForm.get('titre')?.value);
         formData.append('type', this.candidatForm.get('type')?.value);
         formData.append('bio', this.candidatForm.get('bio')?.value);
+        formData.append(
+          'domaineExpertise',
+          this.candidatForm.get('domaineExpertise')?.value
+        );
 
         const competance = this.candidatForm.get('competance')?.value;
         if (competance && competance.length > 0) {

@@ -8,14 +8,14 @@ export class EntrepriseService {
   private apiUrl = 'http://localhost:8080/api/entreprise';
   private adminUrl = 'http://localhost:8080/admin';
   constructor(private http: HttpClient) {}
-
+getEntrepriseById(id: string): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/${id}`);
+  }
   getAllEntreprises(): Observable<any[]> {
     return this.http.get<any[]>(`${this.apiUrl}/all`);
   }
 
-  getEntrepriseById(id: string): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}/${id}`);
-  }
+  
   updateEntreprisePartial(id: string, updatedData: FormData): Observable<any> {
     return this.http.patch(`${this.apiUrl}/${id}`, updatedData);
   }

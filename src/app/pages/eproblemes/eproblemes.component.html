@@ -32,9 +32,7 @@
     </header>
     <div class="main-content">
         <h2 style="text-align: center;">Mes problèmes techniques</h2>
-
         <div *ngIf="problemes.length === 0">Aucun problème technique trouvé.</div>
-
         <div class="problemes-grid">
             <div *ngFor="let p of problemes" class="probleme-card">
                 <span class="badge-statut" [ngClass]="{'resolu': p.statut === 'Résolu'}">{{ p.statut }}</span>

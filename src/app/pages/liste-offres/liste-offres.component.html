@@ -4,11 +4,11 @@
     </div>
     <nav>
         <ul class="nav-links">
-            <li><a routerLink="/" class="active">Accueil</a></li>
+            <li><a routerLink="/">Accueil</a></li>
 
             <!-- Navbar CANDIDAT -->
             <ng-container *ngIf="role === 'CANDIDAT'">
-                <li><a routerLink="/liste-offres">Postuler à des offres</a></li>
+                <li><a routerLink="/liste-offres" class="active">Postuler à des offres</a></li>
                 <li><a href="#">Événements & Actualités</a></li>
                 <li><a href="#">Contact</a></li>
             </ng-container>
@@ -22,15 +22,15 @@
 
             <!-- Navbar CHERCHEUR -->
             <ng-container *ngIf="role === 'CHERCHEUR'">
-                <li><a href="#">Mes recherches</a></li>
-                <li><a href="#">Collaborations</a></li>
+                <li><a href="#" routerLink="/Mes-théses">Mes Projets</a></li>
+                <li><a href="#" routerLink="/liste-offres" class="active">Emplois & Stages</a></li>
                 <li><a href="#">Contact</a></li>
             </ng-container>
 
             <!-- Navbar par défaut ou non connecté -->
             <ng-container *ngIf="!role || role === 'ADMIN' || role === 'SUPERADMIN'">
-                <li><a href="#">Emplois & Stages</a></li>
-                <li><a href="#">Publier une offre</a></li>
+                <li><a href="#" routerLink="/liste-offres" class="active">Emplois & Stages</a></li>
+                <li><a (click)="OnClick()">Publier une offre</a></li>
                 <li><a href="#">Contact</a></li>
             </ng-container>
         </ul>
@@ -55,6 +55,7 @@
         <img src="assets/images/Vector.png" alt="Menu">
     </button>
 </header>
+<app-recommendation-panel *ngIf="role === 'CANDIDAT'"></app-recommendation-panel>
 
 <div class="modal fade" id="signupModal" tabindex="-1" aria-labelledby="signupModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
@@ -228,7 +229,7 @@
             <ul>
                 <li *ngFor="let advantage of selectedOffer.advantages">{{ advantage }}</li>
             </ul>
-            <button class="apply-button">Postulez maintenant</button>
+            <button class="apply-button" (click)="onApplyClick()">Postulez maintenant</button>
         </div>
     </div>
     <div class="modern-modal" *ngIf="showMotivationModal">

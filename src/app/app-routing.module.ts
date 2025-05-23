@@ -20,6 +20,11 @@ import { OffresComponent } from './admin/offres/offres.component';
 import { ProblemeTechniquesComponent } from './admin/probleme-techniques/probleme-techniques.component';
 import { ProblemesComponent } from './pages/problemes/problemes.component';
 import { EproblemesComponent } from './pages/eproblemes/eproblemes.component';
+import { AppeldOffresComponent } from './pages/appeld-offres/appeld-offres.component';
+import { ProfilChercheurComponent } from './pages/profil-chercheur/profil-chercheur.component';
+import { ProjetThesesComponent } from './admin/projet-theses/projet-theses.component';
+import { ProjetsComponent } from './pages/projets/projets.component';
+import { CprojetsComponent } from './pages/cprojets/cprojets.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -37,8 +42,24 @@ const routes: Routes = [
     data: { roles: ['ADMIN'] },
   },
   {
+    path: 'théses',
+    component: ProjetsComponent,
+  },
+  {
+    path: 'Mes-théses',
+    component: CprojetsComponent,
+    canActivate: [AuthGuard],
+    data: { roles: ['CHERCHEUR'] },
+  },
+  {
     path: 'nouveau-comptes',
     component: NouveauComptesComponent,
+    canActivate: [AuthGuard],
+    data: { roles: ['ADMIN', 'SUPERADMIN'] },
+  },
+  {
+    path: 'projets',
+    component: ProjetThesesComponent,
     canActivate: [AuthGuard],
     data: { roles: ['ADMIN', 'SUPERADMIN'] },
   },
@@ -83,7 +104,7 @@ const routes: Routes = [
     data: { roles: ['ENTREPRISE'] },
   },
   {
-    path: 'appels-offres',
+    path: 'appelsOffres',
     component: AppelsOffresComponent,
     canActivate: [AuthGuard],
     data: { roles: ['ADMIN', 'SUPERADMIN'] },
@@ -114,10 +135,20 @@ const routes: Routes = [
     data: { roles: ['ENTREPRISE'] },
   },
   {
+    path: 'Cprofil',
+    component: ProfilChercheurComponent,
+    canActivate: [AuthGuard],
+    data: { roles: ['CHERCHEUR'] },
+  },
+  {
     path: 'Eoffres',
     component: EoffresComponent,
     canActivate: [AuthGuard],
     data: { roles: ['ENTREPRISE'] },
+  },
+  {
+    path: 'Appel-offres',
+    component: AppeldOffresComponent,
   },
   { path: 'liste-offres', component: ListeOffresComponent },
   { path: '**', redirectTo: 'home' },

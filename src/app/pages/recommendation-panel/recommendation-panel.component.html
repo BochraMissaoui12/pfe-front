@@ -1,0 +1,18 @@
+<div class="recommendation-panel" [class.open]="isOpen">
+    <div class="panel-header">
+        <span>Recommandations</span>
+        <button class="close-btn" (click)="togglePanel()">×</button>
+    </div>
+    <div *ngFor="let offer of recommendations">
+        <div class="offre-card" (click)="onRecommendationClick(offer)" style="cursor: pointer;">
+            <h4>{{ offer.titre }}</h4>
+            <p>{{ offer.description }}</p>
+            <p><em>{{ offer.typeOffre }}</em></p>
+        </div>
+    </div>
+
+    <div class=" panel-body" *ngIf="recommendations.length === 0">
+        <p>Aucune recommandation pour le moment.</p>
+    </div>
+</div>
+<button class="recommendation-toggle" (click)="togglePanel()" *ngIf="token">📌 Recommandations</button>

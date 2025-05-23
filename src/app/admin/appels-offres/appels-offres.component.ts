@@ -4,6 +4,7 @@ import Swal from 'sweetalert2';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AppelOffreService } from 'src/app/services/AppelOffreService';
+import { ReponseAppelService } from 'src/app/services/ResponseAppelService';
 
 @Component({
   selector: 'app-appels-offres',
@@ -20,10 +21,13 @@ export class AppelsOffresComponent implements OnInit {
   currentAppel: any | null = null;
   appelForm: FormGroup;
   loading = false;
-
+  showReponsesModal = false;
+  reponses: any[] = [];
+  appelIdSelectionne: string | null = null;
   constructor(
     private appelOffreService: AppelOffreService,
     private notificationService: NotificationService,
+    private reponseAppelService: ReponseAppelService,
     private fb: FormBuilder,
     private router: Router
   ) {
@@ -41,7 +45,50 @@ export class AppelsOffresComponent implements OnInit {
     this.loadNotifications();
     this.loadAppels();
   }
+  openReponsesModal(appelId: string): void {
+    this.appelIdSelectionne = appelId;
+    this.reponseAppelService.getByAppel(appelId).subscribe({
+      next: (data) => {
+        this.reponses = data;
+        this.showReponsesModal = true;
+      },
+      error: () => {
+        Swal.fire('Erreur', 'Impossible de charger les réponses.', 'error');
+      },
+    });
+  }
 
+  closeReponsesModal(): void {
+    this.showReponsesModal = false;
+    this.reponses = [];
+    this.appelIdSelectionne = null;
+  }
+
+  supprimerReponse(id: string): void {
+    Swal.fire({
+      title: 'Confirmer la suppression',
+      text: 'Voulez-vous vraiment supprimer cette réponse ?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Oui, supprimer',
+      cancelButtonText: 'Annuler',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.reponseAppelService.deleteReponse(id).subscribe({
+          next: () => {
+            Swal.fire('Supprimé', 'La réponse a été supprimée.', 'success');
+            // Recharge la liste des réponses
+            if (this.appelIdSelectionne) {
+              this.openReponsesModal(this.appelIdSelectionne);
+            }
+          },
+          error: () => {
+            Swal.fire('Erreur', 'Erreur lors de la suppression.', 'error');
+          },
+        });
+      }
+    });
+  }
   loadAppels() {
     this.appelOffreService.getAll().subscribe({
       next: (data) => (this.appels = data),

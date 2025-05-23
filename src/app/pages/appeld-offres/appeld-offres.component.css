@@ -1,0 +1,287 @@
+@import url("https://fonts.googleapis.com/css2?family=Oxanium:wght@200..800&family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap");
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 2vh 5vw;
+  background: rgba(30, 41, 59, 1);
+  position: relative;
+  font-family: "Poppins", Arial, sans-serif;
+}
+
+.logo img {
+  height: 48px;
+  width: auto;
+}
+
+.navbar nav {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+}
+
+.nav-links {
+  list-style: none;
+  display: flex;
+  gap: 3vw;
+  padding: 0;
+  margin: 0;
+}
+
+.nav-links li a {
+  color: rgba(226, 232, 240, 1);
+  text-decoration: none;
+  font-size: 1rem;
+  padding: 1vh;
+  transition: 0.3s;
+}
+
+.nav-links li a.active,
+.nav-links li a:hover {
+  color: rgba(0, 168, 232, 1);
+}
+
+.btn-primary {
+  background: rgba(0, 168, 232, 1);
+  border: none;
+  padding: 1vh 2vw;
+  border-radius: 36px;
+  color: rgba(30, 41, 59, 1);
+  font-weight: 400;
+  cursor: pointer;
+  transition: 0.3s;
+  font-size: 1rem;
+}
+
+.icons {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.icon-btn {
+  background: none;
+  border: none;
+  font-size: 1.2rem;
+  cursor: pointer;
+  color: rgba(226, 232, 240, 1);
+  transition: color 0.3s ease;
+}
+
+.icon-btn.logout i {
+  color: #fff;
+}
+
+.menu-toggle {
+  display: none;
+  position: absolute;
+  left: 15px;
+  top: 15px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  z-index: 1000;
+}
+
+.menu-toggle img {
+  width: 30px;
+}
+
+@media (max-width: 767px) {
+  .navbar {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 2vh 3vw;
+  }
+
+  .navbar nav {
+    width: 100%;
+    padding-top: 10px;
+  }
+
+  .nav-links {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+    width: 100%;
+  }
+
+  .icons {
+    margin-top: 10px;
+  }
+
+  .menu-toggle {
+    display: block;
+  }
+}
+/* Container */
+.container {
+  max-width: 1200px;
+  margin: 3rem auto;
+  padding: 0 1rem;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  color: #2c3e50;
+}
+
+/* Titre */
+.container h2 {
+  font-weight: 700;
+  font-size: 2rem;
+  margin-bottom: 1.5rem;
+  color: #34495e;
+  text-align: center;
+}
+
+/* Table */
+table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0 12px;
+  background: #fff;
+  box-shadow: 0 2px 8px rgb(0 0 0 / 0.1);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+/* En-tête */
+thead tr {
+  background-color: #2980b9;
+  color: white;
+  text-align: left;
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+thead th {
+  padding: 12px 20px;
+  user-select: none;
+}
+
+/* Corps */
+tbody tr {
+  background-color: #f9fbfc;
+  transition: background-color 0.3s ease;
+  cursor: default;
+  border-radius: 8px;
+}
+
+tbody tr:hover {
+  background-color: #e1f0ff;
+}
+
+/* Cellules */
+tbody td {
+  padding: 14px 20px;
+  vertical-align: middle;
+  font-size: 0.9rem;
+  color: #34495e;
+  max-width: 200px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Bouton Voir détails */
+button.btn-info {
+  background-color: #3498db;
+  border: none;
+  color: white;
+  padding: 6px 14px;
+  font-size: 0.85rem;
+  border-radius: 6px;
+  transition: background-color 0.25s ease;
+  cursor: pointer;
+}
+
+button.btn-info:hover {
+  background-color: #217dbb;
+}
+
+/* Modal */
+.modal-content {
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 8px 24px rgb(0 0 0 / 0.15);
+  padding: 1.5rem;
+  font-size: 1rem;
+  color: #2c3e50;
+  max-width: 600px;
+  margin: auto;
+}
+
+/* Modal header */
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.modal-title {
+  font-weight: 700;
+  font-size: 1.25rem;
+  color: #2980b9;
+}
+
+/* Bouton close */
+.btn-close {
+  background: transparent;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: #7f8c8d;
+  transition: color 0.3s ease;
+}
+
+.btn-close:hover {
+  color: #34495e;
+}
+
+/* Modal body */
+.modal-body p {
+  line-height: 1.5;
+  color: #34495e;
+}
+
+.modal-body p.mb-4 {
+  margin-bottom: 1.5rem;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  tbody td {
+    font-size: 0.8rem;
+    max-width: 120px;
+  }
+
+  thead th {
+    font-size: 0.85rem;
+  }
+
+  button.btn-info {
+    font-size: 0.75rem;
+    padding: 5px 10px;
+  }
+}
+/* Modal form styles */
+.modal-content form {
+  padding: 1rem 1.5rem;
+}
+
+.form-label {
+  font-weight: 600;
+  color: #34495e;
+}
+
+.text-danger {
+  font-size: 0.85rem;
+  margin-top: 0.25rem;
+}
+
+button[disabled] {
+  opacity: 0.6;
+  cursor: not-allowed;
+}

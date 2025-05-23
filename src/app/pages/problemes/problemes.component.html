@@ -24,12 +24,10 @@
 
                     <!-- Navbar CHERCHEUR -->
                     <ng-container *ngIf="role === 'CHERCHEUR'">
-                        <li><a href="#">Mes recherches</a></li>
-                        <li><a href="#">Collaborations</a></li>
+                        <li><a href="#" routerLink="/Mes-théses">Mes Projets</a></li>
+                        <li><a href="#" routerLink="/liste-offres">Emplois & Stages</a></li>
                         <li><a href="#">Contact</a></li>
                     </ng-container>
-
-                    <!-- Navbar par défaut ou non connecté -->
                     <!-- Navbar par défaut ou non connecté -->
                     <ng-container *ngIf="!role || role === 'ADMIN' || role === 'SUPERADMIN'">
                         <li><a href="#">Emplois & Stages</a></li>
@@ -86,7 +84,7 @@
                         <span class="date">{{ p.dateCreation | date:'short' }}</span>
                     </div>
                     <div class="card-body">
-                        <h6 style="font-weight: 400;">{{ p.description }}</h6>
+                        <h6 style="font-weight: 400;color: black;">{{ p.description }}</h6>
                         <div class="fichiers" *ngIf="p.fichiersUrls?.length > 0">
                             <span>Fichiers :</span>
                             <a *ngFor="let url of p.fichiersUrls" [href]="url" target="_blank" rel="noopener noreferrer"

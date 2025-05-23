@@ -1,0 +1,90 @@
+<div class="dashboard-layout">
+    <app-sidebar></app-sidebar>
+    <div class="main-content">
+        <header class="topbar">
+            <div class="left"></div>
+            <div class="right">
+                <button class="icon-btn notification" (click)="toggleNotifications()">
+                    <i class="fa fa-bell"></i>
+                    <span *ngIf="notifications.length > 0" class="notif-badge">{{ notifications.length }}</span>
+                </button>
+                <div class="notif-dropdown" *ngIf="showNotifications">
+                    <div *ngIf="notifications.length === 0" class="notif-empty">
+                        Aucune nouvelle notification.
+                    </div>
+                    <div *ngFor="let notif of notifications" class="notif-item" (click)="consulterNotification(notif)">
+                        <strong>{{ notif.titre }}</strong>
+                        <span class="notif-date">{{ notif.dateCreation | date:'short' }}</span>
+                        <div class="notif-msg">{{ notif.message }}</div>
+                    </div>
+                </div>
+                <button class="icon-btn logout" (click)="logout()">
+                    <i class="fa fa-sign-out-alt"></i>
+                </button>
+            </div>
+        </header>
+        <div class="container my-4">
+            <h3>Mes projets de thèse</h3>
+            <table class="table table-striped mt-3">
+                <thead>
+                    <tr>
+                        <th>Titre</th>
+                        <th>Lieu</th>
+                        <th>Année</th>
+                        <th>Statut</th>
+                        <th>Chercheur</th> <!-- Nouvelle colonne -->
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let projet of projets">
+                        <td>{{ projet.titre }}</td>
+                        <td>{{ projet.lieu }}</td>
+                        <td>{{ projet.annee }}</td>
+                        <td>{{ projet.statut }}</td>
+                        <td>{{ projet.chercheurNom }}</td> <!-- Affichage nom chercheur -->
+                        <td>
+                            <button class="btn btn-danger btn-sm me-2" (click)="deleteProjet(projet.id!)">
+                                Supprimer
+                            </button>
+                            <button class="btn btn-info btn-sm" (click)="showResponses(projet)">
+                                Voir les réponses
+                            </button>
+                        </td>
+                    </tr>
+                    <tr *ngIf="projets.length === 0">
+                        <td colspan="6" class="text-center">Aucun projet trouvé.</td>
+                    </tr>
+                </tbody>
+            </table>
+
+        </div>
+
+        <!-- Modal Bootstrap pour afficher les réponses -->
+        <div class="modal fade" tabindex="-1" [ngClass]="{'show d-block': showResponsesModal}"
+            [style.display]="showResponsesModal ? 'block' : 'none'" aria-modal="true" role="dialog">
+            <div class="modal-dialog modal-lg modal-dialog-scrollable">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Réponses au projet : {{ selectedProjetTitre }}</h5>
+                        <button type="button" class="btn-close" (click)="closeResponsesModal()"
+                            aria-label="Fermer"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div *ngIf="selectedProjetResponses.length === 0" class="text-center text-muted">
+                            Aucune réponse pour ce projet.
+                        </div>
+                        <ul class="list-group" *ngIf="selectedProjetResponses.length > 0">
+                            <li class="list-group-item" *ngFor="let reponse of selectedProjetResponses">
+                                <strong>{{ reponse.nom }} ({{ reponse.email }})</strong>
+                                <p>{{ reponse.message }}</p>
+                                <small class="text-muted">{{ reponse.dateCreation | date:'short' }}</small>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" (click)="closeResponsesModal()">Fermer</button>
+                    </div>
+                </div>
+            </div>
+        </div>

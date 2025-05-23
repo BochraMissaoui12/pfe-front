@@ -13,7 +13,9 @@ export class ChercheurService {
   getAllChercheurs(): Observable<any[]> {
     return this.http.get<any[]>(`${this.apiUrl}/all`);
   }
-
+  updateChercheur(id: string, data: Partial<any>): Observable<any> {
+    return this.http.patch<any>(`${this.apiUrl}/${id}`, data);
+  }
   getChercheurById(id: string): Observable<any> {
     return this.http.get<any>(`${this.apiUrl}/${id}`);
   }

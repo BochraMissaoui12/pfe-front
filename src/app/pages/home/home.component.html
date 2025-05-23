@@ -24,16 +24,15 @@
 
                     <!-- Navbar CHERCHEUR -->
                     <ng-container *ngIf="role === 'CHERCHEUR'">
-                        <li><a href="#">Mes recherches</a></li>
-                        <li><a href="#">Collaborations</a></li>
+                        <li><a href="#" routerLink="/Mes-théses">Mes Projets</a></li>
+                        <li><a href="#" routerLink="/liste-offres">Emplois & Stages</a></li>
                         <li><a href="#">Contact</a></li>
                     </ng-container>
 
                     <!-- Navbar par défaut ou non connecté -->
-                    <!-- Navbar par défaut ou non connecté -->
                     <ng-container *ngIf="!role || role === 'ADMIN' || role === 'SUPERADMIN'">
-                        <li><a href="#">Emplois & Stages</a></li>
-                        <li><a href="#">Publier une offre</a></li>
+                        <li><a href="#" routerLink="/liste-offres">Emplois & Stages</a></li>
+                        <li><a (click)="OnClick()">Publier une offre</a></li>
                         <li><a href="#">Contact</a></li>
                     </ng-container>
                 </ul>
@@ -44,7 +43,7 @@
             <button class="btn-primary"
                 *ngIf="isConnected && (role === 'CHERCHEUR' || role === 'ENTREPRISE' || role === 'CANDIDAT')"
                 [routerLink]="
-          role === 'CHERCHEUR' ? '/chercheur-profil' :
+          role === 'CHERCHEUR' ? '/Cprofil' :
           role === 'ENTREPRISE' ? '/Eprofil' :
           role === 'CANDIDAT' ? '/profil' :
           null
@@ -120,7 +119,7 @@
                     <h3>Travaux de recherche</h3>
                     <p>Explorez les dernières avancées et études menées dans divers domaines. Trouvez des ressources
                         pertinentes pour vos projets académiques et professionnels.</p>
-                    <a href="#" class="read-more"></a>
+                    <a href="#" routerLink="/théses" class="read-more"></a>
                 </div>
                 <div class="cardd" data-aos="fade-left" data-aos-duration="1000">
                     <div class="icon"><i class="fas fa-file-contract"></i></div>
@@ -129,7 +128,7 @@
                     <p>Consultez et soumettez des appels d’offres pour divers secteurs. Une opportunité pour les
                         entreprises
                         et prestataires de services d’accéder à de nouveaux marchés.</p>
-                    <a href="#" class="read-more"></a>
+                    <a href="#" routerLink="/Appel-offres" class="read-more"></a>
                 </div>
                 <div class="cardd" data-aos="fade-left" data-aos-duration="1000">
                     <div class="icon"><i class="fas fa-briefcase"></i></div>
@@ -137,7 +136,7 @@
                     <p>Découvrez les dernières offres d’emploi publiées par les entreprises. Trouvez le poste qui
                         correspond
                         à votre profil et postulez en un clic.</p>
-                    <a href="#" class="read-more"></a>
+                    <a href="#" routerLink="/liste-offres" class="read-more"></a>
                 </div>
                 <div class="cardd" data-aos="fade-left" data-aos-duration="1000">
                     <div class="icon"><i class="fas fa-user-graduate"></i></div>
@@ -145,7 +144,7 @@
                     <p>Accédez à une sélection d’opportunités de stage pour enrichir votre parcours académique
                         et
                         professionnel. Un premier pas vers le monde du travail !</p>
-                    <a href="#" class="read-more"></a>
+                    <a href="#" routerLink="/liste-offres" class="read-more"></a>
                 </div>
                 <div class="cardd" data-aos="fade-left" data-aos-duration="1000">
                     <div class="icon"><i class="fas fa-newspaper"></i></div>
@@ -153,7 +152,7 @@
                     <p> Notre site permet aux utilisateurs de signaler, suivre et gérer efficacement les difficultés
                         Techniques
                         rencontrées au sein des entreprises</p>
-                    <a href="#" class="read-more"></a>
+                    <a href="#" routerLink="/problemes" class="read-more"></a>
                 </div>
                 <div class="cardd" data-aos="fade-left" data-aos-duration="1000">
                     <div class="icon"><i class="fas fa-handshake"></i></div>
@@ -163,7 +162,7 @@
                         la
                         recherche
                         d’experts indépendants. Travaillez à votre rythme !</p>
-                    <a href="#" class="read-more"></a>
+                    <a href="#" routerLink="/liste-offres" class="read-more"></a>
                 </div>
             </div>
         </section>
@@ -181,78 +180,23 @@
                     </div>
                 </div>
                 <div class="grid">
-                    <div class="card" data-aos="zoom-in" data-aos-delay="300">
+                    <div class="card" *ngFor="let offre of offres" style="cursor: pointer;" data-aos="zoom-in"
+                        data-aos-delay="300">
                         <div style="display: flex;">
-                            <img src="assets/images/logoo.png" alt="Logo Metz" class="logo">
+                            <img [src]="offre.entreprise?.logoUrl || 'assets/images/logoo.png'" alt="Logo Entreprise"
+                                class="logo">
                             <div>
-                                <p style="margin-bottom: 0px;font-weight: 400;margin-top: 5px;" class="company">Metz -
-                                    Lockman</p>
-                                <p class="time" style="font-size: 10px;">Sun Apr 08</p>
+                                <p style="margin-bottom: 0px;font-weight: 400;margin-top: 5px;" class="company">
+                                    {{ offre.entreprise?.nom || 'Entreprise inconnue' }}
+                                </p>
+                                <p class="time" style="font-size: 10px;">
+                                    {{ offre.datePublication | date:'EEE d MMM yyyy' : '' : 'fr' }}
+                                </p>
+
                             </div>
                         </div>
-                        <h2>Customer Solutions Engineer</h2>
-                        <p class="location">📍New York</p>
-                    </div>
-                    <div class="card" data-aos="zoom-in" data-aos-delay="300">
-                        <div style="display: flex;">
-                            <img src="assets/images/logoo.png" alt="Logo Metz" class="logo">
-                            <div>
-                                <p style="margin-bottom: 0px; font-weight: 400;margin-top: 5px;" class="company">Metz -
-                                    Lockman</p>
-                                <p class="time" style="font-size: 10px;">Sun Apr 08</p>
-                            </div>
-                        </div>
-                        <h2>Customer Solutions Engineer</h2>
-                        <p class="location">📍New York</p>
-                    </div>
-                    <div class="card" data-aos="zoom-in" data-aos-delay="300">
-                        <div style="display: flex;">
-                            <img src="assets/images/logoo.png" alt="Logo Metz" class="logo">
-                            <div>
-                                <p style="margin-bottom: 0px;font-weight: 400; margin-top: 5px;font-weight: 400;"
-                                    class="company">Metz -
-                                    Lockman</p>
-                                <p class="time" style="font-size: 10px;">Sun Apr 08</p>
-                            </div>
-                        </div>
-                        <h2>Customer Solutions Engineer</h2>
-                        <p class="location">📍New York</p>
-                    </div>
-                    <div class="card" data-aos="zoom-in" data-aos-delay="300">
-                        <div style="display: flex;">
-                            <img src="assets/images/logoo.png" alt="Logo Metz" class="logo">
-                            <div>
-                                <p style="margin-bottom: 0px;font-weight: 400; margin-top: 5px;" class="company">Metz -
-                                    Lockman</p>
-                                <p class="time" style="font-size: 10px;">Sun Apr 08</p>
-                            </div>
-                        </div>
-                        <h2>Corporate Creative Administrator</h2>
-                        <p class="location">📍Indiana</p>
-                    </div>
-                    <div class="card" data-aos="zoom-in" data-aos-delay="300">
-                        <div style="display: flex;">
-                            <img src="assets/images/logoo.png" alt="Logo Metz" class="logo">
-                            <div>
-                                <p style="margin-bottom: 0px;font-weight: 400; margin-top: 5px;" class="company">Metz -
-                                    Lockman</p>
-                                <p class="time" style="font-size: 10px;">Sun Apr 08</p>
-                            </div>
-                        </div>
-                        <h2>Customer Solutions Engineer</h2>
-                        <p class="location">📍New York</p>
-                    </div>
-                    <div class="card" data-aos="zoom-in" data-aos-delay="300">
-                        <div style="display: flex;">
-                            <img src="assets/images/logoo.png" alt="Logo Metz" class="logo">
-                            <div>
-                                <p style="margin-bottom: 0px;font-weight: 400; margin-top: 5px;" class="company">Metz -
-                                    Lockman</p>
-                                <p class="time" style="font-size: 10px;">Sun Apr 08</p>
-                            </div>
-                        </div>
-                        <h2>Corporate Creative Administrator</h2>
-                        <p class="location">📍Indiana</p>
+                        <h2>{{ offre.titre }}</h2>
+                        <p class="location">📍{{ offre.localisation }}</p>
                     </div>
                 </div>
             </div>
@@ -268,58 +212,18 @@
                 </div>
             </div>
             <div class="news-container">
-                <div class="news-card" data-aos="fade-left" data-aos-duration="1000">
-                    <img src="assets/images/act2.png" alt="Yooreed Event" class="news-image">
-                    <div class="logo"><img src="assets/images/yooreed.png" alt="Yooreed Logo"></div>
-                    <h3>Yooreed</h3>
-                    <p class="subtitle">Dgitalisation is a must</p>
-                    <p class="description">Une conférence dédiée aux dernières avancées technologiques qui rassembler
-                        les
-                        plus grandes entreprises et donnera lieu à des pan...</p>
-                    <a href="#" class="read-more"></a>
-                </div>
-                <div class="news-card" data-aos="fade-left" data-aos-duration="1000">
-                    <img src="assets/images/act1.png" alt="UTTEC Meeting" class="news-image">
-                    <div class="logo"><img src="assets/images/utica.png" alt="UTTEC Logo"></div>
-                    <h3>UTTEC</h3>
-                    <p class="subtitle">Réunion du comité technologique.</p>
-                    <p class="description">Une conférence dédiée aux dernières avancées technologiques qui rassemblera
-                        les
-                        plus grandes entreprises...</p>
-                    <a href="#" class="read-more"></a>
-                </div>
-                <div class="news-card" data-aos="fade-left" data-aos-duration="1000">
-                    <img src="assets/images/act3.png" alt="UTTEC Congress" class="news-image">
-                    <div class="logo"><img src="assets/images/utica.png" alt="UTTEC Logo"></div>
-                    <h3>UTTEC</h3>
-                    <p class="subtitle">Congré national</p>
-                    <p class="description">Congrès qui réunira les plus grands investisseurs tunisiens et offrira des
-                        opportunités énormes d'investissement rentable</p>
+                <div *ngFor="let card of news_cards" class="news-card" data-aos="fade-left" data-aos-duration="1000">
+                    <img [src]="card.image" [alt]="card.titre + ' Event'" class="news-image">
+                    <div class="logo">
+                        <img [src]="card.entrepriseLogo" [alt]="card.entrepriseNom + ' Logo'">
+                    </div>
+                    <h3>{{ card.titre }}</h3>
+                    <p class="description">{{ card.description }}</p>
                     <a href="#" class="read-more"></a>
                 </div>
             </div>
         </section>
-        <section style="background-color: white; height: 70px;">
-        </section>
-        <section class="recrutement">
-            <div class="container">
-                <div class="content">
-                    <div class="image" data-aos="fade-right" data-aos-delay="300">
-                        <img src="assets/images/rect.png" alt="Entretien d'embauche">
-                    </div>
-                    <div class="text" data-aos="fade-left" data-aos-delay="300">
-                        <h2>Recrutez les Meilleurs Talents avec UTTEC</h2>
-                        <p>Trouvez les candidats idéaux pour votre entreprise en publiant vos offres d'emploi et de
-                            stage
-                            sur
-                            UTTEC. Bénéficiez d’une plateforme intuitive pour attirer des talents qualifiés et optimiser
-                            votre
-                            processus de recrutement.</p>
-                        <a href="#" class="btn">PUBLIER UNE OFFRE D'EMPLOI</a>
-                    </div>
-                </div>
-            </div>
-        </section>
+
         <section class="app">
             <div class="container">
                 <div class="text-content" data-aos="fade-right" data-aos-delay="300">

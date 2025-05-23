@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { LOCALE_ID, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -30,6 +30,17 @@ import { FileNamePipe } from './services/file-name.pipe';
 import { ProblemesComponent } from './pages/problemes/problemes.component';
 import { ProfilChercheurComponent } from './pages/profil-chercheur/profil-chercheur.component';
 import { EproblemesComponent } from './pages/eproblemes/eproblemes.component';
+import { AppeldOffresComponent } from './pages/appeld-offres/appeld-offres.component';
+import { TruncatePipe } from './services/TruncatePipe';
+import { ProjetThesesComponent } from './admin/projet-theses/projet-theses.component';
+import { ProjetsComponent } from './pages/projets/projets.component';
+import { CprojetsComponent } from './pages/cprojets/cprojets.component';
+import { ChatbotComponent } from './pages/chatbot/chatbot.component';
+import { RecommendationPanelComponent } from './pages/recommendation-panel/recommendation-panel.component';
+import { registerLocaleData } from '@angular/common';
+import localeFr from '@angular/common/locales/fr';
+
+registerLocaleData(localeFr, 'fr');
 @NgModule({
   declarations: [
     AppComponent,
@@ -52,10 +63,17 @@ import { EproblemesComponent } from './pages/eproblemes/eproblemes.component';
     EoffresComponent,
     OffresComponent,
     FileNamePipe,
+    TruncatePipe,
     ProblemeTechniquesComponent,
     ProblemesComponent,
     ProfilChercheurComponent,
     EproblemesComponent,
+    AppeldOffresComponent,
+    ProjetThesesComponent,
+    ProjetsComponent,
+    CprojetsComponent,
+    ChatbotComponent,
+    RecommendationPanelComponent,
   ],
   imports: [
     BrowserModule,
@@ -67,6 +85,7 @@ import { EproblemesComponent } from './pages/eproblemes/eproblemes.component';
     ToastrModule.forRoot(),
   ],
   providers: [
+    { provide: LOCALE_ID, useValue: 'fr' },
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
   ],
   bootstrap: [AppComponent],

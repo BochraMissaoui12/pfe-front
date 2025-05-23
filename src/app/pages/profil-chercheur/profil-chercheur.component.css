@@ -1,0 +1,266 @@
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 2vh 5vw;
+  background: rgba(30, 41, 59, 1);
+  position: relative;
+}
+
+.logo img {
+  height: 48px;
+}
+
+.navbar nav {
+  flex: 1;
+  padding-top: 15px;
+  display: flex;
+  justify-content: center;
+}
+
+.nav-links {
+  list-style: none;
+  display: flex;
+  gap: 3vw;
+}
+
+.nav-links li a {
+  color: rgba(226, 232, 240, 1);
+  text-decoration: none;
+  font-size: 1rem;
+  padding: 1vh;
+  transition: 0.3s;
+}
+
+.nav-links li a.active,
+.nav-links li a:hover {
+  color: rgba(0, 168, 232, 1);
+}
+
+.btn-primary {
+  background: rgba(0, 168, 232, 1);
+  border: none;
+  padding: 1vh 2vw;
+  border-radius: 36px;
+  color: rgba(30, 41, 59, 1);
+  font-weight: 400;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.btn-primary:hover {
+  background: #0078cc;
+}
+
+.icons {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.icons i {
+  font-size: 1.5rem;
+  color: rgba(226, 232, 240, 1);
+  opacity: 0.7;
+}
+
+.menu-toggle {
+  display: none;
+  position: absolute;
+  left: 15px;
+  top: 15px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  z-index: 1000;
+}
+
+.menu-toggle img {
+  width: 30px;
+}
+
+/* Responsive styles */
+@media (max-width: 830px) {
+  .navbar {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .navbar nav {
+    padding-top: 5px;
+  }
+  .nav-links,
+  .icons {
+    display: none;
+    width: 100%;
+    margin-top: 10px;
+  }
+  .nav-links.active {
+    display: flex;
+    flex-direction: column;
+  }
+  .icons.active {
+    display: flex;
+  }
+  .menu-toggle {
+    display: block;
+  }
+}
+.profile-container {
+  max-width: 1100px;
+  margin: 2.5rem auto;
+  padding: 0 1.5rem;
+}
+
+.card {
+  background: #f7fafd;
+  border-radius: 22px;
+  box-shadow: 0 4px 24px 0 rgba(44, 62, 80, 0.07);
+  border: 1.5px solid #dbeafe;
+  padding: 2.5rem 2.5rem 2rem 2.5rem;
+  margin-bottom: 2.5rem;
+  position: relative;
+  transition: box-shadow 0.2s;
+}
+
+.card:hover {
+  box-shadow: 0 8px 32px 0 rgba(44, 62, 80, 0.13);
+}
+
+.card-header {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  margin-bottom: 1.8rem;
+}
+
+.card-header h2 {
+  font-size: 2.3rem;
+  font-weight: 700;
+  margin: 0;
+  color: #232946;
+  letter-spacing: -0.5px;
+}
+
+.card-header .subtitle {
+  color: #5c6f8c;
+  font-size: 1.15rem;
+  font-weight: 500;
+  margin-bottom: 0.1rem;
+  letter-spacing: 0.01em;
+}
+
+.card-content {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2.5rem;
+}
+
+.profile-fields {
+  flex: 1 1 350px;
+}
+
+.profile-field {
+  margin-bottom: 1.7rem;
+}
+
+.profile-field label {
+  font-weight: 600;
+  color: #5c6f8c;
+  display: block;
+  margin-bottom: 0.35rem;
+  letter-spacing: 0.03em;
+  font-size: 1.03rem;
+}
+
+.profile-field .field-display {
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+  color: #232946;
+  font-size: 1.08rem;
+  background: #e7ecf2;
+  border-radius: 12px;
+  padding: 0.65rem 1rem;
+  min-height: 44px;
+  border: 1px solid #e0e7ef;
+  transition: background 0.2s;
+}
+
+.profile-field .field-edit {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+input[type="text"],
+input[type="email"] {
+  background: #f1f5f9;
+  border: 1.5px solid #cfd8dc;
+  border-radius: 10px;
+  padding: 0.55rem 1rem;
+  font-size: 1.07rem;
+  color: #232946;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  box-shadow: 0 1px 2px rgba(44, 62, 80, 0.03);
+}
+
+input[type="text"]:focus,
+input[type="email"]:focus {
+  border-color: #3b82f6;
+  outline: none;
+  background: #fff;
+}
+
+.btn-edit,
+.btn-save,
+.btn-cancel {
+  border: none;
+  border-radius: 16px;
+  padding: 0.38rem 1.2rem;
+  font-size: 1.03rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.18s, color 0.18s;
+  margin-left: 0.2rem;
+}
+
+.btn-edit {
+  background: #e0e7ef;
+  color: #232946;
+}
+
+.btn-edit:hover {
+  background: #3b82f6;
+  color: #fff;
+}
+
+.btn-save {
+  background: #3b82f6;
+  color: #fff;
+}
+
+.btn-save:hover {
+  background: #2563eb;
+}
+
+.btn-cancel {
+  background: #f87171;
+  color: #fff;
+}
+
+.btn-cancel:hover {
+  background: #dc2626;
+}
+
+@media (max-width: 800px) {
+  .card-content {
+    flex-direction: column;
+    gap: 1.2rem;
+  }
+  .profile-container {
+    padding: 0 0.5rem;
+  }
+  .card {
+    padding: 1.2rem;
+  }
+}

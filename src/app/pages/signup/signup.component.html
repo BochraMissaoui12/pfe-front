@@ -493,7 +493,7 @@
     </div>
     <div *ngIf="currentStep === 3 && userType === 'candidat'" class="container">
         <h2>Precisez votre profil</h2>
-        <p>Voulez-vous vous inscrire en tant que candidat, chercheur, freelancer ou Ã©tudiant ?</p>
+        <p>Voulez-vous vous inscrire en tant que ?</p>
         <form [formGroup]="candidatForm" style="text-align: center;">
             <button type="button" class="btn" (click)="selectProfile('employé')">Employé</button>
             <button type="button" class="btn" (click)="selectProfile('freelancer')">Freelancer</button>
@@ -516,6 +516,17 @@
                     <div *ngIf="candidatForm.get('titre')?.invalid && candidatForm.get('titre')?.touched"
                         class="error-message">
                         Titre est requis.
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="domaineExpertise">Domaine d'expertise</label>
+                    <select id="domaineExpertise" formControlName="domaineExpertise" class="form-input">
+                        <option value="" disabled selected>Choisissez un domaine</option>
+                        <option *ngFor="let domaine of domainesExpertise" [value]="domaine">{{ domaine }}</option>
+                    </select>
+                    <div *ngIf="candidatForm.get('domaineExpertise')?.invalid && candidatForm.get('domaineExpertise')?.touched"
+                        class="error-message">
+                        Domaine d'expertise est requis.
                     </div>
                 </div>
 

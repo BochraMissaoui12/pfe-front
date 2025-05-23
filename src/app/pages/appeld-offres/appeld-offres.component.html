@@ -1,0 +1,173 @@
+<body>
+    <div class="home">
+        <header class="navbar" data-aos="fade-down" data-aos-duration="1000">
+            <div class="logo">
+                <img src="assets/images/logo.png" alt="Logo">
+            </div>
+            <nav>
+                <ul class="nav-links">
+                    <li><a routerLink="/" class="active">Accueil</a></li>
+
+                    <!-- Navbar CANDIDAT -->
+                    <ng-container *ngIf="role === 'CANDIDAT'">
+                        <li><a routerLink="/liste-offres">Postuler à des offres</a></li>
+                        <li><a href="#">Événements & Actualités</a></li>
+                        <li><a href="#">Contact</a></li>
+                    </ng-container>
+
+                    <!-- Navbar ENTREPRISE -->
+                    <ng-container *ngIf="role === 'ENTREPRISE'">
+                        <li><a routerLink="/Eoffres">Mes Offres</a></li>
+                        <li><a routerLink="/Eproblemes">Mes Problemes & Solutions</a></li>
+                        <li><a routerLink="/Eevenements">Mes Actualité</a></li>
+                    </ng-container>
+
+                    <!-- Navbar CHERCHEUR -->
+                    <ng-container *ngIf="role === 'CHERCHEUR'">
+                        <li><a href="#" routerLink="/Mes-théses">Mes Projets</a></li>
+                        <li><a href="#" routerLink="/liste-offres">Emplois & Stages</a></li>
+                        <li><a href="#">Contact</a></li>
+                    </ng-container>
+
+                    <!-- Navbar par défaut ou non connecté -->
+                    <!-- Navbar par défaut ou non connecté -->
+                    <ng-container *ngIf="!role || role === 'ADMIN' || role === 'SUPERADMIN'">
+                        <li><a href="#">Emplois & Stages</a></li>
+                        <li><a href="#">Publier une offre</a></li>
+                        <li><a href="#">Contact</a></li>
+                    </ng-container>
+                </ul>
+            </nav>
+            <!-- Bouton dynamique -->
+            <button class="btn-primary" *ngIf="!isConnected || role === 'ADMIN' || role === 'SUPERADMIN'"
+                (click)="openSignupModal()">S'inscrire</button>
+            <button class="btn-primary"
+                *ngIf="isConnected && (role === 'CHERCHEUR' || role === 'ENTREPRISE' || role === 'CANDIDAT')"
+                [routerLink]="
+          role === 'CHERCHEUR' ? '/chercheur-profil' :
+          role === 'ENTREPRISE' ? '/Eprofil' :
+          role === 'CANDIDAT' ? '/profil' :
+          null
+        ">
+                Votre profil
+            </button>
+
+            <div class="modal fade" id="signupModal" tabindex="-1" aria-labelledby="signupModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content" style="background-color: rgba(30, 41, 59, 1);border-radius: 16px;">
+                        <div class="modal-header custom-header" [ngClass]="{'verification-header': isVerificationMode}">
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                                [ngClass]="{'btn-close-black': isVerificationMode}"></button>
+                        </div>
+                        <div class="modal-body custom-body" [ngClass]="{'verification-body': isVerificationMode}">
+                            <app-signup (verificationModeChange)="isVerificationMode = $event"></app-signup>
+                            <!-- Composant Signup -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Menu mobile -->
+            <button class="menu-toggle" (click)="toggleMenu()">
+                <img src="assets/images/Vector.png" alt="Menu">
+            </button>
+        </header>
+        <!-- appeld-offres.component.html -->
+        <div class="container mt-5">
+            <h2>Liste des appels d'offres</h2>
+
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>Publié Le</th>
+                        <th>Pays</th>
+                        <th>Description</th>
+                        <th>Promoteur</th>
+                        <th>Type</th>
+                        <th>Expire Le</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let appel of appelOffres">
+                        <td>{{ appel.publieLe }}</td>
+                        <td>{{ appel.pays }}</td>
+                        <td>{{ appel.description | truncate:100 }}</td>
+                        <td>{{ appel.promoteur | truncate:20 }}</td>
+                        <td>{{ appel.type }}</td>
+                        <td>{{ appel.expireLe }}</td>
+                        <td>
+                            <button class="btn btn-sm btn-info" (click)="showDetails(appel.id)">
+                                Voir détails
+                            </button>
+                        </td>
+                        <td>
+                            <button class="btn btn-sm btn-success " (click)="openReponseModal(appel?.id)">
+                                Envoyer une réponse
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Modal Détails -->
+        <div class="modal fade" id="detailsModal" tabindex="-1">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Détails complet</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p><strong>Description:</strong></p>
+                        <p class="mb-4">{{ selectedAppel?.description }}</p>
+                        <p><strong>Promoteur:</strong></p>
+                        <p>{{ selectedAppel?.promoteur }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="reponseModal" tabindex="-1" aria-labelledby="reponseModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <form [formGroup]="reponseForm" (ngSubmit)="submitReponse()" class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="reponseModalLabel">Répondre à l'appel d'offre</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fermer"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label for="nomEntreprise" class="form-label">Nom de l'entreprise</label>
+                            <input type="text" id="nomEntreprise" formControlName="nomEntreprise" class="form-control"
+                                required />
+                            <div *ngIf="reponseForm.get('nomEntreprise')?.invalid && reponseForm.get('nomEntreprise')?.touched"
+                                class="text-danger">
+                                Le nom de l'entreprise est requis.
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="emailEntreprsie" class="form-label">Email de l'entreprise</label>
+                            <input type="email" id="emailEntreprsie" formControlName="emailEntreprsie"
+                                class="form-control" required />
+                            <div *ngIf="reponseForm.get('emailEntreprsie')?.invalid && reponseForm.get('emailEntreprsie')?.touched"
+                                class="text-danger">
+                                Email valide requis.
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="messages" class="form-label">Message</label>
+                            <textarea id="messages" formControlName="messages" class="form-control" rows="4"
+                                required></textarea>
+                            <div *ngIf="reponseForm.get('messages')?.invalid && reponseForm.get('messages')?.touched"
+                                class="text-danger">
+                                Le message est requis.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary" [disabled]="reponseForm.invalid">Envoyer</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                    </div>
+                </form>
+            </div>
+        </div>

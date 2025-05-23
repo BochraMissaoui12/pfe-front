@@ -5,12 +5,14 @@ import {
   QueryList,
   ViewChildren,
 } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import * as bootstrap from 'bootstrap';
 import { forkJoin, of } from 'rxjs';
 import { CandidatureService } from 'src/app/services/CandidatureService';
 import { EntrepriseService } from 'src/app/services/EntrepriseService';
 import { OffreService } from 'src/app/services/OffreService';
 import Swal from 'sweetalert2';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-liste-offres',
@@ -19,8 +21,8 @@ import Swal from 'sweetalert2';
 })
 export class ListeOffresComponent implements OnInit {
   menuOpen = false;
-  pageSize = 6; // Number of items per page
-  currentPage = 1; // Current page number
+  pageSize = 6;
+  currentPage = 1;
   offers: any[] = [];
   isVerificationMode = false;
   showMotivationModal = false;
@@ -45,13 +47,29 @@ export class ListeOffresComponent implements OnInit {
   isConnected = false;
   budgetPropose: number | null = null;
   @ViewChildren('offerDescription') offerDescriptions!: QueryList<ElementRef>;
+  token: string | null = localStorage.getItem('token');
+  user: any | null = null;
+
   constructor(
     private offreService: OffreService,
+    private route: ActivatedRoute,
     private candidatureService: CandidatureService,
-    private entrepriseService: EntrepriseService
+    private entrepriseService: EntrepriseService,
+    private http: HttpClient
   ) {}
 
   ngOnInit(): void {
+    // Charger les données utilisateur depuis localStorage
+    const storedUser = localStorage.getItem('user');
+    if (storedUser) {
+      this.user = JSON.parse(storedUser);
+      // Initialiser offresConsultees si non défini
+      if (!this.user.offresConsultees) {
+        this.user.offresConsultees = [];
+        localStorage.setItem('user', JSON.stringify(this.user));
+      }
+    }
+
     this.loadOffresValidees();
     const token = localStorage.getItem('token');
     if (token) {
@@ -59,6 +77,7 @@ export class ListeOffresComponent implements OnInit {
         const payload = JSON.parse(atob(token.split('.')[1]));
         this.role = payload.role;
         this.isConnected = true;
+        this.isCandidat = this.role === 'CANDIDAT';
       } catch (e) {
         this.isConnected = false;
         this.role = null;
@@ -67,7 +86,21 @@ export class ListeOffresComponent implements OnInit {
       this.isConnected = false;
       this.role = null;
     }
+    this.route.queryParams.subscribe((params) => {
+      const offerId = params['selectedOfferId'];
+      if (offerId && this.offers.length > 0) {
+        const found = this.offers.find((o) => o.id == offerId);
+        if (found) {
+          this.selectedOffer = found;
+          this.showModal = true;
+          if (this.isCandidat) {
+            this.markOfferAsConsulted(offerId);
+          }
+        }
+      }
+    });
   }
+
   getProfileRoute(): string {
     switch (this.role) {
       case 'CANDIDAT':
@@ -80,6 +113,7 @@ export class ListeOffresComponent implements OnInit {
         return '/profil';
     }
   }
+
   decodeToken(token: string): any {
     try {
       const payload = token.split('.')[1];
@@ -89,10 +123,10 @@ export class ListeOffresComponent implements OnInit {
       return null;
     }
   }
+
   loadOffresValidees(): void {
     this.offreService.getOffresValidees().subscribe({
       next: (data) => {
-        // Mappe les offres
         this.offers = data.map((offre) => ({
           id: offre.id,
           title: offre.titre,
@@ -111,8 +145,8 @@ export class ListeOffresComponent implements OnInit {
           contract: offre.typeOffre,
           requirements: offre.exigances || [],
           entrepriseId: offre.entrepriseId,
-          company: '', // sera rempli après
-          logo: '', // sera rempli après
+          company: '',
+          logo: '',
         }));
 
         const entrepriseRequests = this.offers.map((offer) =>
@@ -142,6 +176,7 @@ export class ListeOffresComponent implements OnInit {
       },
     });
   }
+
   openSignupModal() {
     const modalElement = document.getElementById('signupModal');
     if (modalElement) {
@@ -151,6 +186,7 @@ export class ListeOffresComponent implements OnInit {
       console.error('Élément modal non trouvé');
     }
   }
+
   suggestPositions() {
     if (!this.positionFilter.trim()) {
       this.positionSuggestions = [];
@@ -166,7 +202,6 @@ export class ListeOffresComponent implements OnInit {
   }
 
   filterOffers() {
-    console.log(this.offers);
     this.suggestPositions();
     this.filteredOffers = this.offers.filter((offer) => {
       const positionMatch =
@@ -184,17 +219,19 @@ export class ListeOffresComponent implements OnInit {
     this.selectedOfferIndex = 0;
     this.selectedOffer =
       this.filteredOffers.length > 0 ? this.filteredOffers[0] : null;
-    this.currentPage = 1; // Revenir à la première page après filtre
+    this.currentPage = 1;
   }
 
   setOfferType(type: string) {
     this.offerType = type;
     this.filterOffers();
   }
+
   getAll() {
     this.offerType = '';
     this.loadOffresValidees();
   }
+
   selectPositionSuggestion(suggestion: string) {
     this.positionFilter = suggestion;
     this.showPositionSuggestions = false;
@@ -203,13 +240,18 @@ export class ListeOffresComponent implements OnInit {
   selectOffer(index: number) {
     this.selectedOfferIndex = index;
     this.selectedOffer = this.filteredOffers[index];
+    if (this.isCandidat && this.selectedOffer) {
+      this.markOfferAsConsulted(this.selectedOffer.id);
+    }
     if (window.innerWidth < 1200) {
       this.showModal = true;
     }
   }
+
   closeModal() {
     this.showModal = false;
   }
+
   toggleMenu() {
     this.menuOpen = !this.menuOpen;
     const navLinks = document.querySelector('.nav-links') as HTMLElement;
@@ -219,6 +261,7 @@ export class ListeOffresComponent implements OnInit {
       navLinks.classList.remove('active');
     }
   }
+
   hidePositionSuggestionsDelayed() {
     if (this.preventBlur) {
       return;
@@ -227,6 +270,7 @@ export class ListeOffresComponent implements OnInit {
       this.showPositionSuggestions = false;
     }, 200);
   }
+
   suggestLocations() {
     if (!this.locationFilter.trim()) {
       this.locationSuggestions = [];
@@ -247,7 +291,6 @@ export class ListeOffresComponent implements OnInit {
     this.filterOffers();
   }
 
-  // Update the existing blur handler
   hideLocationSuggestionsDelayed() {
     setTimeout(() => {
       if (!this.preventBlurLocation) {
@@ -276,6 +319,7 @@ export class ListeOffresComponent implements OnInit {
       .fill(0)
       .map((_, i) => i + 1);
   }
+
   getUserRole(): string | null {
     const token = localStorage.getItem('token');
     if (!token) return null;
@@ -314,6 +358,16 @@ export class ListeOffresComponent implements OnInit {
     }
     this.showMotivationModal = true;
     this.motivationText = '';
+  }
+  OnClick() {
+    Swal.fire({
+      icon: 'info',
+      title: 'Connexion requise',
+      text: 'Veuillez vous connecter en tant que entreprise pour publier votre offre.',
+      confirmButtonText: 'Se connecter',
+    }).then(() => {
+      this.openSignupModal();
+    });
   }
   isCandidatureInvalid(): boolean {
     if (!this.motivationText || !this.motivationText.trim()) return true;
@@ -376,7 +430,7 @@ export class ListeOffresComponent implements OnInit {
         this.showMotivationModal = false;
         this.motivationText = '';
         this.budgetPropose = null;
-        this.acceptCommission = false; // reset checkbox
+        this.acceptCommission = false;
         this.candidatureLoading = false;
         Swal.fire({
           icon: 'success',
@@ -395,5 +449,36 @@ export class ListeOffresComponent implements OnInit {
         this.candidatureLoading = false;
       },
     });
+  }
+
+  markOfferAsConsulted(offreId: string): void {
+    if (!this.token || !this.isCandidat || !this.user) {
+      console.warn('Utilisateur non connecté ou non candidat');
+      return;
+    }
+
+    // Vérifier si offresConsultees existe et si l'offre est déjà consultée
+    if (!this.user.offresConsultees) {
+      this.user.offresConsultees = [];
+    }
+    if (this.user.offresConsultees.includes(offreId)) {
+      return;
+    }
+
+    this.http
+      .post(`http://localhost:8080/api/offres/${offreId}/consult`, null, {
+        headers: { Authorization: `Bearer ${this.token}` },
+      })
+      .subscribe({
+        next: () => {
+          // Mettre à jour localement après succès
+          this.user.offresConsultees.push(offreId);
+          localStorage.setItem('user', JSON.stringify(this.user));
+          console.log(`Offre ${offreId} marquée comme consultée`);
+        },
+        error: (error) => {
+          console.error(`Erreur lors de la mise à jour de ${offreId} :`, error);
+        },
+      });
   }
 }

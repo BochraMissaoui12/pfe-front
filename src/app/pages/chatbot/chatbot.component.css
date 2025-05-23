@@ -1,0 +1,201 @@
+/* Bouton flottant */
+.chat-toggle {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: transparent;
+  border: none;
+  border-radius: 50px;
+  padding: 10px;
+  cursor: pointer;
+  z-index: 51000;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.chat-toggle-icon {
+  width: 70px;
+  height: 70px;
+  border-radius: 50px;
+}
+
+.chat-toggle:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+}
+
+/* Conteneur du chatbot */
+.chatbot-container {
+  max-width: 400px;
+  max-height: 800px;
+  position: fixed;
+  bottom: 50px;
+  right: 20px;
+  background: #e6eaee;
+  border-radius: 10px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+  display: flex;
+  flex-direction: column;
+  transform: translateY(100%);
+  transition: transform 0.3s ease-in-out;
+  z-index: 50000;
+  overflow: hidden;
+  /* Ensure it's hidden when not open */
+  visibility: hidden;
+  opacity: 0;
+}
+
+.chatbot-container.open {
+  transform: translateY(0);
+  visibility: visible;
+  opacity: 1;
+}
+
+/* En-tête */
+.chat-header {
+  background: #1e2a44;
+  color: white;
+  padding: 10px 15px;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.header-title {
+  font-weight: 600;
+}
+
+.close-btn {
+  background: none;
+  border: none;
+  color: white;
+  cursor: pointer;
+  font-size: 20px;
+  transition: color 0.2s ease;
+}
+
+.close-btn:hover {
+  color: #ff4d4d;
+}
+
+/* Corps du chat */
+.chat-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 15px;
+  background: #e6eaee;
+}
+
+/* Messages */
+.message {
+  margin: 8px 0;
+  display: flex;
+  flex-direction: column;
+  animation: fadeIn 0.3s ease;
+}
+
+.message-text {
+  padding: 10px 14px;
+  border-radius: 10px;
+  font-size: 14px;
+  line-height: 1.4;
+  margin-top: 5px;
+  max-width: 80%;
+  word-wrap: break-word;
+}
+
+.user-message .message-text {
+  background: #007bff;
+  color: white;
+  align-self: flex-end;
+  border-bottom-right-radius: 10px;
+}
+
+.bot-message .message-text {
+  background: white;
+  color: #333;
+  align-self: flex-start;
+  border-bottom-left-radius: 10px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+/* Footer avec champ de saisie */
+.chat-footer {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  background: #e6eaee;
+  border-top: 1px solid #d3d3d3;
+}
+
+.chat-footer input {
+  flex: 1;
+  padding: 8px 12px;
+  border: 1px solid #d3d3d3;
+  border-radius: 20px;
+  font-size: 14px;
+  outline: none;
+}
+
+.send-btn {
+  background: none;
+  border: none;
+  color: #007bff;
+  font-size: 18px;
+  margin-left: 10px;
+  cursor: pointer;
+}
+
+.send-btn:hover {
+  color: #0056b3;
+}
+/* Suggestions */
+.suggestions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px; /* Increased spacing for a cleaner look */
+  margin-top: 15px;
+  justify-content: flex-start; /* Align buttons to the start */
+}
+
+.suggestions button {
+  background: linear-gradient(
+    135deg,
+    #f0f2f5,
+    #e8ecef
+  ); /* Subtle gradient for depth */
+  border: 1px solid #d3d3d3; /* Light border for definition */
+  padding: 8px 16px;
+  border-radius: 25px; /* More rounded corners for a modern feel */
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 500; /* Slightly bolder text */
+  color: #333;
+  transition: all 0.3s ease; /* Smooth transitions for hover effects */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+}
+
+.suggestions button:hover {
+  background: linear-gradient(
+    135deg,
+    #007bff,
+    #0056b3
+  ); /* Gradient on hover to match user message color */
+  color: white;
+  transform: translateY(-2px); /* Slight lift effect */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15); /* Enhanced shadow on hover */
+}
+/* Animation pour l'apparition des messages */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

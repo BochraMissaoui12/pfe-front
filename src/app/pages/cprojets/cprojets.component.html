@@ -1,0 +1,150 @@
+<header class="navbar">
+    <div class="logo">
+        <img src="assets/images/logo.png" alt="Logo" />
+    </div>
+    <nav>
+        <ul class="nav-links">
+            <li><a routerLink="/">Accueil</a></li>
+            <li><a routerLink="/Mes-théses" class="active">Mes Projets</a></li>
+            <li><a routerLink="/liste-offres">Emplois & Stages</a></li>
+            <li><a routerLink="/">Contact</a></li>
+        </ul>
+    </nav>
+    <button class="btn-primary" routerLink="/Cprofil" style="
+      background: rgba(0, 168, 232, 1);
+      border: none;
+      padding: 1vh 2vw;
+      border-radius: 36px;
+      color: rgba(30, 41, 59, 1);
+      font-weight: 400;
+      cursor: pointer;
+      transition: 0.3s;
+    ">
+        Votre profil
+    </button>
+
+    <div class="icons">
+        <button class="icon-btn logout" (click)="logout()" style="background-color: transparent; border: none">
+            <i class="fa fa-sign-out-alt"></i>
+        </button>
+    </div>
+    <!-- Menu mobile -->
+    <button class="menu-toggle" (click)="toggleMenu()">
+        <img src="assets/images/Vector.png" alt="Menu" />
+    </button>
+</header>
+
+<main class="container">
+    <h1 class="page-title">Mes projets de thèse</h1>
+
+    <div *ngIf="projets.length === 0" class="empty-state">
+        Aucun projet trouvé.
+    </div>
+
+    <div class="projects-list">
+        <div class="project-card" *ngFor="let projet of projets">
+            <h2 class="project-title">{{ projet.titre }}</h2>
+            <p class="project-detail"><strong>Lieu :</strong> {{ projet.lieu }}</p>
+            <p class="project-detail"><strong>Année :</strong> {{ projet.annee }}</p>
+            <p class="project-detail"><strong>Cible :</strong> {{ projet.cible }}</p>
+            <p class="project-detail"><strong>Description :</strong> {{ projet.description }}</p>
+            <p class="project-detail"><strong>Statut :</strong> {{ projet.statut }}</p>
+
+            <div class="project-actions">
+                <button class="btn-info" (click)="openResponsesModal(projet)">
+                    Voir les réponses ({{ responsesMap[projet.id]?.length || 0 }})
+                </button>
+                <button class="btn-primary" (click)="openUpdateModal(projet)">
+                    Modifier
+                </button>
+                <button class="btn-danger" (click)="deleteProjet(projet.id)">
+                    Supprimer
+                </button>
+            </div>
+
+        </div>
+    </div>
+
+</main>
+<!-- Modal modification projet -->
+<div class="modal fade" tabindex="-1" [ngClass]="{'show d-block': showUpdateModal}"
+    [style.display]="showUpdateModal ? 'block' : 'none'" aria-modal="true" role="dialog">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content rounded-4 shadow">
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title">Modifier le projet : {{ selectedProjet?.titre }}</h5>
+                <button type="button" class="btn-close btn-close-white" (click)="closeUpdateModal()"
+                    aria-label="Fermer"></button>
+            </div>
+            <div class="modal-body">
+                <form #updateForm="ngForm" (ngSubmit)="submitUpdate(updateForm)">
+                    <div class="mb-3">
+                        <label for="titre" class="form-label">Titre</label>
+                        <input id="titre" name="titre" class="form-control" [(ngModel)]="updatedProjet.titre"
+                            required />
+                    </div>
+                    <div class="mb-3">
+                        <label for="lieu" class="form-label">Lieu</label>
+                        <input id="lieu" name="lieu" class="form-control" [(ngModel)]="updatedProjet.lieu" required />
+                    </div>
+                    <div class="mb-3">
+                        <label for="annee" class="form-label">Année</label>
+                        <input id="annee" name="annee" type="number" class="form-control"
+                            [(ngModel)]="updatedProjet.annee" required />
+                    </div>
+                    <div class="mb-3">
+                        <label for="cible" class="form-label">Cible</label>
+                        <input id="cible" name="cible" class="form-control" [(ngModel)]="updatedProjet.cible"
+                            required />
+                    </div>
+                    <div class="mb-3">
+                        <label for="description" class="form-label">Description</label>
+                        <textarea id="description" name="description" rows="4" class="form-control"
+                            [(ngModel)]="updatedProjet.description" required></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label for="statut" class="form-label">Statut</label>
+                        <select id="statut" name="statut" class="form-select" [(ngModel)]="updatedProjet.statut"
+                            required>
+                            <option value="publié">Publié</option>
+                            <option value="non-publié">Non publié</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100" [disabled]="updateForm.invalid">
+                        Enregistrer les modifications
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal réponses -->
+<div class="modal fade" tabindex="-1" [ngClass]="{ 'show d-block': showResponsesModal }"
+    [style.display]="showResponsesModal ? 'block' : 'none'" aria-modal="true" role="dialog">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Réponses au projet : {{ selectedProjetTitre }}</h5>
+                <button type="button" class="btn-close" (click)="closeResponsesModal()" aria-label="Fermer"></button>
+            </div>
+            <div class="modal-body">
+                <div *ngIf="selectedProjetResponses.length === 0" class="text-center text-muted">
+                    Aucune réponse pour ce projet.
+                </div>
+                <ul class="list-group" *ngIf="selectedProjetResponses.length > 0">
+                    <li class="list-group-item" *ngFor="let reponse of selectedProjetResponses">
+                        <strong>{{ reponse.nom }} ({{ reponse.email }})</strong>
+                        <p>{{ reponse.message }}</p>
+                        <small class="text-muted">{{ reponse.dateCreation | date: 'short' }}</small>
+                    </li>
+                </ul>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" (click)="closeResponsesModal()">
+                    Fermer
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

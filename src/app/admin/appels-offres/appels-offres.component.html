@@ -58,10 +58,34 @@
                             <button class="btn-action delete" (click)="deleteAppel(appel)">
                                 <i class="fa fa-trash"></i>
                             </button>
+                            <button class="btn-action info" (click)="openReponsesModal(appel.id)">
+                                <i class="fa fa-comments"></i>
+                            </button>
                         </td>
                     </tr>
                 </tbody>
             </table>
+            <!-- Modal Liste des réponses -->
+            <div class="modal" *ngIf="showReponsesModal">
+                <div class="modal-content">
+                    <button (click)="closeReponsesModal()" class="close-btn">&times;</button>
+                    <h3>Réponses à l'appel d'offre</h3>
+                    <div *ngIf="reponses.length === 0" class="empty-msg">
+                        Aucune réponse pour cet appel d'offre.
+                    </div>
+                    <ul *ngIf="reponses.length > 0" class="reponses-list">
+                        <li *ngFor="let reponse of reponses" class="reponse-item">
+                            <p><strong>Entreprise :</strong> {{ reponse.nomEntreprise }}</p>
+                            <p><strong>Email :</strong> {{ reponse.emailEntreprsie }}</p>
+                            <p><strong>Message :</strong> {{ reponse.messages }}</p>
+                            <p><small>Envoyé le : {{ reponse.dateCreation | date:'medium' }}</small></p>
+                            <button class="btn-delete" (click)="supprimerReponse(reponse.id)">Supprimer</button>
+                            <hr />
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
             <div class="modal" *ngIf="showModal">
                 <div class="modal-content">
                     <button (click)="closeModal()" class="close-btn">&times;</button>
