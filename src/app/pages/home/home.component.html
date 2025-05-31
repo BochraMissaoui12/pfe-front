@@ -32,14 +32,14 @@
                     <!-- Navbar par défaut ou non connecté -->
                     <ng-container *ngIf="!role || role === 'ADMIN' || role === 'SUPERADMIN'">
                         <li><a href="#" routerLink="/liste-offres">Emplois & Stages</a></li>
-                        <li><a (click)="OnClick()">Publier une offre</a></li>
+                        <li><a href="#" (click)="OnClick()">Publier une offre</a></li>
                         <li><a href="#">Contact</a></li>
                     </ng-container>
                 </ul>
             </nav>
             <!-- Bouton dynamique -->
             <button class="btn-primary" *ngIf="!isConnected || role === 'ADMIN' || role === 'SUPERADMIN'"
-                (click)="openSignupModal()">S'inscrire</button>
+                (click)="openSignupModal()" style="margin-right: 40px;">S'inscrire</button>
             <button class="btn-primary"
                 *ngIf="isConnected && (role === 'CHERCHEUR' || role === 'ENTREPRISE' || role === 'CANDIDAT')"
                 [routerLink]="

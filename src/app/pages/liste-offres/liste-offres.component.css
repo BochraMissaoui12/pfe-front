@@ -165,7 +165,11 @@
     width: calc(100% - 0.625rem);
   }
 }
-
+.home {
+  font-family: "Poppins", sans-serif;
+  color: var(--text-color);
+  text-align: center;
+}
 /* styles for the sidebar */
 .container {
   display: flex;
@@ -796,7 +800,7 @@ body {
 .menu-toggle {
   display: none;
   position: absolute;
-  left: 15px;
+  right: 15px;
   top: 15px;
   background: none;
   border: none;
@@ -959,14 +963,46 @@ body {
   background-color: white;
 }
 @media (max-width: 830px) {
-  .navbar {
-    flex-direction: column;
-    align-items: flex-start; /* Align items to the start */
-  }
   .navbar nav {
     padding-top: 5px; /* Reduced padding for smaller screens */
   }
-  .nav-links,
+  .navbar {
+    padding: 4vh 5vw;
+  }
+
+  .nav-links {
+    position: fixed;
+    top: 0;
+    right: -250px; /* Hide off screen to the right */
+    width: 250px;
+    height: 100vh;
+    background: rgba(30, 41, 59, 0.98);
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 60px 20px 20px 20px;
+    gap: 24px;
+    transition: right 0.3s ease;
+    z-index: 999;
+    box-shadow: -2px 0 8px rgba(0, 0, 0, 0.09);
+    display: flex;
+  }
+
+  .nav-links.active {
+    right: 0; /* Slide in from the right */
+  }
+
+  /* Hide nav-links in desktop mode */
+  .nav-links {
+    display: none;
+  }
+  .nav-links.active {
+    display: flex;
+  }
+
+  /* Show the menu toggle button */
+  .menu-toggle {
+    display: block;
+  }
   .search-container,
   .icons {
     display: none; /* Initially hide these elements */
@@ -974,10 +1010,6 @@ body {
     margin-top: 10px;
   }
   /* Make sure active class displays the elements properly */
-  .nav-links.active {
-    display: flex; /* Display the nav links */
-    flex-direction: column; /* Stack them vertically */
-  }
   .search-container.active {
     display: flex;
   }
