@@ -15,7 +15,7 @@
                 </ul>
             </nav>
             <!-- Bouton dynamique -->
-            <button class="btn-primary" routerLink="/profil">Votre profil</button>
+            <button class="btn-primary" routerLink="/profil" style="margin-right: 30px;">Votre profil</button>
 
             <!-- Menu mobile -->
             <button class="menu-toggle" (click)="toggleMenu()">
@@ -31,52 +31,53 @@
                 </ul>
             </div>
             <div class="main-content">
-                <div class="candidatures-container">
-                    <h2>Mes candidatures</h2>
-                    <div *ngIf="loading" class="loading-spinner">
-                        Chargement...
-                    </div>
-                    <div *ngIf="!loading && candidatures.length === 0" class="no-candidatures">
-                        Vous n'avez pas encore postulé à une offre.
-                    </div>
-                    <table *ngIf="!loading && pagedCandidatures.length > 0" class="candidatures-table">
-                        <thead>
-                            <tr>
-                                <th>Entreprise</th>
-                                <th>Poste</th>
-                                <th>Date</th>
-                                <th>Statut</th>
-                                <th>Actions</th> <!-- Nouvelle colonne -->
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr *ngFor="let c of pagedCandidatures">
-                                <td>
-                                    <img [src]="c.entrepriseLogo" alt="Logo" class="candidature-logo" />
-                                    <span class="entreprise-name">{{ c.entrepriseNom }}</span>
-                                </td>
-                                <td>{{ c.offreTitre }}</td>
-                                <td>{{ c.datePostulation | date:'dd/MM/yyyy' }}</td>
-                                <td>
-                                    <span [ngClass]="getStatusClass(c.statut)">
-                                        {{ c.statut }}
-                                    </span>
-                                </td>
-                                <td>
-                                    <button (click)="supprimerCandidature(c.id)"
-                                        class="btn btn-danger">Supprimer</button>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <div class="pagination-controls" *ngIf="totalPages > 1">
-                        <button (click)="pagePrecedente()" [disabled]="currentPage === 1">Précédent</button>
-                        <span>Page {{ currentPage }} sur {{ totalPages }}</span>
-                        <button (click)="pageSuivante()" [disabled]="currentPage === totalPages">Suivant</button>
-                    </div>
+                <div style="overflow-x:auto;">
+                    <div class="candidatures-container">
+                        <h2>Mes candidatures</h2>
+                        <div *ngIf="loading" class="loading-spinner">
+                            Chargement...
+                        </div>
+                        <div *ngIf="!loading && candidatures.length === 0" class="no-candidatures">
+                            Vous n'avez pas encore postulé à une offre.
+                        </div>
+                        <table *ngIf="!loading && pagedCandidatures.length > 0" class="candidatures-table">
+                            <thead>
+                                <tr>
+                                    <th>Entreprise</th>
+                                    <th>Poste</th>
+                                    <th>Date</th>
+                                    <th>Statut</th>
+                                    <th>Actions</th> <!-- Nouvelle colonne -->
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let c of pagedCandidatures">
+                                    <td>
+                                        <img [src]="c.entrepriseLogo" alt="Logo" class="candidature-logo" />
+                                        <span class="entreprise-name">{{ c.entrepriseNom }}</span>
+                                    </td>
+                                    <td>{{ c.offreTitre }}</td>
+                                    <td>{{ c.datePostulation | date:'dd/MM/yyyy' }}</td>
+                                    <td>
+                                        <span [ngClass]="getStatusClass(c.statut)">
+                                            {{ c.statut }}
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <button (click)="supprimerCandidature(c.id)"
+                                            class="btn btn-danger">Supprimer</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="pagination-controls" *ngIf="totalPages > 1">
+                            <button (click)="pagePrecedente()" [disabled]="currentPage === 1">Précédent</button>
+                            <span>Page {{ currentPage }} sur {{ totalPages }}</span>
+                            <button (click)="pageSuivante()" [disabled]="currentPage === totalPages">Suivant</button>
+                        </div>
 
+                    </div>
                 </div>
-
             </div>
         </div>
         <footer class="footer">
